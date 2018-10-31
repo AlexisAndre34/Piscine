@@ -1,3 +1,26 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+#---------------- VIEWS DE CREATION (CREATE) ----------------
+
+
+
+
+
+#---------------- VIEWS DE LECTURE (READ) ----------------
+
+
+
+
+#---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
+
+
+
+
+#---------------- VIEWS DE SUPPRESSION (DELETE) ----------------
+
+
+
+
+
+#---------------- VIEWS DE  A DEFINIR ----------------
