@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block title %}Connexion{% endblock %}
+{% block content %}
+
+<div>
+    <form method="post" action="">
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        </div>
+    {% endfor %}
+    <button type="submit">CONNEXION</button>
+    </form>
+</div>
+
+{% endblock %}

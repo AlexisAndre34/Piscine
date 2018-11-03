@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-
+{% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>Marketplace G8</title>
+    <title>{% block title %}MARKETPLACE G8 - CCI{% endblock %}</title>
+
+    <!--CSS-->
+    <link href="{% static 'css/style_marketplace.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
+    {% block content %}
     <p>En attendant une template</p>
+    <ul>
+        <li><a href="{% url 'homepage' %}">Accueil</a></li>
+        {% if user.is_authenticated %}
+            <li>Bonjour, {{ user.username }}</li>
+            <li><a href="{% url 'logout' %}">Deconnexion</a></li>
+        {% else %}
+        <li><a href="{% url 'login' %}">Connexion</a></li>
+        <li><a href="{% url 'signupClient' %}">Créer un compte client</a></li>
+        <!--<li><a href="{ url 'signupCommercant' }">Créer un compte commercant</a></li>-->
+        {% endif %}
+    </ul>
+
+{% endblock %}
+    <!-- Scripts-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'js/script_marketplace.js' %}"></script>
 </body>
 </html>
