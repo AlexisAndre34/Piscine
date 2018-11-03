@@ -1,4 +1,5 @@
 *.log
 *.pot
 *.pyc
+/migrations/^0
 __pycache__/
