@@ -1,5 +1,5 @@
 *.log
 *.pot
 *.pyc
-/Marketplace/app/migrations/0*
+00*
 __pycache__/
