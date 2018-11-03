@@ -1,7 +1,5 @@
 *.log
 *.pot
 *.pyc
-**/migrations/*.py
 0001_initial.py
-!__init__.py
 __pycache__/
