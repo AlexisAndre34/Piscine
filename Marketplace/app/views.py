@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
-from app.models import Client
-from app.forms import SignInForm, SignUpFormClient
+from app.models import Client, Commercant
+from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant
 
 #VIEW PAGE D'ACCUEIL
 def homepage(request):
@@ -22,7 +22,6 @@ def login_user(request):
             user = authenticate(username=username, password=raw_password)
             if user:
                 login(request,user)
-                #request.session['test']="test session réussit"
                 return redirect('homepage')
             else:
                 error=True
@@ -59,8 +58,25 @@ def signup_client(request):
         form = SignUpFormClient(request.POST)
     return render(request, 'signup_client.html', {'formClient': form})
 
-
-
+#Creation d'un compte commercant
+def signup_commercant(request):
+    if request.method == 'POST':
+        form = SignUpFormCommercant(request.POST)
+        if form.is_valid():
+            form.save() #Sauvegarde/Creation d'un utilisateur
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password) #Authentification de l'utilisateur
+            Utilisateur = User.objects.get(username=username)
+            groupe_commercant = Group.objects.get(id='1')  # On ajoute l'utilisateur au groupe commercant ici (id groupe commercant = 1 )
+            Utilisateur.groups.add(groupe_commercant)
+            commercant = Commercant(numcommercant=Utilisateur, telephonecommercant=form.cleaned_data.get('telephonecommercant'), numcommercant_id=Utilisateur.id)
+            commercant.save()  # Sauvegarde du commercant
+            login(request, user) #Connexion au site
+            return redirect('homepage')
+    else:
+        form = SignUpFormCommercant(request.POST)
+    return render(request, 'signup_Commercant.html', {'formCommercant': form})
 
 #---------------- VIEWS DE LECTURE (READ) ----------------
 

@@ -21,6 +21,11 @@ class SignUpFormClient(UserCreationForm):
         model = User
         fields = ('username','first_name','last_name','datenaissanceclient','email','telephoneclient','codepostalclient','villeclient','rueclient','password1', 'password2', )
 
-
+#Formulaire de creation de compte commercant
+class SignUpFormCommercant(UserCreationForm):
+    telephonecommercant = forms.CharField()
+    class Meta:
+        model = User
+        fields = ('username','first_name','last_name','email','telephonecommercant', 'password1', 'password2', )
 
 #-----Formulaire de mise à jour ---
