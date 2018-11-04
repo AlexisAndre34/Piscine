@@ -14,11 +14,12 @@
         <li><a href="{% url 'homepage' %}">Accueil</a></li>
         {% if user.is_authenticated %}
             <li>Bonjour, {{ user.username }}</li>
+            <!--<li>{{ request.session.groupe}}</li>-->
             <li><a href="{% url 'logout' %}">Deconnexion</a></li>
         {% else %}
         <li><a href="{% url 'login' %}">Connexion</a></li>
         <li><a href="{% url 'signupClient' %}">Créer un compte client</a></li>
-        <!--<li><a href="{ url 'signupCommercant' }">Créer un compte commercant</a></li>-->
+        <li><a href="{% url 'signupCommercant' %}">Créer un compte commercant</a></li>
         {% endif %}
     </ul>
 

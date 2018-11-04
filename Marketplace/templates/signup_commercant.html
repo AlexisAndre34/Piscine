@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+
+{% block title %}Création d'un compte commercant{% endblock %}
+{% block content %}
+<div>
+    <form method="post" action="">
+    {% csrf_token %}
+        {% for field in formCommercant %}
+            {% for error in field.errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+            <div>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            </div>
+            {% if field.help_text %}
+              <small>{{ field.help_text }}</small>
+            {% endif %}
+        {% endfor %}
+        <button type="submit" >CREER UN COMPTE</button>
+    </form>
+</div>
+
+{% endblock %}
