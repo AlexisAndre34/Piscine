@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
-from app.models import Client, Commercant
-from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant
+from app.models import Client, Commercant, Commerce, Gerer
+from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm
 
 #VIEW PAGE D'ACCUEIL
 def homepage(request):
@@ -77,6 +77,22 @@ def signup_commercant(request):
     else:
         form = SignUpFormCommercant(request.POST)
     return render(request, 'signup_Commercant.html', {'formCommercant': form})
+
+#Creation d'un commerce
+def create_commerce(request):
+    if request.method == 'POST':
+        form = CommerceForm(request.POST)
+        if form.is_valid():
+            commerce = form.save()
+            commercant = Commercant.objects.get(numcommercant = request.user.id)
+            new_gestion = Gerer(numcommercant = commercant, numcommerce = commerce)
+            new_gestion.save()
+            return render(request, 'index.html')
+    else:
+        form = CommerceForm(request.POST)
+    return render(request, 'create/createCommerce.html', {'formCommerce': form})
+
+
 
 #---------------- VIEWS DE LECTURE (READ) ----------------
 

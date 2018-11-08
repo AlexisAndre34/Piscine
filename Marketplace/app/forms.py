@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from app.models import Commerce
 
 #Formulaire pour la connexion au site
 class SignInForm(forms.Form):
@@ -9,6 +10,11 @@ class SignInForm(forms.Form):
 
 
 #-----Formulaire de creation ---
+
+class CommerceForm(forms.ModelForm):
+    class Meta:
+        model = Commerce
+        fields = '__all__'
 
 #Formulaire de creation d'un compte client
 class SignUpFormClient(UserCreationForm):

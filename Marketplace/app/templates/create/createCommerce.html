@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<form method="post">
+	{% csrf_token %}
+	{% for field in formCommerce %}
+		<div>
+			{{ field.label_tag }}<br>
+			{{ field }}
+		</div>
+	{% endfor %}
+
+	<div>
+		<button type="submit">Envoyer</button>
+	</div>
+</form>
+
+{% endblock %}
