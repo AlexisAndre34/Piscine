@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+                <form  method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in formProduit %}
+                        <div>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        </div>
+                    {% endfor %}
+                      <button type="submit">ENREGISTRER
+                      </button>
+                </form>
+{% endblock %}

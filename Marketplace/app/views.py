@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
-from app.models import Client, Commercant, Commerce, Gerer
-from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm
+from app.models import Client, Commercant, Commerce, Gerer, Produit
+from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm
 
 #VIEW PAGE D'ACCUEIL
 def homepage(request):
@@ -92,6 +92,21 @@ def create_commerce(request):
         form = CommerceForm(request.POST)
     return render(request, 'create/createCommerce.html', {'formCommerce': form})
 
+def create_produit(request, idcommerce):
+    #Si c'est une requete en POST
+    if request.method == 'POST':
+        form = ProduitForm(request.POST, request.FILES)
+        #On verifie que les donnees sont valides
+        if form.is_valid():
+            qtestock = form.cleaned_data.get('quantitestock')
+            commerce = Commerce.objects.get(numsiret=idcommerce)
+            new_produit = Produit(idcommerce=commerce, numcategorie=form.cleaned_data.get('choice_categorie'), nomproduit=form.cleaned_data.get('nomproduit'), marqueproduit=form.cleaned_data.get('marqueproduit'), descriptifproduit=form.cleaned_data.get('descriptifproduit'), caracteristiquesproduit=form.cleaned_data.get('caracteristiquesproduit'), prixproduit=form.cleaned_data.get('prixproduit'), tauxremise=form.cleaned_data.get('tauxremise'), quantitestock=form.cleaned_data.get('quantitestock'), quantitedisponible=qtestock, datelimitereservation=form.cleaned_data.get('datelimitereservation'), photoproduit1=form.cleaned_data.get('photoproduit1'), photoproduit2=form.cleaned_data.get('photoproduit2'))
+            new_produit.save()
+            return render(request, 'index.html')
+    #Si c'est une requete GET ou autre chose
+    else:
+        form = ProduitForm()
+    return render(request, 'create/createProduit.html', {'formProduit': form})
 
 
 #---------------- VIEWS DE LECTURE (READ) ----------------

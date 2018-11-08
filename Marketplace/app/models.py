@@ -58,6 +58,8 @@ class Produit(models.Model):
     quantitestock = models.IntegerField(default='0')
     quantitedisponible = models.IntegerField() #Lors de la création d'un produit le nb de produit disponible est egal au nb de produit en stock
     datelimitereservation = models.IntegerField(blank=True, null=True) #Correspond à un nombre de jour
+    photoproduit1 = models.ImageField(upload_to = 'media/', blank=True, null=True)
+    photoproduit2 = models.ImageField(upload_to = 'media/', blank=True, null=True)
     class Meta:
         db_table = 'produit'
 

@@ -1,7 +1,8 @@
 from django import forms
+from django.forms import ModelChoiceField
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from app.models import Commerce
+from app.models import Commerce, Produit, Categorie
 
 #Formulaire pour la connexion au site
 class SignInForm(forms.Form):
@@ -10,6 +11,19 @@ class SignInForm(forms.Form):
 
 
 #-----Formulaire de creation ---
+
+#formulaire de creation de produit, choix des categories
+class CategorieChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.nomcategorie
+
+#formulaire de creation de produit
+class ProduitForm(forms.ModelForm):
+    choice_categorie = CategorieChoiceField(queryset=Categorie.objects.all(), to_field_name='numcategorie')
+    class Meta:
+        model = Produit
+        exclude = [ 'idcommerce','numcategorie','numproduit','quantitedisponible']
+
 
 class CommerceForm(forms.ModelForm):
     class Meta:
