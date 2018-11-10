@@ -1,0 +1,13 @@
+
+
+
+/* Concernant la barre de navigation */
+.badge-panier {
+    display: flex;
+}
+
+.badge-panier > .badge {
+    min-width:0;
+    background-color:white;
+    color:black;
+}
