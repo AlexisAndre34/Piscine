@@ -2,4 +2,5 @@
 *.pot
 *.pyc
 0*.py
+media/**
 __pycache__/
