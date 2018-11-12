@@ -2,7 +2,8 @@
 *.pot
 *.pyc
 0*.py
-media/**
+/media/*
+!/media/media
 __pycache__/
 *.xml
 *.iml
