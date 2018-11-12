@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
 from app.models import Client, Commercant, Commerce, Gerer, Produit
-from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm
+from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm
 
 #VIEW PAGE D'ACCUEIL
 def homepage(request):
@@ -116,6 +116,45 @@ def read_commerce(request, idcommerce):
     return render(request, 'read/readCommerce.html', {'gerer' : gerer})
 
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
+
+def update_commercant(request):
+    user = User.objects.get(id=request.user.id)
+    commercant = Commercant.objects.get(numcommercant=request.user.id)
+    if request.method == "POST":
+        form = UpdateCommercantForm(request.POST)
+        if form.is_valid():
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.email = form.cleaned_data.get('email')
+            user.save()
+            commercant.telephonecommercant = form.cleaned_data.get('telephonecommercant')
+            commercant.save()
+            return render(request, 'index.html')#A Definir une autre redirection
+    else:
+        return render(request, 'update/updateCommercant.html', locals())
+
+def update_client(request):
+    user = User.objects.get(id=request.user.id)
+    client = Client.objects.get(numclient=request.user.id)
+    if request.method == "POST":
+        form = UpdateClientForm(request.POST)
+        if form.is_valid():
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.email = form.cleaned_data.get('email')
+            user.save()
+            client.datenaissanceclient = form.cleaned_data.get('datenaissanceclient')
+            client.telephoneclient = form.cleaned_data.get('telephoneclient')
+            client.codepostalclient = form.cleaned_data.get('codepostalclient')
+            client.villeclient = form.cleaned_data.get('villeclient')
+            client.rueclient = form.cleaned_data.get('rueclient')
+            client.save()
+            return render(request, 'index.html')#A Definir une autre redirection
+    else:
+        date = str(client.datenaissanceclient.year)+"-"+str(client.datenaissanceclient.month)+"-"+str(client.datenaissanceclient.day) #Permet d'avoir le bon format de date pour le input : type=date , du formulaire
+        return render(request, 'update/updateClient.html', locals())
+
+
 
 
 #---------------- VIEWS DE SUPPRESSION (DELETE) ----------------
