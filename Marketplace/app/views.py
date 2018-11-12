@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
 from app.models import Client, Commercant, Commerce, Gerer, Produit
@@ -111,6 +111,11 @@ def create_produit(request, idcommerce):
 
 #---------------- VIEWS DE LECTURE (READ) ----------------
 
+def read_commerce(request, idcommerce):
+    gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
+    return render(request, 'read/readCommerce.html', {'gerer' : gerer})
+
+
 
 
 
@@ -125,4 +130,4 @@ def create_produit(request, idcommerce):
 
 
 
-#---------------- VIEWS DE  A DEFINIR ----------------
+#---------------- VIEWS DE A DEFINIR ----------------
