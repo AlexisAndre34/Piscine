@@ -4,3 +4,5 @@
 0*.py
 media/**
 __pycache__/
+*.xml
+*.iml
