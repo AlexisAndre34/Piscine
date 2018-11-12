@@ -115,17 +115,17 @@ def read_commerce(request, idcommerce):
     gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
     return render(request, 'read/readCommerce.html', {'gerer' : gerer})
 
-
-
-
-
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
 
-
-
 #---------------- VIEWS DE SUPPRESSION (DELETE) ----------------
+def delete_commerce(request, idcommerce):
+    gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
+    if request.method == 'POST':
+        Commerce.objects.get(numsiret = idcommerce).delete()
+        return render(request, 'index.html')
 
+    return render(request, 'delete/deleteView.html')
 
 
 
