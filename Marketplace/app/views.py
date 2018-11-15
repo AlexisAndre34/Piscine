@@ -173,6 +173,28 @@ def update_commerce(request, idcommerce):
         form = CommerceForm(instance=commerce)
     return render(request, 'update/updateCommerce.html', locals())
 
+# mise a jour d'un produit
+
+def update_produit(request, pk):
+    produit = get_object_or_404(Produit, numproduit=pk)
+    get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=produit.idcommerce)
+    if request.method == "POST":
+        form = ProduitForm(request.POST, request.FILES)
+        if form.is_valid():
+            produit.nomproduit = form.cleaned_data.get('nomproduit')
+            produit.marqueproduit = form.cleaned_data.get('marqueproduit')
+            produit.descriptifproduit = form.cleaned_data.get('descriptifproduit')
+            produit.caracteristiqueproduit = form.cleaned_data.get('caracteristiqueproduit')
+            produit.prixproduit = form.cleaned_data.get('prixproduit')
+            produit.tauxremise = form.cleaned_data.get('tauxremise')
+            produit.quantitestock = form.cleaned_data.get('quantitestock')
+            produit.datelimitereservation = form.cleaned_data.get('datelimitereservation')
+            produit.save()
+            return render(request, 'index.html')
+    else:
+        form = ProduitForm(instance=produit)
+    return render(request, 'update/updateProduit.html', {'Produitform': form})
+
 
 #---------------- VIEWS DE SUPPRESSION (DELETE) ----------------
 def delete_commerce(request, idcommerce):

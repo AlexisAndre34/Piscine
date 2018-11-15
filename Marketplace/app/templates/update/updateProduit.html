@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div>
+    <form method="post" action="">
+        {% csrf_token %}
+        {% for field in Produitform %}
+		<div>
+			{{ field.label_tag }}<br>
+			{{ field }}
+		</div>
+		{% endfor %}
+
+
+    <div>
+		<button type="submit">Envoyer</button>
+	</div>
+    </form>
+</div>
+
+{% endblock %}
