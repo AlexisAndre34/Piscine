@@ -154,7 +154,24 @@ def update_client(request):
         date = str(client.datenaissanceclient.year)+"-"+str(client.datenaissanceclient.month)+"-"+str(client.datenaissanceclient.day) #Permet d'avoir le bon format de date pour le input : type=date , du formulaire
         return render(request, 'update/updateClient.html', locals())
 
-
+def update_commerce(request, idcommerce):
+    user = User.objects.get(id=request.user.id)
+    commerce = get_object_or_404(Commerce, numsiret=idcommerce)
+    if request.method == "POST":
+        commerce.nomcommerce = request.POST.get('nomcommerce')
+        commerce.typecommerce = request.POST.get('typecommerce')
+        commerce.emailcommerce = request.POST.get('emailcommerce')
+        commerce.livraisoncommerce = request.POST.get('livraisoncommerce')
+        commerce.telephonecommerce = request.POST.get('telephonecommerce')
+        commerce.codepostalcommerce = request.POST.get('codepostalcommerce')
+        commerce.villecommerce = request.POST.get('villecommerce')
+        commerce.ruecommerce = request.POST.get('ruecommerce')
+        #print(form.cleaned_data.get('ruecommerce'))
+        commerce.save()
+        return render(request, 'index.html')
+    else:
+        form = CommerceForm(instance=commerce)
+    return render(request, 'update/updateCommerce.html', locals())
 
 
 #---------------- VIEWS DE SUPPRESSION (DELETE) ----------------

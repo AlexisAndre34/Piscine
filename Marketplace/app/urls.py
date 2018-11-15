@@ -9,6 +9,7 @@ urlpatterns = [
 	path('commerce/create', views.create_commerce, name="create_commerce"),
 	path('commerce/read/<int:idcommerce>', views.read_commerce, name="read_commerce"),
 	path('commerce/delete/<int:idcommerce>', views.delete_commerce, name="delete_commerce"),
+	path('commerce/update/<int:idcommerce>', views.update_commerce, name="update_commerce"),
 	path('commercant/update/', views.update_commercant, name="updatecommercant"),
 	path('client/update/', views.update_client, name="updateclient"),
 	path('produit/create/<int:idcommerce>', views.create_produit, name='create_produit')
