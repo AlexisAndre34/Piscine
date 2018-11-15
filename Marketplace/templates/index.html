@@ -49,12 +49,12 @@
 		</div>
 		<div class="col s12 m4 l4">
 			<div class="nav-wrapper">
-			  <form>
+			  <form method="post"  action=""><!--action à renseignez ici-->
+				{% csrf_token %}
 				<div class="input-field">
-				  <input id="search" type="search" required>
-				  <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-				  <i class="material-icons">close</i>
+				  <input id="search" placeholder="Rechercher un produit" name="recherche" type="text">
 				</div>
+				  <button type="submit" class="btn-flat" name="action"><i class="material-icons">search</i></button>
 			  </form>
 			</div>
 		</div>

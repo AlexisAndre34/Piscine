@@ -189,6 +189,8 @@ def update_produit(request, pk):
             produit.tauxremise = form.cleaned_data.get('tauxremise')
             produit.quantitestock = form.cleaned_data.get('quantitestock')
             produit.datelimitereservation = form.cleaned_data.get('datelimitereservation')
+            produit.photoproduit1 = form.cleaned_data.get('photoproduit1')
+            produit.photoproduit2 = form.cleaned_data.get('photoproduit2')
             produit.save()
             return render(request, 'index.html')
     else:
