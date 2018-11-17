@@ -110,10 +110,16 @@ def create_produit(request, idcommerce):
 
 
 #---------------- VIEWS DE LECTURE (READ) ----------------
-
+#permet de read un commerce
 def read_commerce(request, idcommerce):
     gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
     return render(request, 'read/readCommerce.html', {'gerer' : gerer})
+
+#permet de read un produit
+
+def read_produit(request, pk):
+    produit = get_object_or_404(Produit, numproduit=pk)
+    return render(request, 'read/readProduit.html', {'produit' : produit})
 
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
@@ -199,6 +205,9 @@ def update_produit(request, pk):
 
 
 #---------------- VIEWS DE SUPPRESSION (DELETE) ----------------
+
+#permet de delete un commerce
+
 def delete_commerce(request, idcommerce):
     gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
     if request.method == 'POST':
@@ -206,6 +215,16 @@ def delete_commerce(request, idcommerce):
         return render(request, 'index.html')
 
     return render(request, 'delete/deleteView.html')
+#permet de delete un produit
+def delete_produit(request, pk):
+    produit = get_object_or_404(Produit , numproduit=pk)
+    if request.method == 'POST':
+        Produit.objects.get(numproduit = pk).delete()
+        return render(request, 'index.html')
+
+    return render(request, 'delete/deleteView.html')
+
+
 
 
 
