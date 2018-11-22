@@ -24,8 +24,8 @@
         <li><a class="tooltipped" data-position="left" data-tooltip="Deconnexion" href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i></a></li>
         {% else %}
         <li><a class="tooltipped" data-position="left" data-tooltip="Connexion" href="{% url 'login' %}"><i class="material-icons">person_outline</i></a></li>
-		<li><a class="tooltipped" data-position="left" data-tooltip="Inscription" href=""><i class="material-icons">person_add</i></a></li>
-		<li><a class="tooltipped" data-position="left" data-tooltip="Commercant" href=""><i class="material-icons">store</i></a></li>
+		<li><a class="tooltipped" data-position="left" data-tooltip="Inscription" href="{% url 'signupClient' %}"><i class="material-icons">person_add</i></a></li>
+		<li><a class="tooltipped" data-position="left" data-tooltip="Commercant" href="{% url 'signupCommercant' %}"><i class="material-icons">store</i></a></li>
 		{% endif %}
       </ul>
     </div>
