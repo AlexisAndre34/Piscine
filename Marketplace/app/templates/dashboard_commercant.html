@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div>
+    <ul>
+        <li><a href="{% url 'read_commerce_by_commercant' %}">Mes Commerces</a></li>
+        <li><a href="{% url 'create_commerce' %}">Ajouter Commerce</a></li>
+
+    </ul>
+</div>
+
+{% endblock %}

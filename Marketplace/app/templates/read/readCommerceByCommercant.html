@@ -7,6 +7,8 @@
     {% for gerer in listeGerer %}
     <div>
         {{ gerer.numcommerce.nomcommerce }}<br>
+        <a href="{% url 'delete_commerce' gerer.numcommerce.numsiret %}">Supprimer Commerce</a><br>
+        <a href="{% url 'update_commerce' gerer.numcommerce.numsiret %}">Modifier Commerce</a>
     </div>
     {% endfor %}
 </div>

@@ -259,4 +259,10 @@ def produit_by_commerce(request, idcommerce):
     c.produit_set.all()
 
 
+#---------------- VIEWS DASHBOARD ----------------
+
+def dashboard_commercant(request):
+    return render(request, 'dashboard_commercant.html')
+
+
 #---------------- VIEWS DE A DEFINIR ----------------

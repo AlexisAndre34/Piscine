@@ -17,7 +17,8 @@ urlpatterns = [
 	path('produit/read/<int:pk>', views.read_produit, name="read_produit"),
 	path('produit/create/<int:idcommerce>', views.create_produit, name='create_produit'),
 	path('produit/delete/<int:pk>', views.delete_produit, name="delete_produit"),
-	path('produit/update/<int:pk>', views.update_produit, name="updateproduit")
+	path('produit/update/<int:pk>', views.update_produit, name="updateproduit"),
+	path('dashboard/', views.dashboard_commercant, name="dashboard_commercant")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
