@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User, Group
+from django.core.paginator import Paginator, EmptyPage
 from app.models import Client, Commercant, Commerce, Gerer, Produit
 from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm
+
 
 #VIEW PAGE D'ACCUEIL
 def homepage(request):
@@ -215,7 +217,9 @@ def delete_commerce(request, idcommerce):
         return render(request, 'index.html')
 
     return render(request, 'delete/deleteView.html')
+		
 #permet de delete un produit
+
 def delete_produit(request, pk):
     produit = get_object_or_404(Produit , numproduit=pk)
     if request.method == 'POST':
@@ -226,7 +230,22 @@ def delete_produit(request, pk):
 
 
 
-
+#--------------- SEARCH -------------------------#
+def search(request, keyword=None, page=1):
+	recherche = request.POST.get('recherche')
+	if request.method == "POST":
+		produits_all = Produit.objects.filter(nomproduit__contains=recherche)
+	elif request.method == "GET":
+		produits_all = Produit.objects.filter(nomproduit__contains=keyword)
+		recherche=keyword
+		
+	paginator = Paginator(produits_all, 2) #On affiche 1 produit par page
+	try:
+		produits = paginator.page(page)
+	except EmptyPage:
+		produits = paginator.page(paginator.num_pages)
+		
+	return render(request, 'list/produits_recherche.html', locals())
 
 
 #---------------- VIEWS DE A DEFINIR ----------------

@@ -26,7 +26,9 @@ urlpatterns = [
     path('logout', views.logout_user, name='logout'),
     path('signup/commercant', views.signup_commercant, name='signupCommercant'),
     path('signup/client', views.signup_client, name='signupClient'),
-    path('gestion/', include('app.urls'))
+	path('search/', views.search, name="search"),
+	path('search/<str:keyword>/<int:page>', views.search, name="search"),
+	path('gestion/', include('app.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

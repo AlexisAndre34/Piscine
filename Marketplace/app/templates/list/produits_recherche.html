@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+<p>Liste des produits :</p>
+
+
+    <div>
+		<!--On affiche les produits ici -->
+    </div>
+
+
+
+<ul class="pagination">
+
+   {% if produits.has_previous %}
+
+    <li class="waves-effect"><a href="{% url 'search' keyword=recherche page=produits.previous_page_number %}"><i class="material-icons">chevron_left</i></a></li>
+    <li class="waves-effect"><a href="{% url 'search' keyword=recherche page=produits.previous_page_number %}">{{ produits.previous_page_number }}</a></li>
+   {% endif %}
+
+    <li class="active"><a href="#!">{{ produits.number }}</a></li> <!-- produits.paginator.num_pages -->
+
+
+   {% if produits.has_next %}
+
+    <li class="waves-effect"><a href="{% url 'search' keyword=recherche page=produits.next_page_number %}">{{ produits.next_page_number }}</a></li>
+    <li class="waves-effect"><a href="{% url 'search' keyword=recherche page=produits.next_page_number %}"><i class="material-icons">chevron_right</i></a></li>
+
+   {% endif %}
+
+</ul>
+
+{% endblock %}
