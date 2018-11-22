@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div>
+    bonjour
+    {% for gerer in listeGerer %}
+    <div>
+        {{ gerer.numcommerce.nomcommerce }}<br>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

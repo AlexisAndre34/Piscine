@@ -117,8 +117,13 @@ def read_commerce(request, idcommerce):
     gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
     return render(request, 'read/readCommerce.html', {'gerer' : gerer})
 
-#permet de read un produit
+#permet de read tous les commerces d'un commercant
+def read_commerce_by_commercant(request):
+    listeGerer = Gerer.objects.filter(numcommercant = request.user.id)
+    return render(request, 'read/readCommerceByCommercant.html', locals())
 
+
+#permet de read un produit
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     return render(request, 'read/readProduit.html', {'produit' : produit})

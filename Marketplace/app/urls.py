@@ -8,6 +8,7 @@ from django.conf import settings
 urlpatterns = [
 	path('commerce/create', views.create_commerce, name="create_commerce"),
 	path('commerce/read/<int:idcommerce>', views.read_commerce, name="read_commerce"),
+	path('commerce/readByCommercant/', views.read_commerce_by_commercant, name="read_commerce_by_commercant"),
 	path('commerce/delete/<int:idcommerce>', views.delete_commerce, name="delete_commerce"),
 	path('commerce/update/<int:idcommerce>', views.update_commerce, name="update_commerce"),
 	path('commerce/listeProduit/<int : idcommerce', views.produit_by_commerce, name="produit_by_commerce"),
