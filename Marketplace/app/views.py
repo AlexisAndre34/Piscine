@@ -247,5 +247,11 @@ def search(request, keyword=None, page=1):
 		
 	return render(request, 'list/produits_recherche.html', locals())
 
+#---------------- VIEWS DE LISTE ----------------
+#permet de voir les produits d'un commerce
+def produit_by_commerce(request, idcommerce):
+    c = Commerce.objects.get(idcommerce = idcommerce)
+    c.produit_set.all()
+
 
 #---------------- VIEWS DE A DEFINIR ----------------
