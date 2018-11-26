@@ -24,9 +24,14 @@
   border-width : 5px;
 }
 
-.centrer {
+.blocCentrer {
   position: center;
+  border: 5px double;
+  border-color: #CEC8E0;
+  padding: 50px;
   border-radius : 50px;
-  border-color : black;
-  border-width : 5px;
+}
+
+.page {
+  margin : 110px;
 }
