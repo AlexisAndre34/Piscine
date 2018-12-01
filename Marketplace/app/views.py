@@ -327,7 +327,7 @@ def quantite_panier(request, idproduit):
 
 
 def reset_panier(request):
-    return init_panier(request) # A terme doit retourner init_panier()
+    return init_panier(request)
 
 
 
