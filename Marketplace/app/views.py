@@ -81,7 +81,7 @@ def signup_commercant(request):
             return redirect('homepage')
     else:
         form = SignUpFormCommercant(request.POST)
-    return render(request, 'signup_Commercant.html', {'formCommercant': form})
+    return render(request, 'signup_commercant.html', {'formCommercant': form})
 
 #Creation d'un commerce
 def create_commerce(request):
@@ -279,12 +279,12 @@ def afficher_panier(request):
         produit = [objet_produit,produit[1],prix_total]
         produits.append(produit)
 
-    return render(request, 'panier.html', locals())
+    return render(request, 'panier/panier.html', locals())
 
 def init_panier(request):
     panier = []
     request.session['panier'] = panier #On initialise le panier dans la session
-    return render(request, 'panier.html')
+    return request
 
 def ajout_panier(request, idproduit):
     produit = get_object_or_404(Produit, numproduit=idproduit)
