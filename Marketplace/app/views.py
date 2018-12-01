@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator, EmptyPage
 from app.models import Client, Commercant, Commerce, Gerer, Produit
@@ -269,6 +270,7 @@ def dashboard_commercant(request):
 
 #---------------- VIEWS PANIER ----------------
 
+@login_required
 def afficher_panier(request):
     panier_session = request.session.get('panier')
     produits = []
@@ -286,6 +288,7 @@ def init_panier(request):
     request.session['panier'] = panier #On initialise le panier dans la session
     return request
 
+@login_required
 def ajout_panier(request, idproduit):
     produit = get_object_or_404(Produit, numproduit=idproduit)
 
