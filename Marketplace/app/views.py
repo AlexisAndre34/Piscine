@@ -24,6 +24,7 @@ def login_user(request):
             user = authenticate(username=username, password=raw_password)
             if user:
                 login(request,user)
+                request = init_panier(request)
                 return redirect('homepage')
             else:
                 error=True
@@ -55,6 +56,7 @@ def signup_client(request):
             client = Client(numclient=Utilisateur, datenaissanceclient=form.cleaned_data.get('datenaissanceclient'), telephoneclient=form.cleaned_data.get('telephoneclient'), codepostalclient=form.cleaned_data.get('codepostalclient'), villeclient=form.cleaned_data.get('villeclient'), rueclient=form.cleaned_data.get('rueclient'), numclient_id=Utilisateur.id)
             client.save()  # Sauvegarde du client
             login(request, user) #Connexion au site
+            request = init_panier(request)
             return redirect('homepage')
     else:
         form = SignUpFormClient(request.POST)
@@ -75,6 +77,7 @@ def signup_commercant(request):
             commercant = Commercant(numcommercant=Utilisateur, telephonecommercant=form.cleaned_data.get('telephonecommercant'), numcommercant_id=Utilisateur.id)
             commercant.save()  # Sauvegarde du commercant
             login(request, user) #Connexion au site
+            request = init_panier(request)
             return redirect('homepage')
     else:
         form = SignUpFormCommercant(request.POST)
@@ -263,6 +266,67 @@ def produit_by_commerce(request, idcommerce):
 
 def dashboard_commercant(request):
     return render(request, 'dashboard_commercant.html')
+
+#---------------- VIEWS PANIER ----------------
+
+def afficher_panier(request):
+    panier_session = request.session.get('panier')
+    produits = []
+    for produit in panier_session:
+        objet_produit = Produit.objects.get(numproduit=produit[0])
+        prix_total = objet_produit.prixproduit * produit[1]
+
+        produit = [objet_produit,produit[1],prix_total]
+        produits.append(produit)
+
+    return render(request, 'panier.html', locals())
+
+def init_panier(request):
+    panier = []
+    request.session['panier'] = panier #On initialise le panier dans la session
+    return render(request, 'panier.html')
+
+def ajout_panier(request, idproduit):
+    produit = get_object_or_404(Produit, numproduit=idproduit)
+
+    panier_session = request.session.get('panier')
+    for produit_panier in panier_session:
+        if produit.numproduit == produit_panier[0]:
+            produit_panier[1]=produit_panier[1]+1 #On incrèmente la quantite au panier
+            request.session['panier'] = panier_session #On sauvegarde
+            return afficher_panier(request)
+
+    new_ligne_panier = [produit.numproduit,1] #new_ligne_panier = [numproduit,Quantité]
+    panier_session.append(new_ligne_panier)
+    request.session['panier'] = panier_session
+
+    return afficher_panier(request)
+
+def supprimer_panier(request, idproduit):
+    panier_session = request.session.get('panier')
+    for produit_panier in panier_session:
+        if idproduit == produit_panier[0]:
+            panier_session.remove(produit_panier)
+
+    request.session['panier'] = panier_session  # On sauvegarde
+    return afficher_panier(request)
+
+def quantite_panier(request, idproduit):
+
+    panier_session = request.session.get('panier')
+    for produit_panier in panier_session:
+        if idproduit == produit_panier[0]:
+            produit_panier[1]=produit_panier[1]-1 #On modifie la quantite du produit au panier
+            if produit_panier[1] == 0:
+                produit_panier[1]=1
+    request.session['panier'] = panier_session #On sauvegarde
+    return afficher_panier(request)
+
+
+def reset_panier(request):
+    return init_panier(request) # A terme doit retourner init_panier()
+
+
 
 
 #---------------- VIEWS DE A DEFINIR ----------------
