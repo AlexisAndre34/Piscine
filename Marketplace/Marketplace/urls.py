@@ -28,6 +28,11 @@ urlpatterns = [
     path('signup/client', views.signup_client, name='signupClient'),
 	path('search/', views.search, name="search"),
 	path('search/<str:keyword>/<int:page>', views.search, name="search"),
+    path('panier/afficher/', views.afficher_panier, name="afficher_panier"),
+    path('panier/ajout/<int:idproduit>', views.ajout_panier, name="ajout_panier"),
+    path('panier/supprimer/<int:idproduit>', views.supprimer_panier, name="supprimer_panier"),
+    path('panier/quantite/<int:idproduit>', views.quantite_panier, name="quantite_less_panier"),
+    path('panier/reset/', views.reset_panier, name="reset_panier"),
 	path('gestion/', include('app.urls'))
 ]
 
