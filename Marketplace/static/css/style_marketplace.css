@@ -72,8 +72,26 @@
   
 }
 
+/* Recherche de produit */
+.search_card{
+    width: 300px;
+}
 
+.search_card .card-image{
+    border: 1px solid beige;
+}
 
+.search_container {
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+/* Panier */
+.image_panier{
+    width:10%;
+}
 
 
 
