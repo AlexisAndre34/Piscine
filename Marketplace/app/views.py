@@ -243,9 +243,9 @@ def delete_produit(request, pk):
 def search(request, keyword=None, page=1):
 	recherche = request.POST.get('recherche')
 	if request.method == "POST":
-		produits_all = Produit.objects.filter(nomproduit__contains=recherche)
+		produits_all = Produit.objects.filter(nomproduit__icontains=recherche)
 	elif request.method == "GET":
-		produits_all = Produit.objects.filter(nomproduit__contains=keyword)
+		produits_all = Produit.objects.filter(nomproduit__icontains=keyword)
 		recherche=keyword
 		
 	paginator = Paginator(produits_all, 1) #On affiche 1 produit par page
