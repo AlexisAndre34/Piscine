@@ -1,9 +1,27 @@
 {% extends 'index.html' %}
 
 {% block content %}
+<div class="col s12 m10 offset-m1">
+    <div class="row">
+        <div class="col s12 m6">
+            <h3> {{ utilisateur.first_name }} {{utilisateur.last_name }} </h3>
+            <ul>
+                <li>Email : {{ utilisateur.email }}</li>
+                <li>Tel : {{ client.telephoneclient }}</li>
+                <li>DateNaissance : {{ client.datenaissanceclient }}</li>
+                <li>Adresse : {{ client.rueclient }}, {{ client.villeclient }}, {{ client.codepostalclient }}</li>
+            </ul>
+        </div>
 
-<div>
-    bonjour, je suis {{ utilisateur.first_name }} {{utilisateur.last_name }}
+        <div class="col s12 m6">
+            <a class="btn" href="{% url 'mescommandesClient' %}">Mes commandes</a> <a class="btn" href="{% url 'mesreservationsClient' %}">Mes Réservations</a>
+
+            {% block commandes %}
+                <p>Mes commandes ou mes réservations</p>
+            {% endblock %}
+
+        </div>
+    </div>
 </div>
 
 {% endblock %}

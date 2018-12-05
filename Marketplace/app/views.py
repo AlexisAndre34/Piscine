@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator, EmptyPage
-from app.models import Client, Commercant, Commerce, Gerer, Produit
+from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation
 from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm
 
 
@@ -137,6 +137,20 @@ def read_moncompte(request):
     utilisateur = User.objects.get(id=request.user.id)
     client = Client.objects.get(numclient=request.user.id)
     return render(request, 'read/moncompte.html', locals())
+
+#permet de read les commandes d'un Client
+def read_mescommandesClient(request):
+    utilisateur = User.objects.get(id=request.user.id)
+    client = Client.objects.get(numclient=request.user.id)
+    commandes = Commande.objects.filter(numclient=request.user.id)
+    return render(request, 'read/mescommandesClient.html', locals())
+
+#permet de read les réservations d'un Client
+def read_mesreservationsClient(request):
+    utilisateur = User.objects.get(id=request.user.id)
+    client = Client.objects.get(numclient=request.user.id)
+    reservations = Reservation.objects.filter(numclient=request.user.id)
+    return render(request, 'read/mesreservationsClient.html', locals())
 
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
