@@ -132,6 +132,12 @@ def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     return render(request, 'read/readProduit.html', {'produit' : produit})
 
+#permet de read un Client
+def read_moncompte(request):
+    utilisateur = User.objects.get(id=request.user.id)
+    client = Client.objects.get(numclient=request.user.id)
+    return render(request, 'read/moncompte.html', locals())
+
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
 def update_commercant(request):

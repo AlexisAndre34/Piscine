@@ -26,6 +26,7 @@ urlpatterns = [
     path('logout', views.logout_user, name='logout'),
     path('signup/commercant', views.signup_commercant, name='signupCommercant'),
     path('signup/client', views.signup_client, name='signupClient'),
+    path('moncompte/', views.read_moncompte, name="moncompte"),
 	path('search/', views.search, name="search"),
 	path('search/<str:keyword>/<int:page>', views.search, name="search"),
     path('panier/afficher/', views.afficher_panier, name="afficher_panier"),
