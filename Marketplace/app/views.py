@@ -118,8 +118,9 @@ def create_produit(request, idcommerce):
 #---------------- VIEWS DE LECTURE (READ) ----------------
 #permet de read un commerce
 def read_commerce(request, idcommerce):
-    gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
-    return render(request, 'read/readCommerce.html', {'gerer' : gerer})
+    commerce = get_object_or_404(Commerce,  numsiret=idcommerce)
+    estGerant = not (not Gerer.objects.filter(numcommercant=request.user.id, numcommerce=idcommerce))
+    return render(request, 'read/readCommerce.html', locals())
 
 #permet de read tous les commerces d'un commercant
 def read_commerce_by_commercant(request):
