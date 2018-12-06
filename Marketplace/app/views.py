@@ -203,9 +203,9 @@ def update_commerce(request, idcommerce):
         commerce.codepostalcommerce = request.POST.get('codepostalcommerce')
         commerce.villecommerce = request.POST.get('villecommerce')
         commerce.ruecommerce = request.POST.get('ruecommerce')
-        #print(form.cleaned_data.get('ruecommerce'))
         commerce.save()
-        return render(request, 'index.html')
+        gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
+        return render(request, 'read/readCommerce.html', {'gerer': gerer})
     else:
         form = CommerceForm(instance=commerce)
     return render(request, 'update/updateCommerce.html', locals())
