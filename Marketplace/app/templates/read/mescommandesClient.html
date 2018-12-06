@@ -2,11 +2,12 @@
 
 
 {% block commandes %}
-    {{ commandes }}
-    <ul>
-        <li>Commande 1</li>
-        <li>Commande 2</li>
-        <li>Commande 3</li>
-        <li>Commande 4</li>
-    </ul>
+    <div class="collection with-header">
+        <div class="collection-header"><h4>Mes commandes :</h4></div>
+        <a href="#!" class="collection-item">{{ commandes }}</a> <!-- IL faudra faire un for reservation in reservations -->
+        <a href="#!" class="collection-item">Commande 1</a>
+        <a href="#!" class="collection-item">Commande 2</a>
+        <a href="#!" class="collection-item">Commande 3</a>
+        <a href="#!" class="collection-item">Commande 4</a>
+    </div>
 {% endblock %}
