@@ -1,19 +1,25 @@
 {% extends 'index.html' %}
 
+
 {% block content %}
-
-<form method="post">
-	{% csrf_token %}
-	{% for field in formCommerce %}
-		<div>
-			{{ field.label_tag }}<br>
-			{{ field }}
-		</div>
-	{% endfor %}
-
-	<div>
-		<button type="submit">Envoyer</button>
-	</div>
-</form>
-
+  <div class="page">
+    <div class = "formulaire">
+      <div class="blocCentrer">
+        <div class= "titreForm">Créez votre commerce</div>
+        <br>
+          <form method="post">
+            {% csrf_token %}
+            {% for field in formCommerce %}
+            <div>
+              {{ field.label_tag }}<br>
+              {{ field }}
+            </div>
+            {% endfor %}
+            <div class="boutonForm">
+              <button class="btn purple" type="submit">Envoyer</button>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}
