@@ -74,7 +74,12 @@
   justify-content:center;
   
 }
-
+.titreForm {
+  color : purple;
+  font-size : 13 px;
+  font-weight : bold;
+  
+}
 /* Recherche de produit */
 .search_card{
     width: 300px;
