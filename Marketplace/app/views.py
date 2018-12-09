@@ -26,6 +26,7 @@ def login_user(request):
             if user:
                 login(request,user)
                 request = init_panier(request)
+                request = init_reservation(request) #On initiliase le panier et le panier_reservation de l'utilisateur
                 return redirect('homepage')
             else:
                 error=True
@@ -58,6 +59,7 @@ def signup_client(request):
             client.save()  # Sauvegarde du client
             login(request, user) #Connexion au site
             request = init_panier(request)
+            request = init_reservation(request) #On initiliase le panier et le panier_reservation de l'utilisateur
             return redirect('homepage')
     else:
         form = SignUpFormClient(request.POST)
@@ -79,6 +81,7 @@ def signup_commercant(request):
             commercant.save()  # Sauvegarde du commercant
             login(request, user) #Connexion au site
             request = init_panier(request)
+            request = init_reservation(request) #On initiliase le panier et le panier_reservation de l'utilisateur
             return redirect('homepage')
     else:
         form = SignUpFormCommercant(request.POST)
@@ -358,6 +361,7 @@ def afficher_reservation(request):
     for produit in reservation_session:
         objet_produit = Produit.objects.get(numproduit=produit[0])
         prix_total = objet_produit.prixproduit * produit[1]
+        prix_total = round(prix_total,2)
 
         produit = [objet_produit,produit[1],prix_total]
         produits.append(produit)
@@ -384,7 +388,7 @@ def ajout_reservation(request, idproduit):
     reservation_session.append(new_ligne_reservation)
     request.session['reservation'] = reservation_session
 
-    return afficher_panier(request)
+    return afficher_reservation(request)
 
 def supprimer_reservation(request, idproduit):
     reservation_session = request.session.get('reservation')

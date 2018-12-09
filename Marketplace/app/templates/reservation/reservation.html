@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<p class="test">
+<div class="test">
       <table class="striped responsive-table">
         <thead>
           <tr>
@@ -17,13 +17,12 @@
         </thead>
 
         <tbody>
+            {{ produits }}
             {% for produit in produits %}
             <tr>
-                <!-- {% if produit.0.photoproduit1.url. %} -->
                 <td><img class="image_panier" src={{ produit.0.photoproduit1.url }}></td>
                 <td>{{ produit.0.nomproduit }}</td>
                 <td>
-                <!-- {% endif %} -->
                     <a href="{% url 'quantite_less_reservation' produit.0.numproduit %}"><i class="material-icons">remove</i></a>
                     <a href="{% url 'ajout_reservation' produit.0.numproduit %}"><i class="material-icons">add</i></a>
                     <span>{{ produit.1 }}</span>
