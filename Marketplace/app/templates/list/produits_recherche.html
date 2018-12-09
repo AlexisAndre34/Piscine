@@ -7,12 +7,13 @@
 
 <div class="search_container">
     {% for produit in produits %}
-
       <div class="card search_card">
+      {% if produit.photoproduit1.url %}
         <div class="card-image">
           <img src={{ produit.photoproduit1.url }}>
         </div>
-            <a href="{% url 'ajout_panier' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
+      {% endif %}
+            <a href="{% url 'ajout_reservation' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
             {% if produit.idcommerce.livraisondisponible %}
             <a href="{% url 'ajout_panier' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_cart</i></a>
             {% endif %}

@@ -1,5 +1,5 @@
 {% extends 'index.html' %}
-{% block title %}Panier{% endblock %}
+{% block title %}Reservation{% endblock %}
 
 {% block content %}
 
@@ -19,23 +19,25 @@
         <tbody>
             {% for produit in produits %}
             <tr>
+                <!-- {% if produit.0.photoproduit1.url. %} -->
                 <td><img class="image_panier" src={{ produit.0.photoproduit1.url }}></td>
                 <td>{{ produit.0.nomproduit }}</td>
                 <td>
-                    <a href="{% url 'quantite_less_panier' produit.0.numproduit %}"><i class="material-icons">remove</i></a>
-                    <a href="{% url 'ajout_panier' produit.0.numproduit %}"><i class="material-icons">add</i></a>
+                <!-- {% endif %} -->
+                    <a href="{% url 'quantite_less_reservation' produit.0.numproduit %}"><i class="material-icons">remove</i></a>
+                    <a href="{% url 'ajout_reservation' produit.0.numproduit %}"><i class="material-icons">add</i></a>
                     <span>{{ produit.1 }}</span>
                 </td>
                 <td>{{ produit.0.prixproduit }}</td>
                 <td>{{ produit.2 }}</td>
-                <td><a href="{% url 'supprimer_panier' produit.0.numproduit %}"><i class="material-icons">delete</i></a></td>
+                <td><a href="{% url 'supprimer_reservation' produit.0.numproduit %}"><i class="material-icons">delete</i></a></td>
             </tr>
             {% endfor %}
         </tbody>
       </table>
     <div>
-        <a href="{% url 'reset_panier' %}" class="btn">Reset le panier</a>
-        <a href="{% url 'homepage' %}" class="btn">Continuer commande <i class="material-icons">done_all</i></a>
+        <a href="{% url 'reset_reservation' %}" class="btn">Reset la reservation</a>
+        <a class="btn">Continuer commande <i class="material-icons">done_all</i></a>
     </div>
 </div>
 

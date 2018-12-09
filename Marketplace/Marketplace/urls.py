@@ -36,7 +36,12 @@ urlpatterns = [
     path('panier/supprimer/<int:idproduit>', views.supprimer_panier, name="supprimer_panier"),
     path('panier/quantite/<int:idproduit>', views.quantite_panier, name="quantite_less_panier"),
     path('panier/reset/', views.reset_panier, name="reset_panier"),
-	path('gestion/', include('app.urls'))
+    path('reservation/afficher/', views.afficher_reservation, name="afficher_reservation"),
+    path('reservation/ajout/<int:idproduit>', views.ajout_reservation, name="ajout_reservation"),
+    path('reservation/supprimer/<int:idproduit>', views.supprimer_reservation, name="supprimer_reservation"),
+    path('reservation/quantite/<int:idproduit>', views.quantite_reservation, name="quantite_less_reservation"),
+    path('reservation/reset/', views.reset_reservation, name="reset_reservation"),
+  path('gestion/', include('app.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

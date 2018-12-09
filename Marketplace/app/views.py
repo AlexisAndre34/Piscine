@@ -349,8 +349,66 @@ def quantite_panier(request, idproduit):
 
 def reset_panier(request):
     return init_panier(request)
+ 
+#---------------- VIEWS RESERVATION ---------------------
+@login_required
+def afficher_reservation(request):
+    reservation_session = request.session.get('reservation')
+    produits = []
+    for produit in reservation_session:
+        objet_produit = Produit.objects.get(numproduit=produit[0])
+        prix_total = objet_produit.prixproduit * produit[1]
+
+        produit = [objet_produit,produit[1],prix_total]
+        produits.append(produit)
+
+    return render(request, 'reservation/reservation.html', locals())
+
+def init_reservation(request):
+    reservation = []
+    request.session['reservation'] = reservation #On initialise le reservation dans la session
+    return request
+
+@login_required
+def ajout_reservation(request, idproduit):
+    produit = get_object_or_404(Produit, numproduit=idproduit)
+
+    reservation_session = request.session.get('reservation')
+    for produit_reservation in reservation_session:
+        if produit.numproduit == produit_reservation[0]:
+            produit_reservation[1]=produit_reservation[1]+1 #On incrèmente la quantite au reservation
+            request.session['reservation'] = reservation_session #On sauvegarde
+            return afficher_reservation(request)
+
+    new_ligne_reservation = [produit.numproduit,1] #new_ligne_reservation = [numproduit,Quantité]
+    reservation_session.append(new_ligne_reservation)
+    request.session['reservation'] = reservation_session
+
+    return afficher_panier(request)
+
+def supprimer_reservation(request, idproduit):
+    reservation_session = request.session.get('reservation')
+    for produit_reservation in reservation_session:
+        if idproduit == produit_reservation[0]:
+            reservation_session.remove(produit_reservation)
+
+    request.session['reservation'] = reservation_session  # On sauvegarde
+    return afficher_reservation(request)
+
+def quantite_reservation(request, idproduit):
+
+    reservation_session = request.session.get('reservation')
+    for produit_reservation in reservation_session:
+        if idproduit == produit_reservation[0]:
+            produit_reservation[1]=produit_reservation[1]-1 #On modifie la quantite du produit au reservation
+            if produit_reservation[1] == 0:
+                produit_reservation[1]=1
+    request.session['reservation'] = reservation_session #On sauvegarde
+    return afficher_reservation(request)
 
 
+def reset_reservation(request):
+    return init_reservation(request)
 
 
 #---------------- VIEWS DE A DEFINIR ----------------
