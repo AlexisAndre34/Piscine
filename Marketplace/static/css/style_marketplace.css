@@ -45,7 +45,10 @@
 }
 
 .page {
-  margin : 110px;
+  margin-left : 27%;
+  margin-right : 27%;
+  margin-top : 7%;
+  margin-bottom : 7%;
 }
 
 .textError{
