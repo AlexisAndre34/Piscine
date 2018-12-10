@@ -301,7 +301,6 @@ def afficher_panier(request):
     for produit in panier_session:
         objet_produit = Produit.objects.get(numproduit=produit[0])
         prix_total = objet_produit.prixproduit * produit[1]
-
         produit = [objet_produit,produit[1],prix_total]
         produits.append(produit)
 
