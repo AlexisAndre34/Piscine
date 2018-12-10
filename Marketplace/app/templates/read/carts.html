@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div>
+    <a href="{% url 'afficher_panier' %}" class="waves-effect btn-small">Mon panier</a>
+    <a href="{% url 'afficher_reservation' %}"class="waves-effect btn-small">Mon chariot click & collect</a>
+</div>
+{% block carts %}
+
+{% endblock %}
+
+
+{% endblock %}
