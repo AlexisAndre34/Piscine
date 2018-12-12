@@ -298,9 +298,13 @@ def dashboard_commercant(request):
 def afficher_panier(request):
     panier_session = request.session.get('panier')
     produits = []
+    prix_panier = 0.0
     for produit in panier_session:
         objet_produit = Produit.objects.get(numproduit=produit[0])
         prix_total = objet_produit.prixproduit * produit[1]
+        prix_total = round(prix_total, 2)
+        prix_panier = prix_panier + prix_total
+
         produit = [objet_produit,produit[1],prix_total]
         produits.append(produit)
 
@@ -350,7 +354,7 @@ def quantite_panier(request, idproduit):
 
 
 def reset_panier(request):
-    return init_panier(request)
+    return render(init_panier(request), 'panier/panier.html', locals())
  
 #---------------- VIEWS RESERVATION ---------------------
 @login_required
@@ -411,7 +415,7 @@ def quantite_reservation(request, idproduit):
 
 
 def reset_reservation(request):
-    return init_reservation(request)
+    return render(init_reservation(request), 'reservation/reservation.html', locals())
 
 
 #---------------- VIEWS DE A DEFINIR ----------------
