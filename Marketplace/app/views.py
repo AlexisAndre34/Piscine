@@ -361,11 +361,13 @@ def reset_panier(request):
 def afficher_reservation(request):
     reservation_session = request.session.get('reservation')
     produits = []
+    prix_ClickCollect = 0.0
     for produit in reservation_session:
         objet_produit = Produit.objects.get(numproduit=produit[0])
         prix_total = objet_produit.prixproduit * produit[1]
         prix_total = round(prix_total,2)
 
+        prix_ClickCollect = prix_ClickCollect + prix_total
         produit = [objet_produit,produit[1],prix_total]
         produits.append(produit)
 
