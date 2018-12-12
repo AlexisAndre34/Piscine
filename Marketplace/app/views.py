@@ -352,7 +352,30 @@ def quantite_panier(request, idproduit):
     request.session['panier'] = panier_session #On sauvegarde
     return afficher_panier(request)
 
+#def verification_commande(request)
 
+#def validation_commande(request)
+"""
+    LigneCommande = [] #LigneCommande = [Commerce1,[Ligne_produit1], [Ligne_produit2], ... ]
+    CommandesEnCours = [] #CommandesEnCours = [ [LigneCommande1], [LigneCommande2], ... ]
+    
+    panier_session = request.session.get('panier')
+    for ligne_produit in panier_session:
+        objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
+    
+        i = 0 // i de 0 à len(CommandeEnCours)-1
+        while i < (len(CommandEnCours)-1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce : #Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
+            i = i + 1
+         
+        #On doit tester notre sortie de while    
+        if i == (l(len(CommandeEnCours)CommandEnCours)-1): #Si on a parcouru toutes les commandes en cours sans trouver un commerce correspondant à notre produit
+            new_ligneCommande = [objet_produit.idcommerce] #Création d'une nouvelle ligne commande avec en tête le commerce
+            new_ligneCommande.append(ligne_produit) # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
+            CommandesEnCours.append(new_ligneCommande) #On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
+        else:
+            CommandesEnCours[i].append(new_ligneCommande) #Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
+            
+"""
 def reset_panier(request):
     return render(init_panier(request), 'panier/panier.html', locals())
  
