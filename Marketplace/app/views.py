@@ -372,29 +372,28 @@ def verification_commande(request):
             #ligne_produit[1] == objet_produit.quantitestock
             error_qte = True
 
-        elif objet_produit == 0: #Si rupture de stock
-            erreur = "Rupture de stock pour le " + objet_produit.nomproduit
+        if objet_produit.quantitestock == 0: #Si rupture de stock
+            erreur = "Rupture de stock pour le " + objet_produit.nomproduit + ". Veuillez supprimer ce produit de votre panier."
             #ligne_produit[1] == objet_produit.quantitestock
             error_qte = True
 
         Erreurs.append(erreur)
-        #print(" ########################## i =",i)
-        ligne_produit[0] = objet_produit
-        #On doit tester notre sortie de while
-        if i == (len(CommandesEnCours)-1): #Si on a parcouru toutes les commandes en cours sans trouver un commerce correspondant à notre produit
-            LigneCommande = [objet_produit.idcommerce] #Création d'une nouvelle ligne commande avec en tête le commerce
-            LigneCommande.append(ligne_produit) # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
-            CommandesEnCours.append(LigneCommande) #On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
+        ligne_produit[0] = objet_produit #On remplace l'id produit par un objet de type produit pour le recuperer dans la template
 
-        elif i == 0:
-            LigneCommande = [objet_produit.idcommerce] #Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
+        #On doit tester notre sortie de while
+        if not CommandesEnCours : #Si notre liste est vide
+            LigneCommande = [objet_produit.idcommerce]  # Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
             LigneCommande.append(ligne_produit)
             CommandesEnCours.append(LigneCommande)
-        else:
-            CommandesEnCours[i].append(ligne_produit)
+        else :
+            if CommandesEnCours[i][0].numsiret == objet_produit.idcommerce.numsiret:
+                CommandesEnCours[i].append(ligne_produit)
+            elif i == (len(CommandesEnCours)-1):
+                LigneCommande = [objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
+                LigneCommande.append(ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
+                CommandesEnCours.append(LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
 
-        #request.session['CommandeEnCours'] = CommandesEnCours
-
+    #request.session['commandes'] = CommandesEnCours
     return render(request, 'panier/verification.html', locals())
 
 #def validation_commande(request)
