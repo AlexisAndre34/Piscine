@@ -38,7 +38,7 @@
                   <div class="card search_card">
                   {% if produit.photoproduit1.url %}
                     <div class="card-image">
-                      <img src={{ produit.photoproduit1.url }}>
+                        <a href="{% url 'read_produit' produit.numproduit %}" ><img src={{ produit.photoproduit1.url }}></a>
                     </div>
                   {% endif %}
                         <a href="{% url 'ajout_reservation' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
