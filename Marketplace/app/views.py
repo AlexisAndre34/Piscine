@@ -352,33 +352,56 @@ def quantite_panier(request, idproduit):
     request.session['panier'] = panier_session #On sauvegarde
     return afficher_panier(request)
 
-#def verification_commande(request)
-
-#def validation_commande(request)
-"""
-    LigneCommande = [] #LigneCommande = [Commerce1,[Ligne_produit1], [Ligne_produit2], ... ]
+def verification_commande(request):
+    #LigneCommande = [] #LigneCommande = [Commerce1,[Ligne_produit1], [Ligne_produit2], ... ]
     CommandesEnCours = [] #CommandesEnCours = [ [LigneCommande1], [LigneCommande2], ... ]
-    
+    Erreurs = []
+    error_qte = False
     panier_session = request.session.get('panier')
     for ligne_produit in panier_session:
         objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
-    
-        i = 0 // i de 0 à len(CommandeEnCours)-1
-        while i < (len(CommandEnCours)-1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce : #Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
+
+        i = 0 #// i de 0 à len(CommandeEnCours)-1
+        while i < (len(CommandesEnCours)-1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce : #Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
             i = i + 1
-         
-        #On doit tester notre sortie de while    
-        if i == (l(len(CommandeEnCours)CommandEnCours)-1): #Si on a parcouru toutes les commandes en cours sans trouver un commerce correspondant à notre produit
-            new_ligneCommande = [objet_produit.idcommerce] #Création d'une nouvelle ligne commande avec en tête le commerce
-            new_ligneCommande.append(ligne_produit) # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
-            CommandesEnCours.append(new_ligneCommande) #On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
+
+        # On vérifie les quantité dispo
+        erreur = str()
+        if objet_produit.quantitestock < ligne_produit[1]: #Si stock insuffisant
+            erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite proposée: " + str(objet_produit.quantitestock) + ". Veuillez modifier la quantite de ce produit dans votre panier."
+            #ligne_produit[1] == objet_produit.quantitestock
+            error_qte = True
+
+        elif objet_produit == 0: #Si rupture de stock
+            erreur = "Rupture de stock pour le " + objet_produit.nomproduit
+            #ligne_produit[1] == objet_produit.quantitestock
+            error_qte = True
+
+        Erreurs.append(erreur)
+        #print(" ########################## i =",i)
+        ligne_produit[0] = objet_produit
+        #On doit tester notre sortie de while
+        if i == (len(CommandesEnCours)-1): #Si on a parcouru toutes les commandes en cours sans trouver un commerce correspondant à notre produit
+            LigneCommande = [objet_produit.idcommerce] #Création d'une nouvelle ligne commande avec en tête le commerce
+            LigneCommande.append(ligne_produit) # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
+            CommandesEnCours.append(LigneCommande) #On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
+
+        elif i == 0:
+            LigneCommande = [objet_produit.idcommerce] #Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
+            LigneCommande.append(ligne_produit)
+            CommandesEnCours.append(LigneCommande)
         else:
-            CommandesEnCours[i].append(new_ligneCommande) #Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
-            
-"""
+            CommandesEnCours[i].append(ligne_produit)
+
+        #request.session['CommandeEnCours'] = CommandesEnCours
+
+    return render(request, 'panier/verification.html', locals())
+
+#def validation_commande(request)
+
 def reset_panier(request):
     return render(init_panier(request), 'panier/panier.html', locals())
- 
+
 #---------------- VIEWS RESERVATION ---------------------
 @login_required
 def afficher_reservation(request):

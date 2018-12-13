@@ -1,0 +1,39 @@
+{% extends 'read/carts.html' %}
+{% block title %}Panier{% endblock %}
+
+{% block carts %}
+
+<h3>Récap de votre commande :</h3>
+
+
+{% if error_qte %}
+
+    <h5>Avertissement  sur votre commande :</h5>
+    {% for erreur in Erreurs %}
+        <span>{{ erreur }}</span>
+    {% endfor %}
+
+{% else %}
+    <button type="Submit">Paiement</button>
+{% endif %}
+
+
+{{ CommandesEnCours }}
+
+
+
+
+{% for ligne_commande in CommandesEnCours %}
+    <div class="collection with-header">
+        <li class="collection-header"> Commerce : {{ ligne_commande.0.nomcommerce }}</li>
+        {% for produit in ligne_commande %}
+        <li class="collection-item">Produit : {{ produit.0.nomproduit }}</li><!--Nom du produit-->
+        <li class="collection-item">Quantite : {{ produit.1 }}</li><!--Quantite du produit-->
+        {% endfor %}
+    </div>
+
+{% endfor %}
+
+
+
+{% endblock %}

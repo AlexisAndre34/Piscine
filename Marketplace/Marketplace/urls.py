@@ -35,6 +35,7 @@ urlpatterns = [
     path('panier/ajout/<int:idproduit>', views.ajout_panier, name="ajout_panier"),
     path('panier/supprimer/<int:idproduit>', views.supprimer_panier, name="supprimer_panier"),
     path('panier/quantite/<int:idproduit>', views.quantite_panier, name="quantite_less_panier"),
+    path('panier/verfication/', views.verification_commande, name="verification_panier"),
     path('panier/reset/', views.reset_panier, name="reset_panier"),
     path('reservation/afficher/', views.afficher_reservation, name="afficher_reservation"),
     path('reservation/ajout/<int:idproduit>', views.ajout_reservation, name="ajout_reservation"),
