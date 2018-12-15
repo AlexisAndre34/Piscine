@@ -36,7 +36,7 @@
             <div class="search_container">
                 {% for produit in produits %}
                   <div class="card search_card">
-                  {% if produit.photoproduit1.url %}
+                  {% if produit.photoproduit1 %}
                     <div class="card-image">
                         <a href="{% url 'read_produit' produit.numproduit %}" ><img src={{ produit.photoproduit1.url }}></a>
                     </div>

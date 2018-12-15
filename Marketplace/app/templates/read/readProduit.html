@@ -6,16 +6,23 @@
         <div class="col s12 m5"> 
            
          <div class="carousel carousel-slider center">
+            {% if produit.photoproduit1 %}
             <div class="carousel-item" href="#one!">
               <img src={{ produit.photoproduit1.url }}>
             </div>
-            <div class="carousel-item amber white-text" href="#two!">
-              <h2>Second Panel</h2>
-              <p class="white-text">This is your second panel</p>
+            {% endif %}
+            {% if produit.photoproduit2 %}
+            <div class="carousel-item" href="#two!">
+              <img src={{ produit.photoproduit2.url }}>
             </div>
+            {% endif %}
             <ul class="indicators">
+              {% if produit.photoproduit1 %}
+              <li class="indicator-item red"></li>
+              {% endif %}
+              {% if produit.photoproduit2 %}
               <li class="indicator-item"></li>
-              <li class="indicator-item"></li>
+              {% endif %}
             </ul>
           </div>
 
