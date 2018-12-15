@@ -9,7 +9,7 @@ from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, Commer
 
 #VIEW PAGE D'ACCUEIL
 def homepage(request):
-    return render(request, 'index.html')
+    return render(request, 'accueil.html')
 
 
 #---------------- VIEWS DE CONNEXION, DECONNEXION  ----------------
