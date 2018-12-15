@@ -14,7 +14,7 @@
     {% endfor %}
 
 {% else %}
-    <a class="btn-flat" type="Submit">Paiement <i class="material-icons">credit_card</i></a>
+    <a href="{% url 'validation_commande' %}" class="btn-flat">Paiement : {{ prix_total }} euros <i class="material-icons">credit_card</i></a>
 {% endif %}
 
 {% for ligne_commande in CommandesEnCours %}

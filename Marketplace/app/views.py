@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator, EmptyPage
-from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation
+from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation, Appartenir
 from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm
 
 
@@ -146,7 +146,7 @@ def read_moncompte(request):
 def read_mescommandesClient(request):
     utilisateur = User.objects.get(id=request.user.id)
     client = Client.objects.get(numclient=request.user.id)
-    commandes = Commande.objects.filter(numclient=request.user.id)
+    commandes = Commande.objects.filter(numclient=client)
     return render(request, 'read/mescommandesClient.html', locals())
 
 #permet de read les réservations d'un Client
@@ -298,7 +298,7 @@ def dashboard_commercant(request):
 def afficher_panier(request):
     panier_session = request.session.get('panier')
     produits = []
-    prix_panier = 0.0
+    prix_panier = float()
     for produit in panier_session:
         objet_produit = Produit.objects.get(numproduit=produit[0])
         prix_total = objet_produit.prixproduit * produit[1]
@@ -352,15 +352,48 @@ def quantite_panier(request, idproduit):
     request.session['panier'] = panier_session #On sauvegarde
     return afficher_panier(request)
 
+def trierCommandes(request):
+    # LigneCommande = [] #LigneCommande = [Commerce1, [ [Ligne_produit1], [Ligne_produit2], ... ] ]
+    CommandesEnCours = []  # CommandesEnCours = [ [LigneCommande1], [LigneCommande2], ... ]
+    panier_session = request.session.get('panier')
+
+    for ligne_produit in panier_session:
+        objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
+        i = 0  # // i de 0 à len(CommandeEnCours)-1
+        while i < (len(CommandesEnCours) - 1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
+            i = i + 1
+
+        ligne_produit[0] = objet_produit  # On remplace l'id produit par un objet de type produit pour le recuperer dans la template
+
+        # On doit tester notre sortie de while
+        if not CommandesEnCours:  # Si notre liste est vide
+            LigneCommande = [objet_produit.idcommerce]  # Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
+            LigneCommande.append([]) #On insère une liste vide qui accueillera toutes les lignes produit
+            LigneCommande[1].append(ligne_produit)
+            CommandesEnCours.append(LigneCommande)
+        else:
+            if CommandesEnCours[i][0].numsiret == objet_produit.idcommerce.numsiret:  # Si on a trouvé un commerce qui correspond au produit
+                CommandesEnCours[i][1].append(ligne_produit)
+            elif i == (len(CommandesEnCours) - 1):  # Sinon
+                LigneCommande = [objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
+                LigneCommande.append([])
+                LigneCommande[1].append(ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
+                CommandesEnCours.append(LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
+
+    return CommandesEnCours
+
 def verification_commande(request):
     #LigneCommande = [] #LigneCommande = [Commerce1,[Ligne_produit1], [Ligne_produit2], ... ]
     CommandesEnCours = [] #CommandesEnCours = [ [LigneCommande1], [LigneCommande2], ... ]
     Erreurs = []
+    prix_total = float()
     error_qte = False
     panier_session = request.session.get('panier')
+
+
     for ligne_produit in panier_session:
         objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
-
+        prix_total = prix_total + round((objet_produit.prixproduit * ligne_produit[1]),2)
         i = 0 #// i de 0 à len(CommandeEnCours)-1
         while i < (len(CommandesEnCours)-1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce : #Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
             i = i + 1
@@ -378,25 +411,43 @@ def verification_commande(request):
             error_qte = True
 
         Erreurs.append(erreur)
-        ligne_produit[0] = objet_produit #On remplace l'id produit par un objet de type produit pour le recuperer dans la template
+
+        ligne_produit[0] = objet_produit  # On remplace l'id produit par un objet de type produit pour le recuperer dans la template
 
         #On doit tester notre sortie de while
         if not CommandesEnCours : #Si notre liste est vide
+
             LigneCommande = [objet_produit.idcommerce]  # Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
             LigneCommande.append(ligne_produit)
             CommandesEnCours.append(LigneCommande)
         else :
-            if CommandesEnCours[i][0].numsiret == objet_produit.idcommerce.numsiret:
+            if CommandesEnCours[i][0].numsiret == objet_produit.idcommerce.numsiret: #Si on a trouvé un commerce qui correspond au produit
                 CommandesEnCours[i].append(ligne_produit)
-            elif i == (len(CommandesEnCours)-1):
+            elif i == (len(CommandesEnCours)-1): #Sinon
                 LigneCommande = [objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
                 LigneCommande.append(ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
                 CommandesEnCours.append(LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
 
-    #request.session['commandes'] = CommandesEnCours
+
     return render(request, 'panier/verification.html', locals())
 
-#def validation_commande(request)
+def validation_commande(request):
+    Commandes = trierCommandes(request)
+
+    for commande in Commandes:
+        montant_commande = float()
+        for produit in commande[1]: #On recupère le montant total de chaque commande par commerce
+            montant_commande = montant_commande + round((produit[0].prixproduit * produit[1]),2)
+        client = Client.objects.get(numclient=request.user.id)
+        new_commande = Commande(numclient=client, montantcommande=montant_commande, numcommerce=commande[0])
+        new_commande.save() #Sauvegarde de la commande
+
+        for produit in commande[1]:
+            new_appartenir = Appartenir(numproduit=produit[0], numcommande=new_commande, quantitecommande=produit[1] , livraisondemande=False)
+            new_appartenir.save()
+
+    #request = init_panier(request)
+    return render(request, 'panier/valide.html')
 
 def reset_panier(request):
     return render(init_panier(request), 'panier/panier.html', locals())

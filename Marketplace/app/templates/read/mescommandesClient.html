@@ -4,10 +4,8 @@
 {% block commandes %}
     <div class="collection with-header">
         <div class="collection-header"><h4>Mes commandes :</h4></div>
-        <a href="#!" class="collection-item">{{ commandes }}</a> <!-- IL faudra faire un for reservation in reservations -->
-        <a href="#!" class="collection-item">Commande 1</a>
-        <a href="#!" class="collection-item">Commande 2</a>
-        <a href="#!" class="collection-item">Commande 3</a>
-        <a href="#!" class="collection-item">Commande 4</a>
+        {% for commande in commandes %}
+        <a href="#!" class="collection-item">Commande n° {{ commande.numcommande }}, le {{ commande.datecommande }} pour {{ commande.montantcommande }} euros.</a> <!-- IL faudra faire un for reservation in reservations -->
+        {% endfor %}
     </div>
 {% endblock %}
