@@ -4,10 +4,12 @@
 {% block commandes %}
     <div class="collection with-header">
         <div class="collection-header"><h4>Mes réservations :</h4></div>
-        <a href="#!" class="collection-item">{{ reservations }}</a> <!-- IL faudra faire un for reservation in reservations -->
-        <a href="#!" class="collection-item">Reservation 1</a>
-        <a href="#!" class="collection-item">Reservation 2</a>
-        <a href="#!" class="collection-item">Reservation 3</a>
-        <a href="#!" class="collection-item">Reservation 4</a>
+        {% if reservation %}
+            {% for reservation in reservations %}
+            <a href="#!" class="collection-item"> {{ reservation }}</a> <!-- IL faudra faire un for reservation in reservations -->
+            {% endfor %}
+        {% else %}
+            <div class="collection-item">Aucune réservations</div>
+        {% endif %}
     </div>
 {% endblock %}
