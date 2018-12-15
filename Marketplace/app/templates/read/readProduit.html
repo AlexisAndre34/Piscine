@@ -21,7 +21,7 @@
               <li class="indicator-item red"></li>
               {% endif %}
               {% if produit.photoproduit2 %}
-              <li class="indicator-item"></li>
+              <li class="indicator-item red"></li>
               {% endif %}
             </ul>
           </div>
@@ -55,7 +55,8 @@
             <td>{{ produit.caracteristiquesproduit }}</td>
           </tr>
         </tbody>
-      </table>  
+      </table>
+      <a class="btn" href="{% url 'mescommandesClient' %}">Ajouter commandes</a> <a class="btn" href="{% url 'mesreservationsClient' %}">Ajouter Réservations</a>
         </div>
     </div>
 </div>

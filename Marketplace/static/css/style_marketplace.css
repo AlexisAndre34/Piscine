@@ -110,3 +110,10 @@
 .carousel .carousel-item > img{
   width: 70%;
 }
+
+.carousel .indicators .indicator-item{
+  background-color: transparent;
+}
+
+.carousel .indicators .indicator-item.active{
+  background-color: black;

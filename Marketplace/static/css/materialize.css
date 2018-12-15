@@ -5048,6 +5048,7 @@ small {
   background-color: #fff;
 }
 
+
 .tabs.tabs-fixed-width {
   display: -webkit-box;
   display: -webkit-flex;
@@ -5105,7 +5106,7 @@ small {
   position: absolute;
   bottom: 0;
   height: 2px;
-  background-color: #f6b2b5;
+  background-color: red;
   will-change: left, right;
 }
 
