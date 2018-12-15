@@ -117,3 +117,12 @@
 
 .carousel .indicators .indicator-item.active{
   background-color: black;
+}
+
+.titre_image{
+  text-align: center;
+}
+
+.accueil .carousel .carousel-item > img{
+  width: 130%;
+}
