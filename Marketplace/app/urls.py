@@ -18,6 +18,7 @@ urlpatterns = [
 	path('produit/create/<int:idcommerce>', views.create_produit, name='create_produit'),
 	path('produit/delete/<int:pk>', views.delete_produit, name="delete_produit"),
 	path('produit/update/<int:pk>', views.update_produit, name="updateproduit"),
+	path('commande/<int:idcommande>', views.read_commande, name="read_commande"),
 	path('dashboard/', views.dashboard_commercant, name="dashboard_commercant")
 ]
 

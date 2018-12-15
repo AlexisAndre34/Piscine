@@ -142,6 +142,12 @@ def read_moncompte(request):
     client = Client.objects.get(numclient=request.user.id)
     return render(request, 'read/moncompte.html', locals())
 
+#permet de read un commande
+def read_commande(request, idcommande):
+    commande = Commande.objects.get(numcommande=idcommande)
+    appartenir = Appartenir.objects.filter(numcommande=commande)
+    return render(request, 'read/readCommande.html', locals())
+
 #permet de read les commandes d'un Client
 def read_mescommandesClient(request):
     utilisateur = User.objects.get(id=request.user.id)
