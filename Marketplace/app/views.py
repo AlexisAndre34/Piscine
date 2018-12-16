@@ -361,13 +361,29 @@ def quantite_panier(request, idproduit):
 def trierCommandes(request):
     # LigneCommande = [] #LigneCommande = [Commerce1, [ [Ligne_produit1], [Ligne_produit2], ... ] ]
     CommandesEnCours = []  # CommandesEnCours = [ [LigneCommande1], [LigneCommande2], ... ]
+    Erreur = str()
+    prix_total = float()
+    error_qte = False
     panier_session = request.session.get('panier')
 
     for ligne_produit in panier_session:
         objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
+        prix_total = prix_total + round((objet_produit.prixproduit * ligne_produit[1]), 2)
         i = 0  # // i de 0 à len(CommandeEnCours)-1
         while i < (len(CommandesEnCours) - 1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
             i = i + 1
+
+        # On vérifie les quantité dispo
+        if objet_produit.quantitestock < ligne_produit[1]:  # Si stock insuffisant
+            Erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite proposée: " + str(objet_produit.quantitestock) + ". Veuillez modifier la quantite de ce produit dans votre panier."
+            # ligne_produit[1] == objet_produit.quantitestock
+            error_qte = True
+
+        if objet_produit.quantitestock == 0:  # Si rupture de stock
+            Erreur = "Rupture de stock pour le " + objet_produit.nomproduit + ". Veuillez supprimer ce produit de votre panier."
+            # ligne_produit[1] == objet_produit.quantitestock
+            error_qte = True
+
 
         ligne_produit[0] = objet_produit  # On remplace l'id produit par un objet de type produit pour le recuperer dans la template
 
@@ -386,59 +402,25 @@ def trierCommandes(request):
                 LigneCommande[1].append(ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
                 CommandesEnCours.append(LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
 
-    return CommandesEnCours
+    Reponse = []
+    Reponse.append(CommandesEnCours)
+    Reponse.append(Erreur)
+    Reponse.append(error_qte)
+    Reponse.append(prix_total)
+    return Reponse
 
 def verification_commande(request):
-    #LigneCommande = [] #LigneCommande = [Commerce1,[Ligne_produit1], [Ligne_produit2], ... ]
-    CommandesEnCours = [] #CommandesEnCours = [ [LigneCommande1], [LigneCommande2], ... ]
-    Erreurs = []
-    prix_total = float()
-    error_qte = False
-    panier_session = request.session.get('panier')
-
-
-    for ligne_produit in panier_session:
-        objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
-        prix_total = prix_total + round((objet_produit.prixproduit * ligne_produit[1]),2)
-        i = 0 #// i de 0 à len(CommandeEnCours)-1
-        while i < (len(CommandesEnCours)-1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce : #Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
-            i = i + 1
-
-        # On vérifie les quantité dispo
-        erreur = str()
-        if objet_produit.quantitestock < ligne_produit[1]: #Si stock insuffisant
-            erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite proposée: " + str(objet_produit.quantitestock) + ". Veuillez modifier la quantite de ce produit dans votre panier."
-            #ligne_produit[1] == objet_produit.quantitestock
-            error_qte = True
-
-        if objet_produit.quantitestock == 0: #Si rupture de stock
-            erreur = "Rupture de stock pour le " + objet_produit.nomproduit + ". Veuillez supprimer ce produit de votre panier."
-            #ligne_produit[1] == objet_produit.quantitestock
-            error_qte = True
-
-        Erreurs.append(erreur)
-
-        ligne_produit[0] = objet_produit  # On remplace l'id produit par un objet de type produit pour le recuperer dans la template
-
-        #On doit tester notre sortie de while
-        if not CommandesEnCours : #Si notre liste est vide
-
-            LigneCommande = [objet_produit.idcommerce]  # Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
-            LigneCommande.append(ligne_produit)
-            CommandesEnCours.append(LigneCommande)
-        else :
-            if CommandesEnCours[i][0].numsiret == objet_produit.idcommerce.numsiret: #Si on a trouvé un commerce qui correspond au produit
-                CommandesEnCours[i].append(ligne_produit)
-            elif i == (len(CommandesEnCours)-1): #Sinon
-                LigneCommande = [objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
-                LigneCommande.append(ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
-                CommandesEnCours.append(LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
-
+    Reponse = trierCommandes(request)
+    CommandesEnCours = Reponse[0]
+    Erreur = Reponse[1]
+    error_qte = Reponse[2]
+    prix_total = Reponse[3]
 
     return render(request, 'panier/verification.html', locals())
 
 def validation_commande(request):
-    Commandes = trierCommandes(request)
+    Reponse = trierCommandes(request)
+    Commandes = Reponse[0]
 
     for commande in Commandes:
         montant_commande = float()

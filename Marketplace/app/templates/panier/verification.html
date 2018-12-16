@@ -9,9 +9,8 @@
 {% if error_qte %}
 
     <h5>Avertissement  sur votre commande :</h5>
-    {% for erreur in Erreurs %}
-        <span>{{ erreur }}</span>
-    {% endfor %}
+    <span>{{ Erreur }}</span>
+
 
 {% else %}
     <a href="{% url 'validation_commande' %}" class="btn-flat">Paiement : {{ prix_total }} euros <i class="material-icons">credit_card</i></a>
@@ -20,7 +19,7 @@
 {% for ligne_commande in CommandesEnCours %}
     <div class="collection with-header">
         <li class="collection-header"><i class="material-icons">store</i>{{ ligne_commande.0.nomcommerce }}</li>
-        {% for produit in ligne_commande %}
+        {% for produit in ligne_commande.1 %}
             {% if produit.0.nomproduit %}
             <li class="collection-item">Produit : {{ produit.0.nomproduit }}, Quantité : {{ produit.1 }} </li><!--Nom du produit-->
             {% endif %}
