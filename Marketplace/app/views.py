@@ -450,9 +450,11 @@ def validation_commande(request):
 
         for produit in commande[1]:
             new_appartenir = Appartenir(numproduit=produit[0], numcommande=new_commande, quantitecommande=produit[1] , livraisondemande=False)
-            new_appartenir.save()
+            new_appartenir.save() #Sauvegarde
+            produit[0].quantitestock = produit[0].quantitestock - produit[1] #On modifie la quantite en stock du produit
+            produit[0].save() #Sauvegarde
 
-    #request = init_panier(request)
+    request = init_panier(request)
     return render(request, 'panier/valide.html')
 
 def reset_panier(request):
