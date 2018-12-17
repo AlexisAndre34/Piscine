@@ -8,8 +8,9 @@
     {% for gerer in listeGerer %}
     <div class="collection-item">
         {{ gerer.numcommerce.nomcommerce }}<br>
-        <a class="btn teal"href="{% url 'delete_commerce' gerer.numcommerce.numsiret %}"><i class="material-icons">delete</i></a>
         <a class="btn teal"href="{% url 'update_commerce' gerer.numcommerce.numsiret %}">Modifier Commerce</a>
+        <a class="btn teal"href="{% url 'delete_commerce' gerer.numcommerce.numsiret %}"><i class="material-icons">delete</i></a>
+
     </div>
     {% endfor %}
     </div>
