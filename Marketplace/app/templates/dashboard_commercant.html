@@ -2,12 +2,31 @@
 
 {% block content %}
 
-<div>
-    <ul>
-        <li><a href="{% url 'read_commerce_by_commercant' %}">Mes Commerces</a></li>
-        <li><a href="{% url 'create_commerce' %}">Ajouter Commerce</a></li>
+<div class="col s12 m10 offset-m1">
+    <div class="row">
 
-    </ul>
+
+        <div class="col s12 m5">
+            <h3> {{ utilisateur.first_name }} {{utilisateur.last_name }} </h3>
+            <ul>
+                <li>Email : {{ utilisateur.email }}</li>
+                <li>Tel : {{ commercant.telephonecommercant }}</li>
+
+
+            </ul>
+
+        </div>
+
+
+        <div class="col s12 m5">
+            <div>
+                <a class="btn teal"href="{% url 'read_commerce_by_commercant' %}">Mes Commerces</a>
+                <a class="btn teal"href="{% url 'create_commerce' %}">Ajouter Commerce</a>
+
+            </div>
+        </div>
+
+
 </div>
 
 {% endblock %}

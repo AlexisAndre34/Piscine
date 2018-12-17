@@ -296,7 +296,9 @@ def produit_by_commerce(request, idcommerce):
 #---------------- VIEWS DASHBOARD ----------------
 
 def dashboard_commercant(request):
-    return render(request, 'dashboard_commercant.html')
+    utilisateur = User.objects.get(id=request.user.id)
+    commercant = Commercant.objects.get(numcommercant=request.user.id)
+    return render(request, 'dashboard_commercant.html', locals())
 
 #---------------- VIEWS PANIER ----------------
 
