@@ -3,14 +3,16 @@
 {% block content %}
 
 <div>
-    bonjour
+    <div class="collection with-header">
+        <div class="collection-header"><h4>Mes Commerces</h4></div>
     {% for gerer in listeGerer %}
-    <div>
+    <div class="collection-item">
         {{ gerer.numcommerce.nomcommerce }}<br>
-        <a href="{% url 'delete_commerce' gerer.numcommerce.numsiret %}">Supprimer Commerce</a><br>
-        <a href="{% url 'update_commerce' gerer.numcommerce.numsiret %}">Modifier Commerce</a>
+        <a class="btn teal"href="{% url 'delete_commerce' gerer.numcommerce.numsiret %}"><i class="material-icons">delete</i></a>
+        <a class="btn teal"href="{% url 'update_commerce' gerer.numcommerce.numsiret %}">Modifier Commerce</a>
     </div>
     {% endfor %}
+    </div>
 </div>
 
 {% endblock %}
