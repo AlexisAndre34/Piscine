@@ -19,9 +19,15 @@
       <a href="#" data-target="mobile-demo" class="waves-effect waves-light sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         {% if user.is_authenticated %}
-		<li><a href="{% url 'afficher_panier' %}" class="badge-panier"><i class="material-icons">shopping_basket</i><i class="material-icons">shopping_cart</i></a></li>
-        <li><a class="tooltipped" data-position="left" data-tooltip="Mon Compte" href="{% url 'moncompte' %}"><i class="material-icons">account_circle</i></a></li>
-        <li><a class="tooltipped" data-position="left" data-tooltip="Deconnexion" href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i></a></li>
+          {% if request.session.estClient %}
+            <li><a href="{% url 'afficher_panier' %}" class="badge-panier"><i class="material-icons">shopping_basket</i><i class="material-icons">shopping_cart</i></a></li>
+            <li><a class="tooltipped" data-position="left" data-tooltip="Mon Compte" href="{% url 'moncompte' %}"><i class="material-icons">account_circle</i></a></li>
+            <li><a class="tooltipped" data-position="left" data-tooltip="Deconnexion" href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i></a></li>
+          {% else %}
+            <li><a class="tooltipped" data-position="left" data-tooltip="Gestion" href="{% url 'dashboard_commercant' %}"><i class="material-icons">dashboard</i></a></li>
+            <li><a class="tooltipped" data-position="left" data-tooltip="Deconnexion" href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i></a></li>
+
+          {% endif %}
         {% else %}
         <li><a class="tooltipped" data-position="left" data-tooltip="Connexion" href="{% url 'login' %}"><i class="material-icons">person_outline</i></a></li>
 		<li><a class="tooltipped" data-position="left" data-tooltip="Inscription" href="{% url 'signupClient' %}"><i class="material-icons">person_add</i></a></li>
@@ -80,11 +86,7 @@
 
 {% block content %}
 
-	{% if user.is_authenticated %}
-		<h3>Bonjour {{ user.username }}.</h3>
-	{% else %}
-		<h3>Bienvenue sur le marketplace du groupe 8.</h3>
-	{% endif %}
+	
 
 	
 {% endblock %}

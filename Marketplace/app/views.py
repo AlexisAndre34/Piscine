@@ -25,8 +25,15 @@ def login_user(request):
             user = authenticate(username=username, password=raw_password)
             if user:
                 login(request,user)
+                groupe = User.objects.filter(groups__name='client', id=user.id) #On cherche si notre utilisateur est un client
+                if not groupe: #Si aucun objet n'est retourné, il n'est pas client
+                    estClient = False
+                else:           #Sinon, c'est un client
+                    estClient =True
+                request.session['estClient'] = estClient #On mémorise cette information
                 request = init_panier(request)
                 request = init_reservation(request) #On initiliase le panier et le panier_reservation de l'utilisateur
+
                 return redirect('homepage')
             else:
                 error=True
@@ -313,7 +320,9 @@ def afficher_panier(request):
         prix_total = round(prix_total, 2)
         prix_panier = prix_panier + prix_total
 
-        produit = [objet_produit,produit[1],prix_total]
+        print(produit[2])
+        livraison_demande = not (produit[2]%2 == 0)
+        produit = [objet_produit,produit[1],prix_total,livraison_demande]
         produits.append(produit)
 
     return render(request, 'panier/panier.html', locals())
@@ -334,7 +343,7 @@ def ajout_panier(request, idproduit):
             request.session['panier'] = panier_session #On sauvegarde
             return afficher_panier(request)
 
-    new_ligne_panier = [produit.numproduit,1] #new_ligne_panier = [numproduit,Quantité]
+    new_ligne_panier = [produit.numproduit,1,0] #new_ligne_panier = [numproduit,Quantité,LivraisonDemande(Bool)]
     panier_session.append(new_ligne_panier)
     request.session['panier'] = panier_session
 
@@ -358,6 +367,17 @@ def quantite_panier(request, idproduit):
             if produit_panier[1] == 0:
                 produit_panier[1]=1
     request.session['panier'] = panier_session #On sauvegarde
+    return afficher_panier(request)
+
+def change_livraison(request, idproduit):
+    panier_session = request.session.get('panier')
+    for produit_panier in panier_session:
+        if idproduit == produit_panier[0]: #On a trouvé le produit dans le panier
+            if produit_panier[2] == 0: #Si la livraison n'est pas demandé
+                produit_panier[2] = 1
+            else:                       #Sinon
+                produit_panier[2] = 0
+    request.session['panier'] = panier_session  # On sauvegarde
     return afficher_panier(request)
 
 def trierCommandes(request):
