@@ -314,6 +314,7 @@ def afficher_panier(request):
     panier_session = request.session.get('panier')
     produits = []
     prix_panier = float()
+    panier_vide = True
     for produit in panier_session:
         objet_produit = Produit.objects.get(numproduit=produit[0])
         prix_total = objet_produit.prixproduit * produit[1]
@@ -322,7 +323,8 @@ def afficher_panier(request):
 
         produit = [objet_produit,produit[1],prix_total]
         produits.append(produit)
-
+    if produits:
+        panier_vide = False
     return render(request, 'panier/panier.html', locals())
 
 def init_panier(request):

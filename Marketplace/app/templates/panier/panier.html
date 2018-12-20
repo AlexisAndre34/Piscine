@@ -4,6 +4,7 @@
 {% block carts %}
 
 <div class="test">
+    {% if not panier_vide %}
       <table class="striped responsive-table">
         <thead>
           <tr>
@@ -34,9 +35,13 @@
         </tbody>
       </table>
     <div>
+
         <a href="{% url 'reset_panier' %}" class="btn">Reset le panier</a>
         <a href="{% url 'verification_panier' %}" class="btn">Continuer commande <i class="material-icons">done_all</i></a>
         <span>Prix total du panier : {{ prix_panier }} euros. </span>
+    {% else %}
+        <span>Votre panier est vide :(</span>
+    {% endif %}
     </div>
 </div>
 {% endblock %}
