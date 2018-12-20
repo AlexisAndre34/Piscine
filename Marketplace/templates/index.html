@@ -55,7 +55,7 @@
 		</div>
 		<div class="col s12 m4 l4">
 			<div class="nav-wrapper">
-			  <form method="post"  action="/search/">
+			  <form method="post"  action="{% url 'search' %}">
 				{% csrf_token %}
 				<div class="input-field">
 				  <input id="search" placeholder="Rechercher un produit" name="recherche" type="text">
