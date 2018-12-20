@@ -383,14 +383,14 @@ def trierCommandes(request):
             i = i + 1
 
         # On vérifie les quantité dispo
-        if objet_produit.quantitestock < ligne_produit[1]:  # Si stock insuffisant
-            Erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite proposée: " + str(objet_produit.quantitestock) + ". Veuillez modifier la quantite de ce produit dans votre panier."
-            # ligne_produit[1] == objet_produit.quantitestock
+        if objet_produit.quantitedisponible < ligne_produit[1]:  # Si stock insuffisant
+            Erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite disponible: " + str(objet_produit.quantitedisponible) + ". Veuillez modifier la quantite de ce produit dans votre panier."
+            # ligne_produit[1] == objet_produit.quantitedisponible
             error_qte = True
 
         if objet_produit.quantitestock == 0:  # Si rupture de stock
             Erreur = "Rupture de stock pour le " + objet_produit.nomproduit + ". Veuillez supprimer ce produit de votre panier."
-            # ligne_produit[1] == objet_produit.quantitestock
+            # ligne_produit[1] == objet_produit.quantitedisponible
             error_qte = True
 
 
@@ -443,6 +443,7 @@ def validation_commande(request):
             new_appartenir = Appartenir(numproduit=produit[0], numcommande=new_commande, quantitecommande=produit[1] , livraisondemande=False)
             new_appartenir.save() #Sauvegarde
             produit[0].quantitestock = produit[0].quantitestock - produit[1] #On modifie la quantite en stock du produit
+            produit[0].quantitedisponible = produit[0].quantitedisponible - produit[1] #On modifie la quantite disponible du produit
             produit[0].save() #Sauvegarde
 
     request = init_panier(request)
