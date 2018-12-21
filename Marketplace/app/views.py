@@ -374,7 +374,7 @@ def trierDemande(request, choix):
         objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
         prix_total = prix_total + round((objet_produit.prixproduit * ligne_produit[1]), 2)
         i = 0  # // i de 0 à len(CommandeEnCours)-1
-        while i < (len(CommandesEnCours) - 1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
+        while (i < (len(CommandesEnCours)-1)) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce.numsiret:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
             i = i + 1
 
         # On vérifie les quantité dispo
@@ -398,7 +398,6 @@ def trierDemande(request, choix):
             CommandesEnCours.append(LigneCommande)
         else:
             if CommandesEnCours[i][0].numsiret == objet_produit.idcommerce.numsiret:  # Si on a trouvé un commerce qui correspond au produit
-                print(CommandesEnCours[i][1])
                 CommandesEnCours[i][1].append(ligne_produit)
             elif i == (len(CommandesEnCours) - 1):  # Sinon
                 LigneCommande = [objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
