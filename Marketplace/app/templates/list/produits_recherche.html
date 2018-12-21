@@ -2,57 +2,51 @@
 {% load static %}
 {% block content %}
 
-<div class="col s12 m10 offset-m1">
-    <div class="row">
-        <div class="col s12 m4">
-            <span>Formulaire pour affiner la recherche ici</span>
-                <!--
-                <h6>Affinez votre recherche : </h6>
-                <form class="col s12 m10" method="post" action="">
-                    {% csrf_token %}
-                    <div class="input-field row s6">
-                        <div class="switch">
-                            <label>
-                              Prix : Decroissant
-                              <input type="checkbox">
-                              <span class="lever"></span>
-                              Croissant
-                            </label>
-                        </div>
-                    </div>
-                    <div class="input-field row s6">
-                        <select>
-                          <option value="" disabled selected>Choissisez votre ville</option>
-                          <option value="Montpellier">Montpellier</option>
-                          <option value="Sète">Sète</option>
-                          <option value="Gignac">Gignac</option>
-                        </select>
-                    </div>
-                </form>-->
-
+<!--
+<h6>Affinez votre recherche : </h6>
+<form class="col s12 m10" method="post" action="">
+    {% csrf_token %}
+    <div class="input-field row s6">
+        <div class="switch">
+            <label>
+              Prix : Decroissant
+              <input type="checkbox">
+              <span class="lever"></span>
+              Croissant
+            </label>
         </div>
+    </div>
+    <div class="input-field row s6">
+        <select>
+          <option value="" disabled selected>Choissisez votre ville</option>
+          <option value="Montpellier">Montpellier</option>
+          <option value="Sète">Sète</option>
+          <option value="Gignac">Gignac</option>
+        </select>
+    </div>
+</form>-->
 
-        <div class="col s12 m8">
-            <div class="search_container">
-                {% for produit in produits %}
-                  <div class="card search_card">
-                  {% if produit.photoproduit1 %}
-                    <div class="card-image">
-                        <a href="{% url 'read_produit' produit.numproduit %}" ><img src={{ produit.photoproduit1.url }}></a>
-                    </div>
-                  {% endif %}
-                        <a href="{% url 'ajout_reservation' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
-                        {% if produit.idcommerce.livraisondisponible %}
-                        <a href="{% url 'ajout_panier' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_cart</i></a>
-                        {% endif %}
-                    <div class="card-content">
-                        <span class="card-title">{{ produit.nomproduit }}</span>
-                        <p>Prix : {{ produit.prixproduit }} euros</p>
-                    </div>
-                  </div>
-                {% endfor %}
-            </div>
+
+<div class="search_container">
+    {% for produit in produits %}
+      <div class="card search_card">
+      {% if produit.photoproduit1 %}
+        <div class="card-image">
+            <a href="{% url 'read_produit' produit.numproduit %}" ><img src={{ produit.photoproduit1.url }}></a>
         </div>
+      {% endif %}
+            <a href="{% url 'ajout_reservation' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
+            {% if produit.idcommerce.livraisondisponible %}
+            <a href="{% url 'ajout_panier' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_cart</i></a>
+            {% endif %}
+        <div class="card-content">
+            <span class="card-title">{{ produit.nomproduit }}</span>
+            <p>Prix : {{ produit.prixproduit }} euros</p>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+
 
 
 <ul class="pagination">

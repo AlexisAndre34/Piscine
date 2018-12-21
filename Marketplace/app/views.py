@@ -280,17 +280,24 @@ def delete_produit(request, pk):
 def search(request, keyword=None, page=1):
     #keyword et page sont utilisé lorsque l'utilisateur fait défiler les pages, par défaut ils valent respectivement None et 1
     recherche = request.POST.get('recherche') #On récupère la recherche de l'utilisateur qui nous est envoyé en requete POST
-    if not recherche : #Si la recherche est Vide
-        return redirect('/') #Redirection vers la page d'accueil si aucun champ de recherche
-        #redirect(request.META['HTTP_REFERER']) redirige l'utilisateur vers la page précedente mais problème de boucle infinie
+    if keyword is None : #Si la recherche est Vide
+        if not recherche:
+            return redirect('/') #Redirection vers la page d'accueil si aucun champ de recherche
+            #redirect(request.META['HTTP_REFERER']) redirige l'utilisateur vers la page précedente mais problème de boucle infinie
+        else:
+            produits_all = Produit.objects.filter(nomproduit__icontains=recherche)
+
+            paginator = Paginator(produits_all, 1)  # On affiche 1 produit par page
+            try:
+                produits = paginator.page(page)
+            except EmptyPage:
+                produits = paginator.page(paginator.num_pages)
+
+            return render(request, 'list/produits_recherche.html', locals())
     else:
 
-        print("hello")
-        if request.method == "POST":
-            produits_all = Produit.objects.filter(nomproduit__icontains=recherche)
-        elif request.method == "GET":
-            produits_all = Produit.objects.filter(nomproduit__icontains=keyword)
-            recherche=keyword
+        produits_all = Produit.objects.filter(nomproduit__icontains=keyword)
+        recherche=keyword
 
         paginator = Paginator(produits_all, 1) #On affiche 1 produit par page
         try:
