@@ -5,7 +5,7 @@
     <div class="collection with-header">
         <div class="collection-header"><h4>Mes commandes :</h4></div>
         {% for commande in commandes %}
-        <a href="{% url 'read_commande' commande.numcommande %}" class="collection-item">Commande n° {{ commande.numcommande }}, le {{ commande.datecommande }} pour {{ commande.montantcommande }} euros.</a> <!-- IL faudra faire un for reservation in reservations -->
+        <a href="{% url 'read_commande' commande.numcommande %}" class="collection-item">Commande effectuée le {{ commande.datecommande }} pour {{ commande.montantcommande }} euros.</a> <!-- IL faudra faire un for reservation in reservations -->
         {% endfor %}
     </div>
 {% endblock %}

@@ -4,12 +4,8 @@
 {% block commandes %}
     <div class="collection with-header">
         <div class="collection-header"><h4>Mes réservations :</h4></div>
-        {% if reservation %}
-            {% for reservation in reservations %}
-            <a href="#!" class="collection-item"> {{ reservation }}</a> <!-- IL faudra faire un for reservation in reservations -->
-            {% endfor %}
-        {% else %}
-            <div class="collection-item">Aucune réservations</div>
-        {% endif %}
+        {% for reservation in reservations %}
+        <a href="{% url 'read_reservation' reservation.numreservation %}" class="collection-item">Réservation effectuée le {{ reservation.datereservation }} pour {{ reservation.montantreservation }} euros.</a> <!-- IL faudra faire un for reservation in reservations -->
+        {% endfor %}
     </div>
 {% endblock %}

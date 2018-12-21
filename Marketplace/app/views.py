@@ -149,11 +149,17 @@ def read_moncompte(request):
     client = Client.objects.get(numclient=request.user.id)
     return render(request, 'read/moncompte.html', locals())
 
-#permet de read un commande
+#permet de read une commande
 def read_commande(request, idcommande):
     commande = Commande.objects.get(numcommande=idcommande)
     appartenir = Appartenir.objects.filter(numcommande=commande)
     return render(request, 'read/readCommande.html', locals())
+
+#permet de read une reservation
+def read_reservation(request, idreservation):
+    reservation = Reservation.objects.get(numreservation=idreservation)
+    reserver = Reserver.objects.filter(numreservation=reservation)
+    return render(request, 'read/readReservation.html', locals())
 
 #permet de read les commandes d'un Client
 def read_mescommandesClient(request):
@@ -166,7 +172,7 @@ def read_mescommandesClient(request):
 def read_mesreservationsClient(request):
     utilisateur = User.objects.get(id=request.user.id)
     client = Client.objects.get(numclient=request.user.id)
-    reservations = Reservation.objects.filter(numclient=request.user.id)
+    reservations = Reservation.objects.filter(numclient=client)
     return render(request, 'read/mesreservationsClient.html', locals())
 
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
@@ -587,8 +593,9 @@ def validation_reservations(request):
 
         CommerceDateLimite.append(datelimite)
         DatesLimites.append(CommerceDateLimite)
-    print(DatesLimites)
+
     type_demande = "reservation"
+    request = init_reservation(request)
     return render(request, 'panier/valide.html', locals())
 
 
