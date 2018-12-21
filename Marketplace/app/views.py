@@ -3,9 +3,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator, EmptyPage
-from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation, Appartenir
+from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation, Appartenir, Reserver
 from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm
-
+from datetime import datetime, timedelta
 
 #VIEW PAGE D'ACCUEIL
 def homepage(request):
@@ -374,14 +374,12 @@ def trierDemande(request, choix):
         objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
         prix_total = prix_total + round((objet_produit.prixproduit * ligne_produit[1]), 2)
         i = 0  # // i de 0 à len(CommandeEnCours)-1
-        while i < (len(CommandesEnCours) - 1) and CommandesEnCours[i][
-            0].numsiret != objet_produit.idcommerce:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
+        while i < (len(CommandesEnCours) - 1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
             i = i + 1
 
         # On vérifie les quantité dispo
         if objet_produit.quantitedisponible < ligne_produit[1]:  # Si stock insuffisant
-            Erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite disponible: " + str(
-                objet_produit.quantitedisponible) + ". Veuillez modifier la quantite de ce produit dans votre panier."
+            Erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite disponible: " + str(objet_produit.quantitedisponible) + ". Veuillez modifier la quantite de ce produit dans votre panier."
             # ligne_produit[1] == objet_produit.quantitedisponible
             error_qte = True
 
@@ -390,28 +388,23 @@ def trierDemande(request, choix):
             # ligne_produit[1] == objet_produit.quantitedisponible
             error_qte = True
 
-        ligne_produit[
-            0] = objet_produit  # On remplace l'id produit par un objet de type produit pour le recuperer dans la template
+        ligne_produit[0] = objet_produit  # On remplace l'id produit par un objet de type produit pour le recuperer dans la template
 
         # On doit tester notre sortie de while
         if not CommandesEnCours:  # Si notre liste est vide
-            LigneCommande = [
-                objet_produit.idcommerce]  # Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
-            LigneCommande.append([])  # On insère une liste vide qui accueillera toutes les lignes produit
+            LigneCommande = [objet_produit.idcommerce]  # Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
+            LigneCommande.append(list())  # On insère une liste vide qui accueillera toutes les lignes produit
             LigneCommande[1].append(ligne_produit)
             CommandesEnCours.append(LigneCommande)
         else:
-            if CommandesEnCours[i][
-                0].numsiret == objet_produit.idcommerce.numsiret:  # Si on a trouvé un commerce qui correspond au produit
+            if CommandesEnCours[i][0].numsiret == objet_produit.idcommerce.numsiret:  # Si on a trouvé un commerce qui correspond au produit
+                print(CommandesEnCours[i][1])
                 CommandesEnCours[i][1].append(ligne_produit)
             elif i == (len(CommandesEnCours) - 1):  # Sinon
-                LigneCommande = [
-                    objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
-                LigneCommande.append([])
-                LigneCommande[1].append(
-                    ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
-                CommandesEnCours.append(
-                    LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
+                LigneCommande = [objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
+                LigneCommande.append(list())
+                LigneCommande[1].append(ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
+                CommandesEnCours.append(LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
 
     Reponse = list()
     Reponse.append(CommandesEnCours)
@@ -500,6 +493,7 @@ def validation_commande(request):
             produit[0].quantitedisponible = produit[0].quantitedisponible - produit[1] #On modifie la quantite disponible du produit
             produit[0].save() #Sauvegarde
 
+    type_demande = "commande"
     request = init_panier(request)
     return render(request, 'panier/valide.html')
 
@@ -566,6 +560,39 @@ def verification_reservation(request):
     prix_total = Reponse[3]
 
     return render(request, 'reservation/verificationReservation.html', locals())
+
+def validation_reservations(request):
+    reponse = trierDemande(request, False)
+    Reservations = reponse[0]
+    DatesLimites = list()
+    for reservation in Reservations:
+        CommerceDateLimite=list()
+        CommerceDateLimite.append(reservation[0])
+        montant_reservation = float()
+        for produit in reservation[1]:
+            montant_reservation = montant_reservation + round((produit[0].prixproduit * produit[1]),2)
+            datelimite = datetime.now() + timedelta(days=produit[0].datelimitereservation)
+        client = Client.objects.get(numclient =request.user.id)
+        new_reservation = Reservation(numclient=client, montantreservation = montant_reservation, numcommerce=reservation[0])
+        new_reservation.save()
+
+        for produit in reservation[1]:
+            new_reserver = Reserver(numproduit=produit[0], numreservation=new_reservation, quantitereserve=produit[1])
+            new_reserver.save()
+            produit[0].quantitedisponible = produit[0].quantitedisponible - produit[1]
+            produit[0].save()
+
+            datetime_produit = datetime.now() + timedelta(days=produit[0].datelimitereservation)
+            if datetime_produit < datelimite:
+                datelimite = datetime_produit
+
+        CommerceDateLimite.append(datelimite)
+        DatesLimites.append(CommerceDateLimite)
+    print(DatesLimites)
+    type_demande = "reservation"
+    return render(request, 'panier/valide.html', locals())
+
+
 
 def reset_reservation(request):
     return render(init_reservation(request), 'reservation/reservation.html', locals())

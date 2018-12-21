@@ -3,7 +3,7 @@
 
 {% block carts %}
 
-<h3>Récap de votre commande :</h3>
+<h3>Récap de votre réservation :</h3>
 
 
 {% if error_qte %}
@@ -13,7 +13,7 @@
 
 
 {% else %}
-    <a href="" class="btn-flat">Paiement : {{ prix_total }} euros <i class="material-icons">credit_card</i></a>
+    <a href="{% url 'validation_reservation' %}" class="btn">Réserver maintenant : {{ prix_total }} euros </a>
 {% endif %}
 
 {% for ligne_commande in ReservationsEnCours %}
@@ -21,7 +21,7 @@
         <li class="collection-header"><i class="material-icons">store</i>{{ ligne_commande.0.nomcommerce }}</li>
         {% for produit in ligne_commande.1 %}
             {% if produit.0.nomproduit %}
-            <li class="collection-item">Produit : {{ produit.0.nomproduit }}, Quantité : {{ produit.1 }} </li><!--Nom du produit-->
+            <li class="collection-item">Produit : {{ produit.0.nomproduit }}, Quantité : {{ produit.1 }} <I>Vous avez {{ produit.0.datelimitereservation }} jours pour aller chercher ce produit.</I></li><!--Nom du produit-->
             {% endif %}
         {% endfor %}
     </div>
