@@ -4,6 +4,7 @@
 {% block carts %}
 
 <div class="test">
+      {% if not reservation_vide %}
       <table class="striped responsive-table">
         <thead>
           <tr>
@@ -35,9 +36,12 @@
       </table>
     <div>
         <a href="{% url 'reset_reservation' %}" class="btn">Reset la reservation</a>
-        <a class="btn">Click & Collect<i class="material-icons">done_all</i></a>
+        <a href="{% url 'verification_reservation' %}" class="btn">Click & Collect<i class="material-icons">done_all</i></a>
         <span>Prix total de mes réservations : {{ prix_ClickCollect }} euros</span>
     </div>
+    {% else %}
+    <span>Aucune réservations :( </span>
+    {% endif %}
 </div>
 
 {% endblock %}

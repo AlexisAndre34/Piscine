@@ -1,0 +1,32 @@
+{% extends 'read/carts.html' %}
+{% block title %}Reservation{% endblock %}
+
+{% block carts %}
+
+<h3>Récap de votre commande :</h3>
+
+
+{% if error_qte %}
+
+    <h5>Avertissement  sur votre réservation :</h5>
+    <span>{{ Erreur }}</span>
+
+
+{% else %}
+    <a href="" class="btn-flat">Paiement : {{ prix_total }} euros <i class="material-icons">credit_card</i></a>
+{% endif %}
+
+{% for ligne_commande in ReservationsEnCours %}
+    <div class="collection with-header">
+        <li class="collection-header"><i class="material-icons">store</i>{{ ligne_commande.0.nomcommerce }}</li>
+        {% for produit in ligne_commande.1 %}
+            {% if produit.0.nomproduit %}
+            <li class="collection-item">Produit : {{ produit.0.nomproduit }}, Quantité : {{ produit.1 }} </li><!--Nom du produit-->
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+
+
+{% endblock %}

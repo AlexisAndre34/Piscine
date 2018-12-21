@@ -42,6 +42,7 @@ urlpatterns = [
     path('reservation/ajout/<int:idproduit>', views.ajout_reservation, name="ajout_reservation"),
     path('reservation/supprimer/<int:idproduit>', views.supprimer_reservation, name="supprimer_reservation"),
     path('reservation/quantite/<int:idproduit>', views.quantite_reservation, name="quantite_less_reservation"),
+    path('reservation/verification', views.verification_reservation, name="verification_reservation"),
     path('reservation/reset/', views.reset_reservation, name="reset_reservation"),
   path('gestion/', include('app.urls'))
 ]

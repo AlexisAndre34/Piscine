@@ -321,28 +321,116 @@ def dashboard_commercant(request):
     commercant = Commercant.objects.get(numcommercant=request.user.id)
     return render(request, 'dashboard_commercant.html', locals())
 
-#---------------- VIEWS PANIER ----------------
 
-@login_required
-def afficher_panier(request):
-    panier_session = request.session.get('panier')
-    produits = []
-    prix_panier = float()
+#---------------- COMMUN  PANIER ET RESERVATION ----------------
+
+#Affichage du panier si choix=True, si choix=False alors affichage des reservations
+def afficher_demande(request, choix):
+    resultat = list()
+    produits = list()
+    prix_demande = float()
     panier_vide = True
-    for produit in panier_session:
+
+    if choix:
+        demande = request.session.get('panier')
+    else:
+        demande = request.session.get('reservation')
+
+    for produit in demande:
         objet_produit = Produit.objects.get(numproduit=produit[0])
         prix_total = objet_produit.prixproduit * produit[1]
         prix_total = round(prix_total, 2)
-        prix_panier = prix_panier + prix_total
+        prix_demande = prix_demande + prix_total
 
         produit = [objet_produit,produit[1],prix_total]
         produits.append(produit)
     if produits:
         panier_vide = False
+
+    # resultat = [produits,prix_demande,panier_vide]
+    resultat.append(produits)
+    resultat.append(prix_demande)
+    resultat.append(panier_vide)
+
+    return resultat
+
+
+# trierDemande: requets x Bool -> list[]
+# trie le panier si choix == True
+# trie les reservation si choix == False
+def trierDemande(request, choix):
+    # LigneCommande = list() #LigneCommande = [Commerce1, [ [Ligne_produit1], [Ligne_produit2], ... ] ]
+    CommandesEnCours = list()  # CommandesEnCours = [ [LigneCommande1], [LigneCommande2], ... ]
+    Erreur = str()
+    prix_total = float()
+    error_qte = False
+
+    if choix:
+        demande = request.session.get('panier')
+    else:
+        demande = request.session.get('reservation')
+
+    for ligne_produit in demande:
+        objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
+        prix_total = prix_total + round((objet_produit.prixproduit * ligne_produit[1]), 2)
+        i = 0  # // i de 0 à len(CommandeEnCours)-1
+        while i < (len(CommandesEnCours) - 1) and CommandesEnCours[i][
+            0].numsiret != objet_produit.idcommerce:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
+            i = i + 1
+
+        # On vérifie les quantité dispo
+        if objet_produit.quantitedisponible < ligne_produit[1]:  # Si stock insuffisant
+            Erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite disponible: " + str(
+                objet_produit.quantitedisponible) + ". Veuillez modifier la quantite de ce produit dans votre panier."
+            # ligne_produit[1] == objet_produit.quantitedisponible
+            error_qte = True
+
+        if objet_produit.quantitestock == 0:  # Si rupture de stock
+            Erreur = "Rupture de stock pour le " + objet_produit.nomproduit + ". Veuillez supprimer ce produit de votre panier."
+            # ligne_produit[1] == objet_produit.quantitedisponible
+            error_qte = True
+
+        ligne_produit[
+            0] = objet_produit  # On remplace l'id produit par un objet de type produit pour le recuperer dans la template
+
+        # On doit tester notre sortie de while
+        if not CommandesEnCours:  # Si notre liste est vide
+            LigneCommande = [
+                objet_produit.idcommerce]  # Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
+            LigneCommande.append([])  # On insère une liste vide qui accueillera toutes les lignes produit
+            LigneCommande[1].append(ligne_produit)
+            CommandesEnCours.append(LigneCommande)
+        else:
+            if CommandesEnCours[i][
+                0].numsiret == objet_produit.idcommerce.numsiret:  # Si on a trouvé un commerce qui correspond au produit
+                CommandesEnCours[i][1].append(ligne_produit)
+            elif i == (len(CommandesEnCours) - 1):  # Sinon
+                LigneCommande = [
+                    objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
+                LigneCommande.append([])
+                LigneCommande[1].append(
+                    ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
+                CommandesEnCours.append(
+                    LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
+
+    Reponse = list()
+    Reponse.append(CommandesEnCours)
+    Reponse.append(Erreur)
+    Reponse.append(error_qte)
+    Reponse.append(prix_total)
+    return Reponse
+#---------------- VIEWS PANIER ----------------
+
+@login_required
+def afficher_panier(request):
+    resultat = afficher_demande(request,True)
+    produits = resultat[0]
+    prix_panier = resultat[1]
+    panier_vide = resultat[2]
     return render(request, 'panier/panier.html', locals())
 
 def init_panier(request):
-    panier = []
+    panier = list()
     request.session['panier'] = panier #On initialise le panier dans la session
     return request
 
@@ -383,68 +471,18 @@ def quantite_panier(request, idproduit):
     request.session['panier'] = panier_session #On sauvegarde
     return afficher_panier(request)
 
-def trierCommandes(request):
-    # LigneCommande = [] #LigneCommande = [Commerce1, [ [Ligne_produit1], [Ligne_produit2], ... ] ]
-    CommandesEnCours = []  # CommandesEnCours = [ [LigneCommande1], [LigneCommande2], ... ]
-    Erreur = str()
-    prix_total = float()
-    error_qte = False
-    panier_session = request.session.get('panier')
-
-    for ligne_produit in panier_session:
-        objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
-        prix_total = prix_total + round((objet_produit.prixproduit * ligne_produit[1]), 2)
-        i = 0  # // i de 0 à len(CommandeEnCours)-1
-        while i < (len(CommandesEnCours) - 1) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
-            i = i + 1
-
-        # On vérifie les quantité dispo
-        if objet_produit.quantitedisponible < ligne_produit[1]:  # Si stock insuffisant
-            Erreur = "Le stock de " + objet_produit.nomproduit + " est insuffisant. Quantite disponible: " + str(objet_produit.quantitedisponible) + ". Veuillez modifier la quantite de ce produit dans votre panier."
-            # ligne_produit[1] == objet_produit.quantitedisponible
-            error_qte = True
-
-        if objet_produit.quantitestock == 0:  # Si rupture de stock
-            Erreur = "Rupture de stock pour le " + objet_produit.nomproduit + ". Veuillez supprimer ce produit de votre panier."
-            # ligne_produit[1] == objet_produit.quantitedisponible
-            error_qte = True
-
-
-        ligne_produit[0] = objet_produit  # On remplace l'id produit par un objet de type produit pour le recuperer dans la template
-
-        # On doit tester notre sortie de while
-        if not CommandesEnCours:  # Si notre liste est vide
-            LigneCommande = [objet_produit.idcommerce]  # Si on trouve un commerce correspondant à notre produit, alors on ajoute la nouvelle ligne produit à la suite de la ligne de commande déjà existante
-            LigneCommande.append([]) #On insère une liste vide qui accueillera toutes les lignes produit
-            LigneCommande[1].append(ligne_produit)
-            CommandesEnCours.append(LigneCommande)
-        else:
-            if CommandesEnCours[i][0].numsiret == objet_produit.idcommerce.numsiret:  # Si on a trouvé un commerce qui correspond au produit
-                CommandesEnCours[i][1].append(ligne_produit)
-            elif i == (len(CommandesEnCours) - 1):  # Sinon
-                LigneCommande = [objet_produit.idcommerce]  # Création d'une nouvelle ligne commande avec en tête le commerce
-                LigneCommande.append([])
-                LigneCommande[1].append(ligne_produit)  # A la suite du commerce on ajoute la ligne_produit (Produit,Quantite) de notre panier
-                CommandesEnCours.append(LigneCommande)  # On ajoute cette nouvelle ligne de commande à notre liste de commande à traiter
-
-    Reponse = []
-    Reponse.append(CommandesEnCours)
-    Reponse.append(Erreur)
-    Reponse.append(error_qte)
-    Reponse.append(prix_total)
-    return Reponse
 
 def verification_commande(request):
-    Reponse = trierCommandes(request)
+    Reponse = trierDemande(request,True)
     CommandesEnCours = Reponse[0]
     Erreur = Reponse[1]
     error_qte = Reponse[2]
     prix_total = Reponse[3]
 
-    return render(request, 'panier/verification.html', locals())
+    return render(request, 'panier/verificationPanier.html', locals())
 
 def validation_commande(request):
-    Reponse = trierCommandes(request)
+    Reponse = trierDemande(request,True)
     Commandes = Reponse[0]
 
     for commande in Commandes:
@@ -471,22 +509,14 @@ def reset_panier(request):
 #---------------- VIEWS RESERVATION ---------------------
 @login_required
 def afficher_reservation(request):
-    reservation_session = request.session.get('reservation')
-    produits = []
-    prix_ClickCollect = 0.0
-    for produit in reservation_session:
-        objet_produit = Produit.objects.get(numproduit=produit[0])
-        prix_total = objet_produit.prixproduit * produit[1]
-        prix_total = round(prix_total,2)
-
-        prix_ClickCollect = prix_ClickCollect + prix_total
-        produit = [objet_produit,produit[1],prix_total]
-        produits.append(produit)
-
+    resultat = afficher_demande(request, False)
+    produits = resultat[0]
+    prix_ClickCollect = resultat[1]
+    reservation_vide = resultat[2]
     return render(request, 'reservation/reservation.html', locals())
 
 def init_reservation(request):
-    reservation = []
+    reservation = list()
     request.session['reservation'] = reservation #On initialise le reservation dans la session
     return request
 
@@ -527,6 +557,15 @@ def quantite_reservation(request, idproduit):
     request.session['reservation'] = reservation_session #On sauvegarde
     return afficher_reservation(request)
 
+
+def verification_reservation(request):
+    Reponse = trierDemande(request,False)
+    ReservationsEnCours = Reponse[0]
+    Erreur = Reponse[1]
+    error_qte = Reponse[2]
+    prix_total = Reponse[3]
+
+    return render(request, 'reservation/verificationReservation.html', locals())
 
 def reset_reservation(request):
     return render(init_reservation(request), 'reservation/reservation.html', locals())
