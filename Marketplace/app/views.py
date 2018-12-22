@@ -324,8 +324,10 @@ def produit_by_ville(request, ville):
     listeProduits = []
     for commerce in listeCommerces:
         produitsParCommerce = Produit.objects.filter(idcommerce = commerce.numsiret)
-        for produit in listeCommerces:
+        for produit in produitsParCommerce:
             listeProduits.append(produit)
+
+    print(listeProduits)
 
     return render(request, 'list/produit_by_ville.html', locals())
 
