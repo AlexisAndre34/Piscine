@@ -319,6 +319,18 @@ def produit_by_commerce(request, idcommerce):
     c = Commerce.objects.get(idcommerce = idcommerce)
     c.produit_set.all()
 
+def produit_by_ville(request, ville):
+    listeCommerces = Commerce.objects.filter(villecommerce = ville)
+    listeProduits = []
+    for commerce in listeCommerces:
+        produitsParCommerce = Produit.objects.filter(idcommerce = commerce.numsiret)
+        for produit in listeCommerces:
+            listeProduits.append(produit)
+
+    return render(request, 'list/produit_by_ville.html', locals())
+
+
+
 
 #---------------- VIEWS DASHBOARD ----------------
 

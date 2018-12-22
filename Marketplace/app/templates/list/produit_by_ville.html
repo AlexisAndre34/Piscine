@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="search_container">
+    {% for produit in listeProduits %}
+      <div class="card search_card">
+      {% if produit.photoproduit1 %}
+        <div class="card-image">
+            <a href="{% url 'read_produit' produit.numproduit %}" ><img src={{ produit.photoproduit1.url }}></a>
+        </div>
+      {% endif %}
+            <a href="{% url 'ajout_reservation' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
+            {% if produit.idcommerce.livraisondisponible %}
+            <a href="{% url 'ajout_panier' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_cart</i></a>
+            {% endif %}
+        <div class="card-content">
+            <span class="card-title">{{ produit.nomproduit }}</span>
+            <p>Prix : {{ produit.prixproduit }} euros</p>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+
+
+
+<ul class="pagination">
+
+   {% if listeProduits.has_previous %}
+
+    <li class="waves-effect"><a href="{% url 'search' recherche listeProduits.previous_page_number %}"><i class="material-icons">chevron_left</i></a></li>
+    <li class="waves-effect"><a href="{% url 'search' recherche listeProduits.previous_page_number %}">{{ listeProduits.previous_page_number }}</a></li>
+   {% endif %}
+
+    <li class="active"><a href="#!">{{ listeProduits.number }}</a></li> <!-- listeProduits.paginator.num_pages -->
+
+
+   {% if listeProduits.has_next %}
+
+    <li class="waves-effect"><a href="{% url 'search' recherche listeProduits.next_page_number %}">{{ listeProduits.next_page_number }}</a></li>
+    <li class="waves-effect"><a href="{% url 'search' recherche listeProduits.next_page_number %}"><i class="material-icons">chevron_right</i></a></li>
+
+   {% endif %}
+
+</ul>
+
+
+{% endblock %}
