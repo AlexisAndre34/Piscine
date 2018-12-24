@@ -319,7 +319,7 @@ def produit_by_commerce(request, idcommerce):
     c = Commerce.objects.get(idcommerce = idcommerce)
     c.produit_set.all()
 
-def produit_by_ville(request, ville):
+def produit_by_ville(request, ville, page=1):
     listeCommerces = Commerce.objects.filter(villecommerce = ville)
     listeProduits = []
     for commerce in listeCommerces:
@@ -327,7 +327,11 @@ def produit_by_ville(request, ville):
         for produit in produitsParCommerce:
             listeProduits.append(produit)
 
-    print(listeProduits)
+    paginator = Paginator(listeProduits, 1)  # On affiche 1 produit par page
+    try:
+        produits = paginator.page(page)
+    except EmptyPage:
+        produits = paginator.page(paginator.num_pages)
 
     return render(request, 'list/produit_by_ville.html', locals())
 
