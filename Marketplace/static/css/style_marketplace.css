@@ -24,6 +24,17 @@
   border-width : 5px;
 }
 
+.Commentaire {
+  justify-content:left;
+  display: flex;
+}
+
+.BlocCom {
+  display: flex;
+  padding-top: 50px;
+  padding-left: 100 px;
+}
+
 .blocCentrer {
   position: center;
   border: 5px double;

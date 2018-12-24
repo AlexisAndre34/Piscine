@@ -3,8 +3,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator, EmptyPage
-from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation, Appartenir, Reserver
-from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm
+from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation, Appartenir, Reserver, Commenter
+from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm, CommentaireForm
 from datetime import datetime, timedelta
 
 #VIEW PAGE D'ACCUEIL
@@ -141,7 +141,20 @@ def read_commerce_by_commercant(request):
 #permet de read un produit
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
-    return render(request, 'read/readProduit.html', {'produit' : produit})
+
+    #Si c'est une requete en POST
+    if request.method == 'POST':
+        form = CommentaireForm(request.POST, request.FILES)
+        #On verifie que les donnees sont valides
+        if form.is_valid():
+            client = Client.objects.get(numclient=request.user.id)
+            new_commenter = Commenter(numproduit=produit, numclient=client, commentaire=form.cleaned_data.get('commentaire'), note=form.cleaned_data.get('note'), datecommentaire=form.cleaned_data.get('datecommentaire'))
+            new_commenter.save()
+            return render(request, 'read/readProduit.html', {'produit' : produit})
+    #Si c'est une requete GET ou autre chose
+    else:
+        form = CommentaireForm()
+    return render(request, 'read/readProduit.html', {'formCommentaire': form, 'produit' : produit})
 
 #permet de read un Client
 def read_moncompte(request):

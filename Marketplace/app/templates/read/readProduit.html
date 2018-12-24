@@ -60,5 +60,54 @@
         </div>
     </div>
 </div>
+<div class="col s12 m10 offset-m1">
+  <h4>Commentaires</h4>
+  
+  <div class ="BlocCom">
+    <div class ="Commentaire">
+    
+      <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in formCommentaire %}
+        {% for error in field.errors %}
+        <div class="textError">
+           <p>{{ error }}</p>
+         </div>
+        {% endfor %}
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.help_text %}
+            <small>{{ field.help_text }}</small>
+          {% endif %}
+      {% endfor %}
+      <div class="boutonForm">
+        <button class="btn purple" type="submit" >Ajouter un commentaire</button>
+      </div>
+      </form>
+    </div>
+    <div class ="Commentaire">
+      <tr>
+        <td>{{commenter.datecommentaire}}</td>
+        <td>{{commenter.commentaire}}</td>
+        <td>{{commenter.note}}</td>
+      </tr>
+    </div>
+  </div>   
 
+</div>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

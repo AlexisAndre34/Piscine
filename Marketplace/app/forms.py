@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelChoiceField
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from app.models import Commerce, Produit, Categorie
+from app.models import Commerce, Produit, Categorie, Commenter
 import datetime
 
 #Formulaire pour la connexion au site
@@ -31,6 +31,12 @@ class CommerceForm(forms.ModelForm):
         model = Commerce
         fields = '__all__'
 
+#Formulaire de creation de commentaire
+class CommentaireForm(forms.ModelForm):
+  class Meta:
+    model = Commenter
+    exclude = ['id','numproduit','numclient','datecommentaire']
+        
 #Formulaire de creation d'un compte client
 class SignUpFormClient(UserCreationForm):
     datenaissanceclient = forms.DateField(widget = forms.SelectDateWidget(years=range(1900, 2100)))
