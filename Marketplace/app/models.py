@@ -26,6 +26,10 @@ class Client(models.Model):
         db_table = 'client'
 
 #Autres entités
+#Changement d'attributs:
+#   datelimitereservation = models.IntegerField(blank=True, null=True) #Correspond à un nombre de jour
+#   gps_latitude = models.FloatField()
+#   geps_longitude = models. FloatField()
 class Commerce(models.Model):
     numsiret = models.BigIntegerField(primary_key=True, help_text="Renseignez votre numèro de siret, 14 chiffres succesifs")
     nomcommerce = models.CharField(max_length=30)
@@ -45,6 +49,9 @@ class Categorie(models.Model):
     class Meta:
         db_table = 'categorie'
 
+
+#Changement d'attributs:
+# Il faut enlever l'attribut datelimitereservation pour le deplacer vers le commerce (et le renommer pour qu'il soit plus explicite).
 class Produit(models.Model):
     numproduit = models.AutoField(primary_key=True)
     idcommerce = models.ForeignKey(Commerce, on_delete=models.CASCADE, db_column='idcommerce')
@@ -72,6 +79,8 @@ class Commande(models.Model):
     class Meta:
         db_table = 'commande'
 
+#Changement d'attributs:
+#Ajouter un attribut de date limite pour la reservation, car le commerce peut changer son nb de jours par défaut en cours de reservation
 class Reservation(models.Model):
     numreservation = models.AutoField(primary_key=True)
     numclient = models.ForeignKey(Client, on_delete=models.CASCADE, db_column='numclient')
