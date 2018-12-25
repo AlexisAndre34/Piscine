@@ -45,6 +45,7 @@ urlpatterns = [
     path('reservation/verification', views.verification_reservation, name="verification_reservation"),
     path('reservation/valide', views.validation_reservations, name="validation_reservation"),
     path('reservation/reset/', views.reset_reservation, name="reset_reservation"),
+    path('carte/commerces', views.list_commerces_carte, name="commerces_carte"),
   path('gestion/', include('app.urls'))
 ]
 

@@ -188,6 +188,9 @@ def read_mesreservationsClient(request):
     reservations = Reservation.objects.filter(numclient=client)
     return render(request, 'read/mesreservationsClient.html', locals())
 
+def list_commerces_carte(request):
+    return render(request, 'list/map_commerces.html')
+
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
 def update_commercant(request):
