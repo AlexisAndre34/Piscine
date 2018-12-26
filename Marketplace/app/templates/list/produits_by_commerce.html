@@ -3,7 +3,12 @@
 {% block content %}
 
 <div>
-    tous les produits d'un commerce{{ produit.numproduit.nomproduit }}
+    tous les produits d'un commerce
 </div>
+
+{% for produit in produits %}
+    {{ produit }}
+
+{% endfor %}
 
 {% endblock %}

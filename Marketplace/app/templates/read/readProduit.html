@@ -63,7 +63,7 @@
 <div class="col s12 m10 offset-m1">
   <h4>Commentaires</h4>
   
-  <div class ="BlocCom">
+  <div class = "BlocCom">
   {% if user.is_authenticated %}
     {% if request.session.estClient %}
     <div class ="Commentaire">
@@ -84,21 +84,35 @@
       <div class="boutonForm">
         <button class="btn purple" type="submit" >Ajouter un commentaire</button>
       </div>
+      * Vous ne pouvez poster qu'un seul commentaire
+      </br>
+      * La note est comprise entre 0 et 5
       </form>
     </div>
     {% endif %}
   {% endif %}
+  </br>
     <div class ="Commentaire">
     {% for commentaire in commentaires %}
-      <tr>
-        <td>{{ commentaire.datecommentaire }}</td>
-        <td>{{ commentaire.commentaire }}</td>
-        <td>{{ commentairer.note }}</td>
-      </tr>
+        <table class="striped">
+          <tbody>
+          <tr>
+            <td>Date :</td>
+            <td>{{ commentaire.datecommentaire }}</td>
+          </tr>
+          <tr>
+            <td>Commentaire :</td>
+            <td>{{ commentaire.commentaire }}</td>
+          </tr>
+          <tr>
+            <td>Note : </td>
+            <td>{{ commentairer.note }}</td>
+          </tr>
+        </tbody>
+        </br>
+      </table>   
     {% endfor %}
     </div>
-  </div>   
-
 </div>
 {% endblock %}
 
