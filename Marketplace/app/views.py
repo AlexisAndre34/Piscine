@@ -142,13 +142,14 @@ def read_commerce_by_commercant(request):
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     commentaires = Commenter.objects.filter(numproduit=produit)
+    client = Client.objects.get(numclient=request.user.id)
+    b1 = Commenter.objects.filter(numproduit=produit, numclient=client)
     
     #Si c'est une requete en POST
     if request.method == 'POST':
         formCommentaire = CommentaireForm(request.POST, request.FILES)
         #On verifie que les donnees sont valides
         if formCommentaire.is_valid():
-            client = Client.objects.get(numclient=request.user.id)
             new_commenter = Commenter(numproduit=produit, numclient=client, commentaire=formCommentaire.cleaned_data.get('commentaire'), note=formCommentaire.cleaned_data.get('note'), datecommentaire=formCommentaire.cleaned_data.get('datecommentaire'))
             new_commenter.save()
             return render(request, 'read/readProduit.html', locals())

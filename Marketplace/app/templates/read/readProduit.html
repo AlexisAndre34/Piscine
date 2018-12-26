@@ -65,32 +65,36 @@
   <h4>Commentaires</h4>
   
   <div class = "BlocCom">
+  {% if b1 %}
+  
+  {% else %}
   {% if user.is_authenticated %}
     {% if request.session.estClient %}
-    <div class ="Commentaire">
-      <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {% for field in formCommentaire %}
-        {% for error in field.errors %}
-        <div class="textError">
-           <p>{{ error }}</p>
-         </div>
-        {% endfor %}
-          {{ field.label_tag }}
-          {{ field }}
-          {% if field.help_text %}
-            <small>{{ field.help_text }}</small>
-          {% endif %}
-      {% endfor %}
-      <div class="boutonForm">
-        <button class="btn purple" type="submit" >Ajouter un commentaire</button>
-      </div>
-      * Vous ne pouvez poster qu'un seul commentaire
-      </br>
-      * La note est comprise entre 0 et 5
-      </form>
-    </div>
+        <div class ="Commentaire">
+          <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% for field in formCommentaire %}
+            {% for error in field.errors %}
+            <div class="textError">
+               <p>{{ error }}</p>
+             </div>
+            {% endfor %}
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+              {% endif %}
+          {% endfor %}
+          <div class="boutonForm">
+            <button class="btn purple" type="submit" >Ajouter un commentaire</button>
+          </div>
+          * Vous ne pouvez poster qu'un seul commentaire
+          </br>
+          * La note est comprise entre 0 et 5
+          </form>
+        </div>
     {% endif %}
+  {% endif %}
   {% endif %}
   </br>
     <div class ="Commentaire">
