@@ -141,7 +141,7 @@ def read_commerce_by_commercant(request):
 #permet de read un produit
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
-
+    commentaires = list()
     #Si c'est une requete en POST
     if request.method == 'POST':
         form = CommentaireForm(request.POST, request.FILES)

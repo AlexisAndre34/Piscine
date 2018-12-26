@@ -64,8 +64,9 @@
   <h4>Commentaires</h4>
   
   <div class ="BlocCom">
+  {% if user.is_authenticated %}
+    {% if request.session.estClient %}
     <div class ="Commentaire">
-    
       <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in formCommentaire %}
@@ -85,12 +86,16 @@
       </div>
       </form>
     </div>
+    {% endif %}
+  {% endif %}
     <div class ="Commentaire">
+    {% for commentaire in commentaires %}
       <tr>
-        <td>{{commenter.datecommentaire}}</td>
-        <td>{{commenter.commentaire}}</td>
-        <td>{{commenter.note}}</td>
+        <td>{{ commentaire.datecommentaire }}</td>
+        <td>{{ commentaire.commentaire }}</td>
+        <td>{{ commentairer.note }}</td>
       </tr>
+    {% endfor %}
     </div>
   </div>   
 
