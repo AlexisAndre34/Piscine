@@ -19,6 +19,7 @@ urlpatterns = [
 	path('produit/delete/<int:pk>', views.delete_produit, name="delete_produit"),
 	path('produit/update/<int:pk>', views.update_produit, name="updateproduit"),
 	path('produit/readByVille/<str:ville>/<int:page>', views.produit_by_ville, name="read_produit_by_ville"),
+	path('produit/readByCommerce/<int:idcommerce>/<int:page>', views.produit_by_commerce, name="read_produit_by_commerce"),
 	path('commande/<int:idcommande>', views.read_commande, name="read_commande"),
 	path('reservation/<int:idreservation>', views.read_reservation, name="read_reservation"),
 	path('dashboard/', views.dashboard_commercant, name="dashboard_commercant")
