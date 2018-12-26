@@ -333,10 +333,14 @@ def search(request, keyword=None, page=1):
 
 #---------------- VIEWS DE LISTE ----------------
 #permet de voir les produits d'un commerce
-def produit_by_commerce(request, idcommerce):
-    c = Commerce.objects.get(numsiret = idcommerce)
-    produits = c.produit_set.all()
-    return render(request, 'list/produits_by_commerce.html', {"produits": produits})
+def produit_by_commerce(request, idcommerce, page=1):
+    produitsParCommerce = Produit.objects.filter(idcommerce = idcommerce)
+    listeProduits = []
+    for produit in produitsParCommerce:
+        listeProduits.append(produit)
+    print(listeProduits)
+
+    return render(request, 'list/produits_by_commerce.html', locals())
 
 def produit_by_ville(request, ville, page=1):
     listeCommerces = Commerce.objects.filter(villecommerce = ville)
