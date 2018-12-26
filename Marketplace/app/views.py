@@ -337,7 +337,7 @@ def produit_by_commerce(request, idcommerce):
     produits = c.produit_set.all()
     return render(request, 'list/produits_by_commerce.html', {"produits": produits})
 
-def produit_by_ville(request, ville):
+def produit_by_ville(request, ville, page=1):
     listeCommerces = Commerce.objects.filter(villecommerce = ville)
     listeProduits = []
     for commerce in listeCommerces:
