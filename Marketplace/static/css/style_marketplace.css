@@ -36,6 +36,11 @@
   padding: 50px;
 }
 
+.DebCom {
+  padding-top: 100px;
+  padding-left : 20px;
+}
+
 .blocCentrer {
   position: center;
   border: 5px double;
