@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 BOOLEAN_CHOICES = (
     (True,'Oui'),
@@ -115,7 +115,7 @@ class Commenter(models.Model):
     numproduit = models.ForeignKey(Produit, on_delete=models.CASCADE, db_column='numproduit')
     numclient = models.ForeignKey(Client, on_delete=models.CASCADE, db_column='numclient')
     commentaire = models.TextField(max_length=300)
-    note = models.IntegerField()
+    note = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     datecommentaire = models.DateField(auto_now_add=True, auto_now=False, verbose_name="Date du commentaire")
     class Meta:
         db_table = 'commenter'
