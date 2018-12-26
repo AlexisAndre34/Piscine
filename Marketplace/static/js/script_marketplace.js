@@ -22,6 +22,20 @@ $(document).ready(function(){
   });
 
 
+$('#gpsbutton').click(function() {
+  var adresse = $('#id_ruecommerce').val()+', '+$('#id_codepostalcommerce').val()+' '+$('#id_villecommerce').val()+', France'  //On concatene la rue et la ville du commerce
+  var mapboxClient = mapboxSdk({ accessToken: 'pk.eyJ1IjoiZ3Q0MjYiLCJhIjoiY2pxMnk4a2U0MTlpaTN4bXVhenZ3cDBmeCJ9.eJr9J2bb4I1VMM6AlAq1IQ' });
+  mapboxClient.geocoding.forwardGeocode({
+    query: adresse,
+    limit: 2
+  })
+  .send()
+  .then(response => {
+    const match = response.body;
+    $('#gpslatitude').val(match.features[0].center[1])
+    $('#gpslongitude').val(match.features[0].center[0])
+  });
+});
 
 // Pour la carte //
 
@@ -37,9 +51,6 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     id: 'mapbox.streets',
     accessToken: 'pk.eyJ1IjoiZ3Q0MjYiLCJhIjoiY2pxMnk4a2U0MTlpaTN4bXVhenZ3cDBmeCJ9.eJr9J2bb4I1VMM6AlAq1IQ'
 }).addTo(mymap); //Acces a MapBox grace un a un cle ( un  token )
-
-
-
 
 
 

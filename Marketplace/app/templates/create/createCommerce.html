@@ -6,6 +6,7 @@
     <div class = "formulaire">
       <div class="blocCentrer">
         <div class= "titreForm">Créez votre commerce</div>
+
         <br>
           <form method="post">
             {% csrf_token %}
@@ -15,6 +16,11 @@
               {{ field }}
             </div>
             {% endfor %}
+            <a id="gpsbutton" class="btn">Récuperer les coordonnées gps de mon établissement</a>
+            <label for="gpslatitude">Latitude:</label>
+            <input id="gpslatitude" type="number" value="0.0" readonly>
+            <label for="gpslongitude">Longitude:</label>
+            <input id="gpslongitude" type="number" value="0.0" readonly>
             <div class="boutonForm">
               <button class="btn purple" type="submit">Envoyer</button>
             </div>
