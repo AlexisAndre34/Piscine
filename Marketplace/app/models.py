@@ -26,20 +26,19 @@ class Client(models.Model):
         db_table = 'client'
 
 #Autres entités
-#Changement d'attributs:
-#   datelimitereservation = models.IntegerField(blank=True, null=True) #Correspond à un nombre de jour
-#   gps_latitude = models.FloatField()
-#   geps_longitude = models. FloatField()
 class Commerce(models.Model):
     numsiret = models.BigIntegerField(primary_key=True, help_text="Renseignez votre numèro de siret, 14 chiffres succesifs")
     nomcommerce = models.CharField(max_length=30)
     typecommerce = models.CharField(max_length=30)
     emailcommerce = models.EmailField()
     livraisondisponible = models.BooleanField(choices=BOOLEAN_CHOICES)
+    joursretrait = models.IntegerField(blank=False, null=True)  # Correspond à un nombre de jour
     telephonecommerce = models.CharField(max_length=15)
     codepostalcommerce = models.IntegerField()
     villecommerce = models.CharField(max_length=30)
     ruecommerce = models.CharField(max_length=30)
+    gpslatitude = models.FloatField(blank=False, null=True)
+    gpslongitude = models.FloatField(blank=False, null=True)
     class Meta:
         db_table = 'commerce'
 
@@ -50,8 +49,6 @@ class Categorie(models.Model):
         db_table = 'categorie'
 
 
-#Changement d'attributs:
-# Il faut enlever l'attribut datelimitereservation pour le deplacer vers le commerce (et le renommer pour qu'il soit plus explicite).
 class Produit(models.Model):
     numproduit = models.AutoField(primary_key=True)
     idcommerce = models.ForeignKey(Commerce, on_delete=models.CASCADE, db_column='idcommerce')
@@ -64,7 +61,6 @@ class Produit(models.Model):
     tauxremise = models.FloatField(max_length=5)
     quantitestock = models.IntegerField(default='0')
     quantitedisponible = models.IntegerField() #Lors de la création d'un produit le nb de produit disponible est egal au nb de produit en stock
-    datelimitereservation = models.IntegerField(blank=True, null=True) #Correspond à un nombre de jour
     photoproduit1 = models.ImageField(upload_to = 'media/', blank=True, null=True)
     photoproduit2 = models.ImageField(upload_to = 'media/', blank=True, null=True)
     class Meta:
@@ -79,14 +75,15 @@ class Commande(models.Model):
     class Meta:
         db_table = 'commande'
 
-#Changement d'attributs:
-#Ajouter un attribut de date limite pour la reservation, car le commerce peut changer son nb de jours par défaut en cours de reservation
+
 class Reservation(models.Model):
     numreservation = models.AutoField(primary_key=True)
     numclient = models.ForeignKey(Client, on_delete=models.CASCADE, db_column='numclient')
     numcommerce = models.ForeignKey(Commerce, on_delete=models.CASCADE, db_column='numcommerce')
     montantreservation = models.FloatField(max_length=30)
     datereservation = models.DateField(auto_now_add=True, auto_now=False, verbose_name="Date de la réservation")
+    datelimitereservation = models.DateField(blank=False, null=True, verbose_name="Date limite de la réservation")
+    paiementrealise = models.BooleanField(default=False, choices=BOOLEAN_CHOICES)
     class Meta:
         db_table = 'reservation'
 
