@@ -607,16 +607,14 @@ def verification_reservation(request):
 def validation_reservations(request):
     reponse = trierDemande(request, False)
     Reservations = reponse[0]
-    DatesLimites = list()
+
     for reservation in Reservations:
-        CommerceDateLimite=list()
-        CommerceDateLimite.append(reservation[0])
         montant_reservation = float()
         for produit in reservation[1]:
             montant_reservation = montant_reservation + round((produit[0].prixproduit * produit[1]),2)
-            datelimite = datetime.now() + timedelta(days=produit[0].datelimitereservation)
+            datelimite = datetime.now() + timedelta(days=reservation[0].joursretrait)
         client = Client.objects.get(numclient =request.user.id)
-        new_reservation = Reservation(numclient=client, montantreservation = montant_reservation, numcommerce=reservation[0])
+        new_reservation = Reservation(numclient=client, montantreservation = montant_reservation, numcommerce=reservation[0], datelimitereservation=datelimite, paiementrealise=False)
         new_reservation.save()
 
         for produit in reservation[1]:
@@ -625,12 +623,7 @@ def validation_reservations(request):
             produit[0].quantitedisponible = produit[0].quantitedisponible - produit[1]
             produit[0].save()
 
-            datetime_produit = datetime.now() + timedelta(days=produit[0].datelimitereservation)
-            if datetime_produit < datelimite:
-                datelimite = datetime_produit
 
-        CommerceDateLimite.append(datelimite)
-        DatesLimites.append(CommerceDateLimite)
 
     type_demande = "reservation"
     request = init_reservation(request)

@@ -5,11 +5,4 @@
 
 <h3>Votre {{ type_demande }} à bien été enregistrée</h3>
 
-<h4>Voici les dates limites de vos différentes réservations :</h4>
-{% for datelimite in DatesLimites %}
-    <div>
-        <span>Commerce : {{ datelimite.0.nomcommerce }} </span>
-        <span>Date maximum : {{ datelimite.1 }} </span>
-    </div>
-{% endfor %}
 {% endblock %}

@@ -18,10 +18,10 @@
 
 {% for ligne_commande in ReservationsEnCours %}
     <div class="collection with-header">
-        <li class="collection-header"><i class="material-icons">store</i>{{ ligne_commande.0.nomcommerce }}</li>
+        <li class="collection-header"><i class="material-icons">store</i>{{ ligne_commande.0.nomcommerce }} : <I>Vous avez {{ ligne_commande.0.joursretrait }} jours pour aller chercher ce produit</I></li>
         {% for produit in ligne_commande.1 %}
             {% if produit.0.nomproduit %}
-            <li class="collection-item">Produit : {{ produit.0.nomproduit }}, Quantité : {{ produit.1 }} <I>Vous avez {{ produit.0.datelimitereservation }} jours pour aller chercher ce produit.</I></li><!--Nom du produit-->
+            <li class="collection-item">Produit : {{ produit.0.nomproduit }}, Quantité : {{ produit.1 }} </li><!--Nom du produit-->
             {% endif %}
         {% endfor %}
     </div>
