@@ -141,20 +141,21 @@ def read_commerce_by_commercant(request):
 #permet de read un produit
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
-
+    commentaires = Commenter.objects.filter(numproduit=produit)
+    
     #Si c'est une requete en POST
     if request.method == 'POST':
-        form = CommentaireForm(request.POST, request.FILES)
+        formCommentaire = CommentaireForm(request.POST, request.FILES)
         #On verifie que les donnees sont valides
-        if form.is_valid():
+        if formCommentaire.is_valid():
             client = Client.objects.get(numclient=request.user.id)
-            new_commenter = Commenter(numproduit=produit, numclient=client, commentaire=form.cleaned_data.get('commentaire'), note=form.cleaned_data.get('note'), datecommentaire=form.cleaned_data.get('datecommentaire'))
+            new_commenter = Commenter(numproduit=produit, numclient=client, commentaire=formCommentaire.cleaned_data.get('commentaire'), note=formCommentaire.cleaned_data.get('note'), datecommentaire=formCommentaire.cleaned_data.get('datecommentaire'))
             new_commenter.save()
-            return render(request, 'read/readProduit.html', {'produit' : produit})
+            return render(request, 'read/readProduit.html', locals())
     #Si c'est une requete GET ou autre chose
     else:
-        form = CommentaireForm()
-    return render(request, 'read/readProduit.html', {'formCommentaire': form, 'produit' : produit})
+        formCommentaire = CommentaireForm()
+    return render(request, 'read/readProduit.html', locals())
 
 #permet de read un Client
 def read_moncompte(request):
