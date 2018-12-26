@@ -39,6 +39,10 @@
                 <a class="waves-effect btn-small green" href="{% url 'update_commerce' idcommerce=commerce.numsiret %}">Modifier</a>
                 <a class="btn-floating red" href="{% url 'delete_commerce' idcommerce=commerce.numsiret %}"><i class="material-icons">delete</i></a>
             </div>
+            <div class="col s12 m7">
+                <a class="btn teal"href="{% url 'create_produit' %}">Ajouter Produits</a>
+                <a class="btn teal"href="{% url 'read_produit' %}">Voir mes produits</a>
+            </div>
             {% endif %}
         </div>
     </div>
