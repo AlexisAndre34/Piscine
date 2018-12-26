@@ -142,8 +142,9 @@ def read_commerce_by_commercant(request):
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     commentaires = Commenter.objects.filter(numproduit=produit)
-    client = Client.objects.get(numclient=request.user.id)
-    b1 = Commenter.objects.filter(numproduit=produit, numclient=client)
+    if request.user.id :
+      client = Client.objects.get(numclient=request.user.id)
+      b1 = Commenter.objects.filter(numproduit=produit, numclient=client)
     
     #Si c'est une requete en POST
     if request.method == 'POST':
