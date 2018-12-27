@@ -609,7 +609,7 @@ def verification_reservation(request):
 def validation_reservations(request):
     reponse = trierDemande(request, False)
     Reservations = reponse[0]
-
+    reservations = list() #Pour afficher dans la template l'ensemble des réservations effectué par commerce et afficher la date limite de retrait
     for reservation in Reservations:
         montant_reservation = float()
         for produit in reservation[1]:
@@ -618,7 +618,7 @@ def validation_reservations(request):
         client = Client.objects.get(numclient =request.user.id)
         new_reservation = Reservation(numclient=client, montantreservation = montant_reservation, numcommerce=reservation[0], datelimitereservation=datelimite, paiementrealise=False)
         new_reservation.save()
-
+        reservations.append(new_reservation)
         for produit in reservation[1]:
             new_reserver = Reserver(numproduit=produit[0], numreservation=new_reservation, quantitereserve=produit[1])
             new_reserver.save()

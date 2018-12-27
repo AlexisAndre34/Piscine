@@ -5,4 +5,9 @@
 
 <h3>Votre {{ type_demande }} à bien été enregistrée</h3>
 
+{% for reservation in reservations %}
+<div>Réservation chez {{ reservation.numcommerce.nomcommerce }} pour un montant de {{ reservation.montantreservation }} euros. Date limite avant retrait : {{ reservation.datelimitereservation }}</div>
+{% endfor %}
+
+
 {% endblock %}
