@@ -56,7 +56,10 @@
           </tr>
         </tbody>
       </table>
-      <a class="btn" href="{% url 'ajout_panier' produit.numproduit %}">Ajouter commandes</a> <a class="btn" href="{% url 'ajout_reservation' produit.numproduit %}">Ajouter Réservations</a>
+      {% if produit.idcommerce.livraisondisponible %}
+      <a class="btn" href="{% url 'ajout_panier' produit.numproduit %}">Ajouter au panier<i class="material-icons">shopping_cart</i></a>
+      {% endif %}
+      <a class="btn" href="{% url 'ajout_reservation' produit.numproduit %}">Ajouter aux réservations <i class="material-icons">shopping_basket</i></a>
         </div>
     </div>
 </div>
@@ -111,7 +114,7 @@
           </tr>
           <tr>
             <td>Note : </td>
-            <td>{{ commentairer.note }}</td>
+            <td>{{ commentaire.note }}</td>
           </tr>
         </tbody>
         </br>
