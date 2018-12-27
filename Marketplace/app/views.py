@@ -6,6 +6,8 @@ from django.core.paginator import Paginator, EmptyPage
 from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation, Appartenir, Reserver, Commenter
 from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm, CommentaireForm
 from datetime import datetime, timedelta
+from django.core import serializers
+from django.http import JsonResponse
 
 #VIEW PAGE D'ACCUEIL
 def homepage(request):
@@ -193,6 +195,16 @@ def read_mesreservationsClient(request):
 
 def list_commerces_carte(request):
     return render(request, 'list/map_commerces.html')
+
+
+def carte_commerces(request):
+
+    commerces = Commerce.objects.all()
+    data = {
+        "commerces": serializers.serialize("json", commerces)
+    }
+
+    return JsonResponse(data)
 
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
