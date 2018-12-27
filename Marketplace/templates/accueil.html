@@ -3,11 +3,11 @@
 <div class="accueil">
 
 <div class="carousel">
-    <a class="carousel-item titre_image"  href="http://localhost:8000/gestion/produit/readByVille/Montpellier/1"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Montpellier_Place_de_la_Com%C3%A9die.jpg/280px-Montpellier_Place_de_la_Com%C3%A9die.jpg"><br><h5>Montpellier</h5></a>
-    <a class="carousel-item titre_image" href="http://localhost:8000/gestion/produit/readByVille/Béziers/1"><img src="https://static.europe-israel.org/wp-content/uploads/2015/11/B%C3%A9ziers-centre-commercial.jpg"><br><h5>Béziers</h5></a>
-    <a class="carousel-item titre_image" href="http://localhost:8000/gestion/produit/readByVille/Sète/1"><img src="https://images.midilibre.fr/api/v1/images/view/5b2900d48fe56f1e964f0878/large/image.jpg"><br><h5>Sète</h5></a>
-    <a class="carousel-item titre_image" href="http://localhost:8000/gestion/produit/readByVille/Agde/1"><img src="https://t-ec.bstatic.com/images/hotel/max1024x768/134/134935284.jpg"><br><h5>Agde</h5></a>
-    <a class="carousel-item titre_image" href="http://localhost:8000/gestion/produit/readByVille/Lunel/1"><img src="https://s.iha.com/00141404696/Lunel-Fontaine-d-antigone-a-montpellier.jpeg"><br><h5>Lunel </h5></a>
+    <a class="carousel-item titre_image"  href="{% url 'read_produit_by_ville' 'Montpellier' 1 %}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Montpellier_Place_de_la_Com%C3%A9die.jpg/280px-Montpellier_Place_de_la_Com%C3%A9die.jpg"><br><h5>Montpellier</h5></a>
+    <a class="carousel-item titre_image" href="{% url 'read_produit_by_ville' 'Béziers' 1 %}"><img src="https://static.europe-israel.org/wp-content/uploads/2015/11/B%C3%A9ziers-centre-commercial.jpg"><br><h5>Béziers</h5></a>
+    <a class="carousel-item titre_image" href="{% url 'read_produit_by_ville' 'Sète' 1 %}"><img src="https://images.midilibre.fr/api/v1/images/view/5b2900d48fe56f1e964f0878/large/image.jpg"><br><h5>Sète</h5></a>
+    <a class="carousel-item titre_image" href="{% url 'read_produit_by_ville' 'Agde' 1 %}"><img src="https://t-ec.bstatic.com/images/hotel/max1024x768/134/134935284.jpg"><br><h5>Agde</h5></a>
+    <a class="carousel-item titre_image" href="{% url 'read_produit_by_ville' 'Lunel' 1 %}"><img src="https://s.iha.com/00141404696/Lunel-Fontaine-d-antigone-a-montpellier.jpeg"><br><h5>Lunel </h5></a>
   </div>
 </div>
 {% endblock %}

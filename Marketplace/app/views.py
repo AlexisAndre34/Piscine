@@ -345,6 +345,7 @@ def produit_by_commerce(request, idcommerce, page=1):
 
     return render(request, 'list/produits_by_commerce.html', locals())
 
+#permet de voir les produits par ville
 def produit_by_ville(request, ville, page=1):
     listeCommerces = Commerce.objects.filter(villecommerce = ville)
     listeProduits = []
@@ -356,6 +357,19 @@ def produit_by_ville(request, ville, page=1):
     print(listeProduits)
 
     return render(request, 'list/produit_by_ville.html', locals())
+
+#permet de voir les produits par categorie
+def produit_by_categorie(request, numcategorie,page=1):
+    produitsParCategorie = Produit.objects.filter(numcategorie = numcategorie)
+    listeProduits = []
+    for produit in produitsParCategorie:
+        listeProduits.append(produit)
+    print(listeProduits)
+
+    return render(request, 'list/produits_by_categorie.html', locals())
+
+
+
 
 
 

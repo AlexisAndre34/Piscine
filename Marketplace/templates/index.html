@@ -40,22 +40,22 @@
     </div>
 	
 	<ul id="dropdown1" class="dropdown-content">
-      <li><a href="">Chaussures</a></li>
-      <li><a href="">Multimédia</a></li>
-      <li><a href="">Vêtements</a></li>
-      <li><a href="">Mobilier</a></li>
-      <li><a href="">Voiture</a></li>
-      <li><a href="">Alimentaire</a></li>
-      <li><a href="">Telephone</a></li>
-      <li><a href="">Ordinateur</a></li>
-      <li><a href="">Sport</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 1 1%}">Chaussures</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 2 1%}">Multimédia</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 3 1%}">Vêtements</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 4 1%}">Mobilier</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 5 1%}">Voiture</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 6 1%}">Alimentaire</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 7 1%}">Telephone</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 8 1%}">Ordinateur</a></li>
+      <li><a href="{% url 'read_produit_by_categorie' 9 1%}">Sport</a></li>
   </ul>
 	
 	<div class="row teal accent-4">
 		<div class="col s12 m4 l8">
           <div class="nav-wrapper hide-on-med-and-down">
             <ul class="left hide-on-med-and-down">
-              <li><a class="active" href="">Accueil</a></li>
+              <li><a class="active" href="{% url 'homepage' %}">Accueil</a></li>
               <li><a href="{% url 'commerces_carte' %}">Géolocalisation des commerces</a></li>
               <li><a class="dropdown-trigger" data-target="dropdown1" href="">Catégories<i class="material-icons white-text right">arrow_drop_down</i></a></li>
             </ul>
