@@ -41,9 +41,14 @@ $('#gpsbutton').click(function() {
 
 var mymap = L.map('mapid').setView([43.608353, 3.879833], 13); //Initialise la carte sur les coordonnees de setView()
 
-var marker = L.marker([43.628834, 3.861713]).addTo(mymap); //Creation d'un marqeur sur les coordonnees gps en parametres
-marker.bindPopup("IG forever").openPopup();
-
+var greenIcon = new L.Icon({ //Création d'un icon de localisation vert
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ3Q0MjYiLCJhIjoiY2pxMnk4a2U0MTlpaTN4bXVhenZ3cDBmeCJ9.eJr9J2bb4I1VMM6AlAq1IQ', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -52,7 +57,37 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     accessToken: 'pk.eyJ1IjoiZ3Q0MjYiLCJhIjoiY2pxMnk4a2U0MTlpaTN4bXVhenZ3cDBmeCJ9.eJr9J2bb4I1VMM6AlAq1IQ'
 }).addTo(mymap); //Acces a MapBox grace un a un cle ( un  token )
 
-
+var marker_utilisateur;
+$('#btn_localisation').click(function(){
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            marker_utilisateur = L.marker([position.coords.latitude,position.coords.longitude],{icon: greenIcon}).addTo(mymap); // Creation du marker avec les coordonnées gps de l'utilisateur
+            marker_utilisateur.bindPopup("Vous êtes ici").openPopup();
+            console.log("hello")
+        });
+    }else {
+        alert("Le service de géolocalisation n'est pas disponible sur votre ordinateur.");
+    }
+});
+var res;
+$('#btn_commerces').click(function(){
+    $.ajax({
+        type: "POST",
+        url: "/carte/commerces/affichage",
+        data: {
+            csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken").val()
+        },
+        dataType: 'json',
+        success: function( result ) {
+            Commerces = JSON.parse(result.commerces)
+            $.each(Commerces, function (cle, valeur){
+                var commerce_marker;
+                commerce_marker = L.marker([Commerces[cle].fields.gpslatitude, Commerces[cle].fields.gpslongitude]).addTo(mymap);
+                commerce_marker.bindPopup(Commerces[cle].fields.nomcommerce);
+            });
+        }
+    });
+});
 
 
 // ----------- //

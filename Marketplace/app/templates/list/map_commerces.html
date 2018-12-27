@@ -3,7 +3,9 @@
 
 {% block content %}
 
-
+<a id="btn_localisation" class="btn green">Localiser ma position<i class="material-icons">location_on</i></a>
+<a id="btn_commerces" class="btn teal">Afficher les commerces<i class="material-icons">store</i></a>
+{% csrf_token %}
 <div id="mapid"></div>
 
 
