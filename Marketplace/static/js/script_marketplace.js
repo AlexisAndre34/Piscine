@@ -32,8 +32,8 @@ $('#gpsbutton').click(function() {
   .send()
   .then(response => {
     const match = response.body;
-    $('#gpslatitude').val(match.features[0].center[1])
-    $('#gpslongitude').val(match.features[0].center[0])
+    $('#id_gpslatitude').val(match.features[0].center[1])
+    $('#id_gpslongitude').val(match.features[0].center[0])
   });
 });
 

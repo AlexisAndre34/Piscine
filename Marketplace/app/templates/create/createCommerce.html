@@ -10,17 +10,69 @@
         <br>
           <form method="post">
             {% csrf_token %}
-            {% for field in formCommerce %}
+
             <div>
-              {{ field.label_tag }}<br>
-              {{ field }}
+              {{ formCommerce.numsiret.label_tag }}
+              {{ formCommerce.numsiret }}
             </div>
-            {% endfor %}
+
+            <div>
+              {{ formCommerce.nomcommerce.label_tag }}
+              {{ formCommerce.nomcommerce }}
+            </div>
+
+            <div>
+              {{ formCommerce.typecommerce.label_tag }}
+              {{ formCommerce.typecommerce }}
+            </div>
+
+            <div>
+              {{ formCommerce.emailcommerce.label_tag }}
+              {{ formCommerce.emailcommerce }}
+            </div>
+
+            <div>
+              {{ formCommerce.livraisondisponible.label_tag }}
+              {{ formCommerce.livraisondisponible }}
+            </div>
+
+            <div>
+              {{ formCommerce.joursretrait.label_tag }}
+              {{ formCommerce.joursretrait }}
+            </div>
+
+            <div>
+              {{ formCommerce.telephonecommerce.label_tag }}
+              {{ formCommerce.telephonecommerce }}
+            </div>
+
+            <div>
+              {{ formCommerce.codepostalcommerce.label_tag }}
+              {{ formCommerce.codepostalcommerce }}
+            </div>
+
+            <div>
+              {{ formCommerce.villecommerce.label_tag }}
+              {{ formCommerce.villecommerce }}
+            </div>
+
+            <div>
+              {{ formCommerce.ruecommerce.label_tag }}
+              {{ formCommerce.ruecommerce }}
+            </div>
+
             <a id="gpsbutton" class="btn">Récuperer les coordonnées gps de mon établissement</a>
-            <label for="gpslatitude">Latitude:</label>
-            <input id="gpslatitude" type="number" value="0.0" readonly>
-            <label for="gpslongitude">Longitude:</label>
-            <input id="gpslongitude" type="number" value="0.0" readonly>
+
+            <div>
+              {{ formCommerce.gpslatitude.label_tag }}
+              <input type="number" name="gpslatitude" step="any" readonly required="" id="id_gpslatitude">
+            </div>
+
+            <div>
+              {{ formCommerce.gpslongitude.label_tag }}
+              <input type="number" name="gpslongitude" step="any" readonly required="" id="id_gpslongitude">
+            </div>
+
             <div class="boutonForm">
               <button class="btn purple" type="submit">Envoyer</button>
             </div>
@@ -29,3 +81,4 @@
     </div>
   </div>
 {% endblock %}
+
