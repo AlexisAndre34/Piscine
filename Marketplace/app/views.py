@@ -658,6 +658,19 @@ def validation_reservations(request):
     return render(request, 'panier/valide.html', locals())
 
 
+def paiement_reservation(request, idreservation):
+    reservation = get_object_or_404(Reservation, numreservation=idreservation)
+    commercant = get_object_or_404(Commercant, numcommercant=request.user.id)
+    verification = get_object_or_404(Gerer, numcommerce=reservation.numcommerce, numcommercant=commercant)
+
+    #Si toutes les vérifications ont été passé et qu'aucune erreur 404 n'a été levée alors:
+    reservation.paiementrealise = True #On modifie la reservation
+    reservation.save()
+    produits_reserver = Reserver.objects.filter(numreservation=reservation.numreservation)
+    for produit_reserver in produits_reserver: #On va mdofier chaque produit de la reservation du client, pour changer leur quantite en stock
+        produit_reserver.numproduit.quantitestock = produit_reserver.numproduit.quantitestock - produit_reserver.quantitereserve
+        produit_reserver.numproduit.save()
+
 
 def reset_reservation(request):
     return render(init_reservation(request), 'reservation/reservation.html', locals())

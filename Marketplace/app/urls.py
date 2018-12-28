@@ -23,6 +23,7 @@ urlpatterns = [
 	path('produit/readByCategorie/<int:numcategorie>/<int:page>', views.produit_by_categorie, name = "read_produit_by_categorie"),
 	path('commande/<int:idcommande>', views.read_commande, name="read_commande"),
 	path('reservation/<int:idreservation>', views.read_reservation, name="read_reservation"),
+	path('reservation/paiement/<int:idreservation>', views.paiement_reservation, name="paiement_reservation"),
 	path('dashboard/', views.dashboard_commercant, name="dashboard_commercant")
 ]
 
