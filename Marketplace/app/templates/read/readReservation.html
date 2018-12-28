@@ -2,14 +2,16 @@
 
 {% block content %}
 
-<div class="collection with-header">
-    <li class="collection-header"><i class="material-icons">store</i> {{ reservation.numcommerce.nomcommerce }} : {{ reservation.montantreservation }} euros. </li>
-    <li class="collection-item"><I>Date limite avant l'annulation de votre réservation : {{ reservation.datelimitereservation }}</I></li>
-    {% for produit in reserver %}
-        {% if produit.numproduit %}
-        <li class="collection-item">Produit : {{ produit.numproduit.nomproduit }}, Quantité : {{ produit.quantitereserve }} </li>
-        {% endif %}
-    {% endfor %}
+<div class="recapitulation">
+    <div class="collection with-header">
+        <li class="collection-header"><i class="material-icons">store</i> {{ reservation.numcommerce.nomcommerce }} : {{ reservation.montantreservation }} euros. </li>
+        <li class="collection-item"><I>Date limite avant l'annulation de votre réservation : {{ reservation.datelimitereservation }}</I></li>
+        {% for produit in reserver %}
+            {% if produit.numproduit %}
+            <li class="collection-item">Produit : {{ produit.numproduit.nomproduit }}, Quantité : {{ produit.quantitereserve }} </li>
+            {% endif %}
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

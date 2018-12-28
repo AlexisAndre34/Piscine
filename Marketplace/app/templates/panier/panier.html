@@ -3,9 +3,9 @@
 
 {% block carts %}
 
-<div class="test">
+
     {% if not panier_vide %}
-      <table class="striped responsive-table">
+      <table class="striped centered ">
         <thead>
           <tr>
               <th>Image</th>
@@ -20,7 +20,7 @@
         <tbody>
             {% for produit in produits %}
             <tr>
-                <td><img class="image_panier" src={{ produit.0.photoproduit1.url }}></td>
+                <td class="image_panier"><img src={{ produit.0.photoproduit1.url }}></td>
                 <td>{{ produit.0.nomproduit }}</td>
                 <td>
                     <a href="{% url 'quantite_less_panier' produit.0.numproduit %}"><i class="material-icons">remove</i></a>
@@ -35,13 +35,13 @@
         </tbody>
       </table>
     <div>
-
-        <a href="{% url 'reset_panier' %}" class="btn">Reset le panier</a>
-        <a href="{% url 'verification_panier' %}" class="btn">Continuer commande <i class="material-icons">done_all</i></a>
-        <span>Prix total du panier : {{ prix_panier }} euros. </span>
+        <div class="justify_center">
+            <a href="{% url 'reset_panier' %}" class="btn">Reset le panier</a>
+            <a href="{% url 'verification_panier' %}" class="btn">Continuer commande <i class="material-icons">done_all</i></a>
+            <p>Prix total du panier : {{ prix_panier }} euros. </p>
+        </div>
     {% else %}
         <span>Votre panier est vide :(</span>
     {% endif %}
     </div>
-</div>
 {% endblock %}

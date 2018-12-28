@@ -3,9 +3,9 @@
 
 {% block carts %}
 
-<h3>Récap de votre commande :</h3>
+<h3>Résumé de votre commande :</h3>
 
-
+<div class="recapitulation">
 {% if error_qte %}
 
     <h5>Avertissement  sur votre commande :</h5>
@@ -13,7 +13,7 @@
 
 
 {% else %}
-    <a href="{% url 'validation_commande' %}" class="btn-flat">Paiement : {{ prix_total }} euros <i class="material-icons">credit_card</i></a>
+    <a href="{% url 'validation_commande' %}" class="btn green">Paiement : {{ prix_total }} euros <i class="material-icons">credit_card</i></a>
 {% endif %}
 
 {% for ligne_commande in CommandesEnCours %}
@@ -26,7 +26,7 @@
         {% endfor %}
     </div>
 {% endfor %}
-
+</div>
 
 
 {% endblock %}

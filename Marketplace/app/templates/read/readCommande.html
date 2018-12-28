@@ -2,13 +2,14 @@
 
 {% block content %}
 
-<div class="collection with-header">
-    <li class="collection-header"><i class="material-icons">store</i> {{ commande.numcommerce.nomcommerce }} : {{ commande.montantcommande }} euros</li>
-    {% for produit in appartenir %}
-        {% if produit.numproduit %}
-        <li class="collection-item">Produit : {{ produit.numproduit.nomproduit }}, Quantité : {{ produit.quantitecommande }} </li>
-        {% endif %}
-    {% endfor %}
+<div class="recapitulation">
+    <div class="collection with-header">
+        <li class="collection-header"><i class="material-icons">store</i> {{ commande.numcommerce.nomcommerce }} : {{ commande.montantcommande }} euros</li>
+        {% for produit in appartenir %}
+            {% if produit.numproduit %}
+            <li class="collection-item">Produit : {{ produit.numproduit.nomproduit }}, Quantité : {{ produit.quantitecommande }} </li>
+            {% endif %}
+        {% endfor %}
+    </div>
 </div>
-
 {% endblock %}

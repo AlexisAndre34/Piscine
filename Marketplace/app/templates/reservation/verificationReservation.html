@@ -3,9 +3,9 @@
 
 {% block carts %}
 
-<h3>Récap de votre réservation :</h3>
+<h3>Résumé de votre réservation :</h3>
 
-
+<div class="recapitulation">
 {% if error_qte %}
 
     <h5>Avertissement  sur votre réservation :</h5>
@@ -13,8 +13,10 @@
 
 
 {% else %}
-    <a href="{% url 'validation_reservation' %}" class="btn">Réserver maintenant : {{ prix_total }} euros </a>
+    <a href="{% url 'validation_reservation' %}" class="btn green">Réserver maintenant : {{ prix_total }} euros </a>
 {% endif %}
+
+
 
 {% for ligne_commande in ReservationsEnCours %}
     <div class="collection with-header">
@@ -26,7 +28,7 @@
         {% endfor %}
     </div>
 {% endfor %}
-
+</div>
 
 
 {% endblock %}

@@ -115,9 +115,26 @@
 
 /* Panier */
 .image_panier{
-    width:10%;
+    width:100px;
 }
 
+.image_panier > img{
+    width:100px;
+}
+
+.justify_center{
+    display: flex;
+    justify-content: center;
+}
+
+.justify_center .btn {
+    margin-right: 10px;
+}
+
+.recapitulation{
+    margin-left: 5%;
+    margin-right: 5%;
+}
 
 .page-footer{
     margin-top: 20%;
