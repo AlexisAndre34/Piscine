@@ -100,10 +100,18 @@
 /* Recherche de produit */
 .search_card{
     width: 300px;
+    margin-right: 10px;
+    min-height: 400px;
+}
+
+
+.search_card .card-image img{
+    max-height: 205px
 }
 
 .search_card .card-image{
     border: 1px solid beige;
+    height: 210px
 }
 
 .search_container {

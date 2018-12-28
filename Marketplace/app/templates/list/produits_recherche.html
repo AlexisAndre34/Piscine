@@ -2,75 +2,71 @@
 {% load static %}
 {% block content %}
 
-<div class="row">
-    <div class="col s12 m5">
-        <h6>Affinez votre recherche : </h6>
-        <form class="col s12 m10" method="post" action="">
-            {% csrf_token %}
-            <div class="input-field row s6">
-                <div class="switch">
-                    <label>
-                      Prix : Decroissant
-                      <input type="checkbox">
-                      <span class="lever"></span>
-                      Croissant
-                    </label>
-                </div>
-            </div>
-            <div class="input-field row s6">
-                <select>
-                  <option value="" disabled selected>Choissisez votre ville</option>
-                  <option value="Montpellier">Montpellier</option>
-                  <option value="Sète">Sète</option>
-                  <option value="Gignac">Gignac</option>
-                </select>
-            </div>
-        </form>
-    </div>
 
-    <div class="col s12 m5">
-        <div class="search_container">
-            {% for produit in produits %}
-              <div class="card search_card">
-              {% if produit.photoproduit1 %}
-                <div class="card-image">
-                    <a href="{% url 'read_produit' produit.numproduit %}" ><img src={{ produit.photoproduit1.url }}></a>
-                </div>
-              {% endif %}
-                    <a href="{% url 'ajout_reservation' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
-                    {% if produit.idcommerce.livraisondisponible %}
-                    <a href="{% url 'ajout_panier' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_cart</i></a>
-                    {% endif %}
-                <div class="card-content">
-                    <span class="card-title">{{ produit.nomproduit }}</span>
-                    <p>Prix : {{ produit.prixproduit }} euros</p>
-                </div>
-              </div>
-            {% endfor %}
+<div class="justify_center">
+    <form method="post" action="">
+        {% csrf_token %}
+        <div>
+            <div class="switch">
+                <label>
+                  <span>Prix : Decroissant</span>
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                  <span>Croissant</span>
+                </label>
+            </div>
         </div>
-    </div>
+        <!--<div class="input-field row s6">
+            <select>
+              <option value="" disabled selected>Choissisez votre ville</option>
+              <option value="Montpellier">Montpellier</option>
+              <option value="Sète">Sète</option>
+              <option value="Gignac">Gignac</option>
+            </select>
+        </div>-->
+    </form>
 </div>
 
+<div class="search_container">
+    {% for produit in produits %}
+      <div class="card search_card">
+      {% if produit.photoproduit1 %}
+        <div class="card-image">
+            <a href="{% url 'read_produit' produit.numproduit %}" ><img src={{ produit.photoproduit1.url }}></a>
+        </div>
+      {% endif %}
+            <a href="{% url 'ajout_reservation' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
+            {% if produit.idcommerce.livraisondisponible %}
+            <a href="{% url 'ajout_panier' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_cart</i></a>
+            {% endif %}
+
+        <div class="card-content">
+            <span class="card-title">{{ produit.nomproduit }}</span>
+            <p>Prix : {{ produit.prixproduit }} euros</p>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+
+<div class="justify_center">
+    <ul class="pagination">
+
+       {% if produits.has_previous %}
+
+        <li class="waves-effect"><a href="{% url 'search' recherche produits.previous_page_number %}"><i class="material-icons">chevron_left</i></a></li>
+        <li class="waves-effect"><a href="{% url 'search' recherche produits.previous_page_number %}">{{ produits.previous_page_number }}</a></li>
+       {% endif %}
+
+        <li class="active teal"><a href="#!">{{ produits.number }}</a></li> <!-- produits.paginator.num_pages -->
 
 
-<ul class="pagination">
+       {% if produits.has_next %}
 
-   {% if produits.has_previous %}
+        <li class="waves-effect"><a href="{% url 'search' recherche produits.next_page_number %}">{{ produits.next_page_number }}</a></li>
+        <li class="waves-effect"><a href="{% url 'search' recherche produits.next_page_number %}"><i class="material-icons">chevron_right</i></a></li>
 
-    <li class="waves-effect"><a href="{% url 'search' recherche produits.previous_page_number %}"><i class="material-icons">chevron_left</i></a></li>
-    <li class="waves-effect"><a href="{% url 'search' recherche produits.previous_page_number %}">{{ produits.previous_page_number }}</a></li>
-   {% endif %}
+       {% endif %}
 
-    <li class="active"><a href="#!">{{ produits.number }}</a></li> <!-- produits.paginator.num_pages -->
-
-
-   {% if produits.has_next %}
-
-    <li class="waves-effect"><a href="{% url 'search' recherche produits.next_page_number %}">{{ produits.next_page_number }}</a></li>
-    <li class="waves-effect"><a href="{% url 'search' recherche produits.next_page_number %}"><i class="material-icons">chevron_right</i></a></li>
-
-   {% endif %}
-
-</ul>
-
+    </ul>
+</div>
 {% endblock %}

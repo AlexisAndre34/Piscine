@@ -3,9 +3,10 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator, EmptyPage
-from app.models import Client, Commercant, Commerce, Gerer, Produit, Commande, Reservation, Appartenir, Reserver, Commenter
+from app.models import Client, Commercant, Commerce, Gerer, Produit, Categorie, Commande, Reservation, Appartenir, Reserver, Commenter
 from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm, CommentaireForm
 from datetime import datetime, timedelta
+from django.db.models import Q #Pour réaliser des Query Set plus complexe, en OR
 from django.core import serializers
 from django.http import JsonResponse
 
@@ -340,9 +341,13 @@ def search(request, keyword=None, page=1):
             return redirect('/') #Redirection vers la page d'accueil si aucun champ de recherche
             #redirect(request.META['HTTP_REFERER']) redirige l'utilisateur vers la page précedente mais problème de boucle infinie
         else:
-            produits_all = Produit.objects.filter(nomproduit__icontains=recherche)
+            categories = Categorie.objects.filter(nomcategorie__icontains=recherche)
+            if not categories: #Si aucune categorie trouvée
+                produits_all = Produit.objects.filter(nomproduit__icontains=recherche)
+            else:
+                produits_all = Produit.objects.filter(Q(nomproduit__icontains=recherche) | Q(numcategorie=categories[0].numcategorie)) #On prend la première categorie qui à été retourné suite à notre requete
 
-            paginator = Paginator(produits_all, 1)  # On affiche 1 produit par page
+            paginator = Paginator(produits_all, 2)  # On affiche 1 produit par page
             try:
                 produits = paginator.page(page)
             except EmptyPage:
@@ -351,10 +356,15 @@ def search(request, keyword=None, page=1):
             return render(request, 'list/produits_recherche.html', locals())
     else:
 
-        produits_all = Produit.objects.filter(nomproduit__icontains=keyword)
-        recherche=keyword
+        categories = Categorie.objects.filter(nomcategorie__icontains=keyword)
+        if not categories:  # Si aucune categorie trouvée
+            produits_all = Produit.objects.filter(nomproduit__icontains=keyword)
+        else:
+            produits_all = Produit.objects.filter(Q(nomproduit__icontains=keyword) | Q(numcategorie=categories[0].numcategorie))  # On prend la première categorie qui à été retourné suite à notre requete
 
-        paginator = Paginator(produits_all, 1) #On affiche 1 produit par page
+        recherche=keyword #On passe la recherche à travers les différentes pages de la pagination
+
+        paginator = Paginator(produits_all, 2) #On affiche 1 produit par page
         try:
             produits = paginator.page(page)
         except EmptyPage:
