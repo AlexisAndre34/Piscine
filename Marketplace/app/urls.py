@@ -22,7 +22,9 @@ urlpatterns = [
 	path('produit/readByCommerce/<int:idcommerce>/<int:page>', views.produit_by_commerce, name="read_produit_by_commerce"),
 	path('produit/readByCategorie/<int:numcategorie>/<int:page>', views.produit_by_categorie, name = "read_produit_by_categorie"),
 	path('commande/<int:idcommande>', views.read_commande, name="read_commande"),
+	path('commandes/commerce/<int:idcommerce>', views.read_mescommandesCommerce, name="list_commandes_commerce"),
 	path('reservation/<int:idreservation>', views.read_reservation, name="read_reservation"),
+	path('reservations/commerce/<int:idcommerce>', views.read_mesreservationsCommerce, name="list_reservations_commerce"),
 	path('reservation/paiement/<int:idreservation>', views.paiement_reservation, name="paiement_reservation"),
 	path('dashboard/', views.dashboard_commercant, name="dashboard_commercant")
 ]

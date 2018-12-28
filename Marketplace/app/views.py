@@ -186,12 +186,28 @@ def read_mescommandesClient(request):
     commandes = Commande.objects.filter(numclient=client)
     return render(request, 'read/mescommandesClient.html', locals())
 
+#permet de read les commandes d'un Commerce
+def read_mescommandesCommerce(request, idcommerce):
+    utilisateur = User.objects.get(id=request.user.id)
+    commercant = Commercant.objects.get(numcommercant=utilisateur)
+    commerce = get_object_or_404(Gerer, numcommercant=commercant, numcommerce=idcommerce) #On doit faire la requete sur un objet de type commerçant
+    commandes = Commande.objects.filter(numcommerce=commerce.numcommerce).order_by('-datecommande') #De manière générale on fait les requet sur le type le plus souvent
+    return render(request, 'list/list_commandes_commerces.html', {'commandes': commandes})
+
 #permet de read les réservations d'un Client
 def read_mesreservationsClient(request):
     utilisateur = User.objects.get(id=request.user.id)
     client = Client.objects.get(numclient=request.user.id)
     reservations = Reservation.objects.filter(numclient=client)
     return render(request, 'read/mesreservationsClient.html', locals())
+
+#permet de read les réservations d'un Commerce
+def read_mesreservationsCommerce(request, idcommerce):
+    utilisateur = User.objects.get(id=request.user.id)
+    commercant = Commercant.objects.get(numcommercant=utilisateur)
+    commerce = get_object_or_404(Gerer, numcommercant=commercant, numcommerce=idcommerce) #On doit faire la requete sur un objet de type commerçant
+    reservations = Reservation.objects.filter(numcommerce=commerce.numcommerce, paiementrealise=False).order_by('-datereservation') #On cherche les réservations qui n'ont pas été payé par le client et on trie nos reservations avec les date de réservations de la plus rècente à la plus ancienne,
+    return render(request, 'list/list_reservations_commerces.html', {'reservations': reservations})
 
 def list_commerces_carte(request):
     return render(request, 'list/map_commerces.html')
