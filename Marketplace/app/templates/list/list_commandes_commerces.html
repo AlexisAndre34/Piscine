@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+<div class="recapitulation">
+    <ul class="collapsible">
+    {% for commande in commandes %}
+        <li>
+          <div class="collapsible-header">Commande du {{ commande.datecommande }}</div>
+          <div class="collapsible-body">
+              <span>Adresse de livraison  : {{ commande.numclient.rueclient }}, {{ commande.numclient.codepostal }} {{ commande.numclient.villeclient }}  </span>
+          </div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

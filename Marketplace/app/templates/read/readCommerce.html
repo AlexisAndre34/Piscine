@@ -48,7 +48,8 @@
         {% endif %}
     </div>
     <div class="col s12 m6">
-        <span>Affichage des commandes et des réservations effectué sur ce commerce</span>
+        <a class="btn" href="{% url 'list_commandes_commerce' commerce.numsiret %}">Voir les commandes effectués</a>
+        <a class="btn" href="{% url 'list_reservations_commerce' commerce.numsiret %}">Voir les réservations en attente</a>
 
     </div>
 </div>

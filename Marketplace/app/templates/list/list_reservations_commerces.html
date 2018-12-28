@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+<div class="recapitulation">
+    <ul class="collapsible">
+{% for reservation in reservations %}
+
+    <li>
+      <div class="collapsible-header">Réservation du {{ reservation.datereservation }}</div>
+      <div class="collapsible-body">
+          <span>Client : </span>
+          <a class="btn pulse green " href="{% url 'paiement_reservation' reservation.numreservation %}">Valider le paiement</a>
+      </div>
+    </li>
+{% endfor %}
+    </ul>
+</div>
+{% endblock %}

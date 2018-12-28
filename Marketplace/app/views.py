@@ -687,6 +687,7 @@ def paiement_reservation(request, idreservation):
         produit_reserver.numproduit.quantitestock = produit_reserver.numproduit.quantitestock - produit_reserver.quantitereserve
         produit_reserver.numproduit.save()
 
+    return read_mesreservationsCommerce(request, reservation.numcommerce)
 
 def reset_reservation(request):
     return render(init_reservation(request), 'reservation/reservation.html', locals())

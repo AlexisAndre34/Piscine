@@ -21,6 +21,9 @@ $(document).ready(function(){
     $('.carousel').carousel();
   });
 
+$(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
 
 $('#gpsbutton').click(function() {
   var adresse = $('#id_ruecommerce').val()+', '+$('#id_codepostalcommerce').val()+' '+$('#id_villecommerce').val()+', France'  //On concatene la rue et la ville du commerce
