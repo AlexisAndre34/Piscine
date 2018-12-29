@@ -2,8 +2,61 @@
 
 {% block content %}
 
-<div>
-    Update client ici
+<div class="page">
+  <div class = "formulaire">
+    <div class="blocCentrer">
+      <form method="post" action="">
+          {% csrf_token %}
+          <div class = "case">
+            <label for="id_first_name">Prénom :</label><br>
+            <textarea type="text" class="materialize-textarea" name="first_name" required id="id_first_name">{{ client.numclient.first_name }}</textarea>
+          </div>
+
+          <div class = "case">
+            <label for="id_last_name">Nom :</label><br>
+            <textarea type="text" class="materialize-textarea" name="last_name" required id="id_last_name">{{ client.numclient.last_name }}</textarea>
+          </div>
+
+          <div class = "case">
+            <label for="id_email">E-mail :</label><br>
+            <input type="email" value={{ client.numclient.email }} name="email" required id="id_email">
+          </div>
+
+          <div class = "case">
+            <label for="id_datenaissanceclient">Date de naissance :</label><br>
+            <input type="date" value="{{ date }}" name="datenaissanceclient" required id="id_datenaissanceclient">
+          </div>
+
+          <div class = "case">
+            <label for="id_telephoneclient">Téléphone :</label><br>
+            <input type="text" value={{ client.telephoneclient }} name="telephoneclient" required id="id_telephoneclient">
+          </div>
+
+          <div class = "case">
+            <label for="id_codepostalclient">Code Postal :</label><br>
+            <input type="number" value={{ client.codepostalclient }} name="codepostalclient" required id="id_codepostalclient">
+          </div>
+
+          <div class = "case">
+            <label for="id_villeclient">Ville :</label><br>
+            <textarea type="text" class="materialize-textarea" name="villeclient" required id="id_villeclient">{{ client.villeclient }}</textarea>
+          </div>
+
+          <div class = "case">
+            <label for="id_rueclient">Rue :</label><br>
+            <textarea type="text" class="materialize-textarea" name="rueclient" required id="id_rueclient">{{ client.rueclient }}</textarea>
+          </div>
+
+          <div class="boutonForm">
+            <button class ="btn purple" type="submit" >Modifier mes informations personnelles</button>
+          </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
 </div>
 
 {% endblock %}

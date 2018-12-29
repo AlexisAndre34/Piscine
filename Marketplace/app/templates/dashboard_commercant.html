@@ -2,31 +2,26 @@
 
 {% block content %}
 
-<div class="col s12 m10 offset-m1">
-    <div class="row">
+
+<div class="row">
 
 
-        <div class="col s12 m5">
-            <h3> {{ utilisateur.first_name }} {{utilisateur.last_name }} </h3>
-            <ul>
-                <li>Email : {{ utilisateur.email }}</li>
-                <li>Tel : {{ commercant.telephonecommercant }}</li>
+    <div class="col s12 m5">
+        <h3> {{ utilisateur.first_name }} {{utilisateur.last_name }} </h3>
+        <ul>
+            <li>Email : {{ utilisateur.email }}</li>
+            <li>Tel : {{ commercant.telephonecommercant }}</li>
+        </ul>
+        <a href="{% url 'updatecommercant' %}"class="waves-effect btn-floating green"><i class="material-icons">edit</i></a>
+    </div>
 
-
-            </ul>
+    <div class="col s12 m5">
+        <div>
+            <a class="btn teal"href="{% url 'read_commerce_by_commercant' %}">Mes Commerces</a>
+            <a class="btn teal"href="{% url 'create_commerce' %}">Ajouter Commerce</a>
 
         </div>
-
-
-        <div class="col s12 m5">
-            <div>
-                <a class="btn teal"href="{% url 'read_commerce_by_commercant' %}">Mes Commerces</a>
-                <a class="btn teal"href="{% url 'create_commerce' %}">Ajouter Commerce</a>
-
-            </div>
-        </div>
-
-
+    </div>
 </div>
 
 {% endblock %}

@@ -2,8 +2,41 @@
 
 {% block content %}
 
-<div>
-    Update commercant ici.
+<div class="page">
+  <div class = "formulaire">
+    <div class="blocCentrer">
+      <form method="post" action="">
+          {% csrf_token %}
+            <div class = "case">
+                <label for="id_first_name">Prénom :</label><br>
+                <textarea type="text" class="materialize-textarea" name="first_name" required id="id_first_name">{{ commercant.numcommercant.first_name }}</textarea>
+            </div>
+
+            <div class = "case">
+                <label for="id_last_name">Nom :</label><br>
+                <textarea type="text"  class="materialize-textarea" name="last_name" required id="id_last_name">{{ commercant.numcommercant.last_name }}</textarea>
+            </div>
+
+            <div class = "case">
+                <label for="id_email">E-mail :</label><br>
+                <input type="email" value={{ commercant.numcommercant.email }} name="email" required id="id_email">
+            </div>
+
+            <div class = "case">
+                <label for="id_telephonecommercant">Téléphone :</label><br>
+                <input type="text" value={{ commercant.telephonecommercant }} name="telephonecommercant" required id="id_telephonecommercant">
+            </div>
+
+            <div class="boutonForm">
+                <button class ="btn purple" type="submit" >Modifier mes informations personnelles</button>
+            </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
 </div>
 
 {% endblock %}
