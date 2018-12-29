@@ -128,14 +128,19 @@ def create_produit(request, idcommerce):
     return render(request, 'create/createProduit.html', {'formProduit': form})
 
 #Doit être connecté
-def create_reduction(request):
+def create_reduction(request,idcommerce):
     utilisateur = User.objects.get(id=request.user.id)
     client = get_object_or_404(Client, numclient=utilisateur)
+    commerce = get_object_or_404(Commerce, numsiret=idcommerce)
 
-    if client.pointsclient > 1000:
+    if client.pointsclient > 1000: #On vérifie bien que le client possède suffisament de points
         if request.method == 'POST':
             form = ReductionForm(request.POST)
             if form.is_valid():
+                new_reduction = Reduction(numclient=client, numcommerce=commerce, typereduction=form.cleaned_data.get('typereduction'), valeurreduction=10, estutilise=False)
+                new_reduction.save()
+                client.pointsclient = client.pointsclient-1000 #On réduit le nombre de points client
+                client.save()
                 return read_moncompte(request)
         else:
             form = ReductionForm()
