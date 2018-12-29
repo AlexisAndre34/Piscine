@@ -706,6 +706,8 @@ def paiement_reservation(request, idreservation):
         produit_reserver.numproduit.quantitestock = produit_reserver.numproduit.quantitestock - produit_reserver.quantitereserve
         produit_reserver.numproduit.save()
 
+    client = reservation.numclient
+    client.pointsclient = client.pointsclient + int(reservation.montantreservation)
     return read_mesreservationsCommerce(request, reservation.numcommerce)
 
 def reset_reservation(request):
