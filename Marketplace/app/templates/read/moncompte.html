@@ -6,13 +6,13 @@
         <h3> {{ utilisateur.first_name }} {{utilisateur.last_name }} </h3>
         <ul>
             <li>Email : {{ utilisateur.email }}</li>
-            <li>Tel : {{ client.telephoneclient }}</li>
-            <li>DateNaissance : {{ client.datenaissanceclient }}</li>
-            <li>Adresse : {{ client.rueclient }}, {{ client.villeclient }}, {{ client.codepostalclient }}</li>
+            <li>Téléphone : {{ client.telephoneclient }}</li>
+            <li>Date de naissance : {{ client.datenaissanceclient }}</li>
+            <li>Adresse : {{ client.rueclient }}, {{ client.codepostalclient }} {{ client.villeclient }}</li>
         </ul>
         <div>
-            <a class="waves-effect btn-small green">Modifier mon compte</a>
             <a class="waves-effect btn-small grey">Changer de mot de passe</a>
+            <a class="waves-effect btn-floating green"><i class="material-icons">edit</i></a>
             <a class="btn-floating red"><i class="material-icons">delete</i></a>
         </div>
     </div>
@@ -25,6 +25,7 @@
         {% endblock %}
 
     </div>
+
 </div>
 
 {% endblock %}

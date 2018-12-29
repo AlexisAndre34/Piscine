@@ -99,8 +99,7 @@
 }
 /* Recherche de produit */
 .search_card{
-    width: 300px;
-    margin-right: 10px;
+    width: 200px;
     min-height: 400px;
 }
 
@@ -157,7 +156,7 @@
   background-color: transparent;
 }
 
-.carousel .indicators .indicator-item.active{
+.carousel .indicators .indicator-item:active{
   background-color: black;
 }
 
