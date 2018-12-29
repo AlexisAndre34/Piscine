@@ -138,6 +138,10 @@
     margin-right: 10px;
 }
 
+.justify_spacearound{
+    display: flex;
+    justify-content: space-around;
+}
 .recapitulation{
     margin-left: 5%;
     margin-right: 5%;
