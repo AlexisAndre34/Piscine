@@ -273,7 +273,7 @@ def update_commercant(request):
             user.save()
             commercant.telephonecommercant = form.cleaned_data.get('telephonecommercant')
             commercant.save()
-            return render(request, 'index.html')#A Definir une autre redirection
+            return dashboard_commercant(request)
     else:
         return render(request, 'update/updateCommercant.html', locals())
 
@@ -293,7 +293,7 @@ def update_client(request):
             client.villeclient = form.cleaned_data.get('villeclient')
             client.rueclient = form.cleaned_data.get('rueclient')
             client.save()
-            return render(request, 'index.html')#A Definir une autre redirection
+            return read_moncompte(request)
     else:
         date = str(client.datenaissanceclient.year)+"-"+str(client.datenaissanceclient.month)+"-"+str(client.datenaissanceclient.day) #Permet d'avoir le bon format de date pour le input : type=date , du formulaire
         return render(request, 'update/updateClient.html', locals())
