@@ -47,6 +47,7 @@ urlpatterns = [
     path('reservation/reset/', views.reset_reservation, name="reset_reservation"),
     path('carte/commerces', views.list_commerces_carte, name="commerces_carte"),
     path('carte/commerces/affichage', views.carte_commerces, name="commerces_carte_affichage"),
+    path('carte/commerces/search', views.carte_search, name="commerces_carte_search"),
   path('gestion/', include('app.urls'))
 ]
 

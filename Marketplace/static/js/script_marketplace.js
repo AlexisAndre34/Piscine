@@ -96,5 +96,26 @@ $('#btn_commerces').click(function(){
     });
 });
 
+$('#btn_search_map').click(function(){
+    $.ajax({
+        type: "POST",
+        url: "/carte/commerces/search",
+        data: {
+            recherche: $('#search_map').val(),
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val()
+
+        },
+        dataType: 'json',
+        success: function( result ) {
+            Commerces = JSON.parse(result.commerces)
+            $.each(Commerces, function (cle, valeur){
+                var commerce_marker;
+                commerce_marker = L.marker([Commerces[cle].fields.gpslatitude, Commerces[cle].fields.gpslongitude]).addTo(mymap);
+                commerce_marker.bindPopup(Commerces[cle].fields.nomcommerce);
+            });
+        }
+    });
+});
+
 
 // ----------- //

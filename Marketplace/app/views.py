@@ -223,6 +223,15 @@ def carte_commerces(request):
 
     return JsonResponse(data)
 
+def carte_search(request):
+    recherche = request.POST.get('recherche')
+    commerces = Commerce.objects.filter(nomcommerce__icontains=recherche)
+    data = {
+        "commerces": serializers.serialize("json", commerces)
+    }
+
+    return JsonResponse(data)
+
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
 def update_commercant(request):
