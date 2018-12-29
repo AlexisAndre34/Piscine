@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelChoiceField
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from app.models import Commerce, Produit, Categorie, Commenter
+from app.models import Commerce, Produit, Categorie, Commenter, Reduction
 import datetime
 
 #Formulaire pour la connexion au site
@@ -36,6 +36,12 @@ class CommentaireForm(forms.ModelForm):
   class Meta:
     model = Commenter
     exclude = ['id','numproduit','numclient','datecommentaire']
+
+#Formulaire de creation de reduction
+class ReductionForm(forms.ModelForm):
+    class Meta:
+        model = Reduction
+        fields = ('typereduction',)
         
 #Formulaire de creation d'un compte client
 class SignUpFormClient(UserCreationForm):

@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+    <h3>Vous avez le droit à une réduction</h3>
+    <form  method="post">
+        {% csrf_token %}
+        {{ formReduction }}
+        <button class="btn" type="Submit"><i class="material-icons">send</i></button>
+    </form>
+
+    <div>
+        <ul>
+            <li>Un email contenant le code de votre réduction vous sera envoyé.</li>
+            <li>Les réductions sont valables uniquement lors de réservations.</li>
+            <li>Le commerçant validera votre réduction lors du paiement en caisse.</li>
+        </ul>
+
+    </div>
+{% endblock %}

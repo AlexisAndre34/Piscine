@@ -3,8 +3,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator, EmptyPage
-from app.models import Client, Commercant, Commerce, Gerer, Produit, Categorie, Commande, Reservation, Appartenir, Reserver, Commenter
-from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm, CommentaireForm
+from app.models import Client, Commercant, Commerce, Gerer, Produit, Categorie, Commande, Reservation, Appartenir, Reserver, Commenter, Reduction
+from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm, CommentaireForm, ReductionForm
 from datetime import datetime, timedelta
 from django.db.models import Q #Pour réaliser des Query Set plus complexe, en OR
 from django.core import serializers
@@ -126,6 +126,22 @@ def create_produit(request, idcommerce):
     else:
         form = ProduitForm()
     return render(request, 'create/createProduit.html', {'formProduit': form})
+
+#Doit être connecté
+def create_reduction(request):
+    utilisateur = User.objects.get(id=request.user.id)
+    client = get_object_or_404(Client, numclient=utilisateur)
+
+    if client.pointsclient > 1000:
+        if request.method == 'POST':
+            form = ReductionForm(request.POST)
+            if form.is_valid():
+                return read_moncompte(request)
+        else:
+            form = ReductionForm()
+        return render(request, 'create/createReduction.html', {'formReduction': form})
+    else:
+        return read_moncompte(request)
 
 
 #---------------- VIEWS DE LECTURE (READ) ----------------
