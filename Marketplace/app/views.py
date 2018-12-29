@@ -144,7 +144,7 @@ def create_reduction(request,idcommerce):
                 return read_moncompte(request)
         else:
             form = ReductionForm()
-        return render(request, 'create/createReduction.html', {'formReduction': form})
+        return render(request, 'create/createReduction.html', {'formReduction': form, "commerce": commerce})
     else:
         return read_moncompte(request)
 
@@ -153,7 +153,13 @@ def create_reduction(request,idcommerce):
 #permet de read un commerce
 def read_commerce(request, idcommerce):
     commerce = get_object_or_404(Commerce,  numsiret=idcommerce)
-    estGerant = not (not Gerer.objects.filter(numcommercant=request.user.id, numcommerce=idcommerce))
+    estGerant = not (not Gerer.objects.filter(numcommercant=request.user.id, numcommerce=idcommerce)) #Premier not : pour tester si le resultat de la requete est vide (cela retourne un boolean) , Deuxième not : s'effectue sur le boolean retourné par le premier not
+
+    estClient = request.session.get('estClient') #On teste si l'utilisateur est un client. Si c'est le cas on va récuperer un objet de type client pour pouvoir tester ensuite si il a un bombre de points suffisant pour générer une réduction dans la template.
+    if estClient:
+        client = Client.objects.get(numclient=request.user.id)
+
+
     return render(request, 'read/readCommerce.html', locals())
 
 #permet de read tous les commerces d'un commercant
