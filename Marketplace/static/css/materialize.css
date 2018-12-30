@@ -8365,6 +8365,7 @@ input[type=range]::-ms-thumb {
 .carousel.carousel-slider {
   top: 0;
   left: 0;
+  margin-top: 75px;
 }
 
 .carousel.carousel-slider .carousel-fixed-item {
@@ -8382,7 +8383,7 @@ input[type=range]::-ms-thumb {
 .carousel.carousel-slider .carousel-item {
   width: 100%;
   height: 100%;
-  min-height: 400px;
+  /*min-height: 400px;*/
   position: absolute;
   top: 0;
   left: 0;
