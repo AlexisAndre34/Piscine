@@ -343,7 +343,7 @@ def update_commerce(request, idcommerce):
         commerce.gpslongitude = request.POST.get('gpslongitude')
         commerce.save()
         gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
-        return render(request, 'read/readCommerce.html', {'gerer': gerer})
+        return read_commerce(request, commerce.numsiret)
     else:
         form = CommerceForm(instance=commerce)
     return render(request, 'update/updateCommerce.html', locals())
@@ -366,7 +366,7 @@ def update_produit(request, pk):
             produit.photoproduit1 = form.cleaned_data.get('photoproduit1')
             produit.photoproduit2 = form.cleaned_data.get('photoproduit2')
             produit.save()
-            return render(request, 'index.html')
+            return read_commerce(request, produit.idcommerce)
     else:
         form = ProduitForm(instance=produit)
     return render(request, 'update/updateProduit.html', {'Produitform': form})
