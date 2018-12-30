@@ -7,8 +7,8 @@
         <div class="collection-header"><h4>Mes Commerces</h4></div>
     {% for gerer in listeGerer %}
     <div class="collection-item">
-        <a href="{% url 'read_commerce' gerer.numcommerce.numsiret %}" class="collection-item">{{ gerer.numcommerce.nomcommerce }}<br></a>
-        <a class="waves-effect btn-small green"href="{% url 'update_commerce' gerer.numcommerce.numsiret %}">Modifier Commerce</a>
+        <a href="{% url 'read_commerce' gerer.numcommerce.numsiret %}" ><h5>{{ gerer.numcommerce.nomcommerce }}</h5></a>
+        <a class="waves-effect btn-small green"href="{% url 'update_commerce' gerer.numcommerce.numsiret %}">Modifier</a>
         <a class="btn-floating red"href="{% url 'delete_commerce' gerer.numcommerce.numsiret %}"><i class="material-icons">delete</i></a>
 
     </div>
