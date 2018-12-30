@@ -8,10 +8,15 @@
 {% for reservation in reservations %}
 
     <li>
-      <div class="collapsible-header">Réservation du {{ reservation.datereservation }}</div>
+      <div class="collapsible-header">Réservation du {{ reservation.datereservation }} <a href="{% url 'read_reservation' reservation.numreservation %}"><i class="material-icons">visibility</i></a></div>
       <div class="collapsible-body">
-          <span>Client : </span>
+          <div>Client : <I> {{ reservation.numclient.numclient.first_name }} {{ reservation.numclient.numclient.last_name }}</I></div>
           <a class="btn pulse green " href="{% url 'paiement_reservation' reservation.numreservation %}">Valider le paiement</a>
+          <div>
+              <input type="text" style="width: 150px;">
+              <a class="btn blue">VALIDER LE CODE DE REDUCTION</a>
+          </div>
+
       </div>
     </li>
 {% endfor %}

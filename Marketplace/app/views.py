@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage
 from app.models import Client, Commercant, Commerce, Gerer, Produit, Categorie, Commande, Reservation, Appartenir, Reserver, Commenter, Reduction
 from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm, CommentaireForm, ReductionForm
@@ -68,6 +69,8 @@ def signup_client(request):
             client = Client(numclient=Utilisateur, datenaissanceclient=form.cleaned_data.get('datenaissanceclient'), telephoneclient=form.cleaned_data.get('telephoneclient'), codepostalclient=form.cleaned_data.get('codepostalclient'), villeclient=form.cleaned_data.get('villeclient'), rueclient=form.cleaned_data.get('rueclient'), numclient_id=Utilisateur.id)
             client.save()  # Sauvegarde du client
             login(request, user) #Connexion au site
+            estClient = True
+            request.session['estClient'] = estClient  # On mémorise le fait que c'est un client en session
             request = init_panier(request)
             request = init_reservation(request) #On initiliase le panier et le panier_reservation de l'utilisateur
             return redirect('homepage')
@@ -90,6 +93,8 @@ def signup_commercant(request):
             commercant = Commercant(numcommercant=Utilisateur, telephonecommercant=form.cleaned_data.get('telephonecommercant'), numcommercant_id=Utilisateur.id)
             commercant.save()  # Sauvegarde du commercant
             login(request, user) #Connexion au site
+            estClient = False
+            request.session['estClient'] = estClient  # On mémorise le fait que c'est un commerçant en session
             request = init_panier(request)
             request = init_reservation(request) #On initiliase le panier et le panier_reservation de l'utilisateur
             return redirect('homepage')
@@ -164,7 +169,8 @@ def read_commerce(request, idcommerce):
 
 #permet de read tous les commerces d'un commercant
 def read_commerce_by_commercant(request):
-    listeGerer = Gerer.objects.filter(numcommercant = request.user.id)
+    commercant = Commercant.objects.get(numcommercant = request.user.id)
+    listeGerer = Gerer.objects.filter(numcommercant = commercant)
     return render(request, 'read/readCommerceByCommercant.html', locals())
 
 
@@ -198,13 +204,35 @@ def read_moncompte(request):
 #permet de read une commande
 def read_commande(request, idcommande):
     commande = Commande.objects.get(numcommande=idcommande)
-    appartenir = Appartenir.objects.filter(numcommande=commande)
+    estClient = request.session.get('estClient')
+    if estClient:
+        client = Client.objects.get(numclient=request.user.id)
+        if commande.numclient != client: #On vérifie que le client est concerné par la reservation
+            raise PermissionDenied #Si ce n'est pas le cas, permission denied
+    else:
+        commercant = Commercant.objects.get(numcommercant=request.user.id)
+        gerer = Gerer.objects.filter(numcommercant=commercant, numcommerce=commande.numcommerce ) #On vérifie que le commerçant est concerné par la reservation
+        if not gerer: #Si le commerçant ne gère pas le commerce en question
+            raise PermissionDenied #Alors permission denied
+
+    appartenir = Appartenir.objects.filter(numcommande=commande) #On arrive ici si les permissions sont bonnes
     return render(request, 'read/readCommande.html', locals())
 
 #permet de read une reservation
 def read_reservation(request, idreservation):
     reservation = Reservation.objects.get(numreservation=idreservation)
-    reserver = Reserver.objects.filter(numreservation=reservation)
+    estClient = request.session.get('estClient')
+    if estClient:
+        client = Client.objects.get(numclient=request.user.id)
+        if reservation.numclient != client: #On vérifie que le client est concerné par la reservation
+            raise PermissionDenied #Si ce n'est pas le cas, permission denied
+    else:
+        commercant = Commercant.objects.get(numcommercant=request.user.id)
+        gerer = Gerer.objects.filter(numcommercant=commercant, numcommerce=reservation.numcommerce ) #On vérifie que le commerçant est concerné par la reservation
+        if not gerer: #Si le commerçant ne gère pas le commerce en question
+            raise PermissionDenied #Alors permission denied
+
+    reserver = Reserver.objects.filter(numreservation=reservation) #On arrive ici si les permissions sont bonnes
     return render(request, 'read/readReservation.html', locals())
 
 #permet de read les commandes d'un Client
@@ -219,7 +247,7 @@ def read_mescommandesCommerce(request, idcommerce):
     utilisateur = User.objects.get(id=request.user.id)
     commercant = Commercant.objects.get(numcommercant=utilisateur)
     commerce = get_object_or_404(Gerer, numcommercant=commercant, numcommerce=idcommerce) #On doit faire la requete sur un objet de type commerçant
-    commandes = Commande.objects.filter(numcommerce=commerce.numcommerce).order_by('-datecommande') #De manière générale on fait les requet sur le type le plus souvent
+    commandes = Commande.objects.filter(numcommerce=commerce.numcommerce).order_by('-datecommande') #De manière générale on fait les requetes sur le type le plus souvent
     return render(request, 'list/list_commandes_commerces.html', {'commandes': commandes})
 
 #permet de read les réservations d'un Client

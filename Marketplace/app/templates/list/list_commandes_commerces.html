@@ -6,9 +6,15 @@
     <ul class="collapsible">
     {% for commande in commandes %}
         <li>
-          <div class="collapsible-header">Commande du {{ commande.datecommande }}</div>
+            <div class="collapsible-header">Commande du {{ commande.datecommande }} <a href="{% url 'read_commande' commande.numcommande %}"><i class="material-icons">visibility</i></a></div>
           <div class="collapsible-body">
-              <span>Adresse de livraison  : {{ commande.numclient.rueclient }}, {{ commande.numclient.codepostal }} {{ commande.numclient.villeclient }}  </span>
+
+            <div>Client : <I>{{ commande.numclient.numclient.first_name }} {{ commande.numclient.numclient.last_name }} </I></div>
+            <div>Adresse de livraison  : <I>{{ commande.numclient.rueclient }}, {{ commande.numclient.codepostal }} {{ commande.numclient.villeclient }} </I></div>
+
+              {% for produit in appartenir %}
+            <div>Liste des produits de la commande</div>
+              {% endfor %}
           </div>
         </li>
     {% endfor %}
