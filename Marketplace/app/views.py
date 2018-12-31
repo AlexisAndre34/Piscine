@@ -178,7 +178,9 @@ def read_commerce_by_commercant(request):
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     commentaires = Commenter.objects.filter(numproduit=produit)
-    if request.user.id == 2 :
+
+    estClient = request.session.get('estClient')
+    if estClient :                                          #Si c'est un client, on regarde s'il a déjà commenter le produit
       client = Client.objects.get(numclient=request.user.id)
       b1 = Commenter.objects.filter(numproduit=produit, numclient=client)
     
