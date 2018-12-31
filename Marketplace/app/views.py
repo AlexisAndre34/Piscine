@@ -770,5 +770,34 @@ def paiement_reservation(request, idreservation):
 def reset_reservation(request):
     return render(init_reservation(request), 'reservation/reservation.html', locals())
 
+#---------------- VIEWS POUR LES REDUCTIONS  ----------------
+"""
+def valider_reduction(request):
+    message = "hello"
+    code_reduction = request.POST.get('code_reduction')
+    id_reservation = request.POST.get('id_reservation')
 
+    reduction = Reduction.objects.filter(codereduction=code_reduction)
+    if not reduction: #Si pas de résultat à notre requête
+        message = "Réduction inexistante"
+    else:
+        reduction = reduction[0]
+        if reduction.estutilise == True:
+            message = "Réduction déjà utilisé"
+        else:
+            reservation = Reservation.objects.get(numreservation=id_reservation)
+            if reduction.typereduction == "bon": #On vérifie si la réduction est un bon ou un pourcentage
+                reservation.montantreservation = reservation.montantreservation - reduction.valeurreduction
+            else:
+                reservation.montantreservation = reservation.montantreservation - (reservation.montantreservation*reduction.valeurreduction)
+            reduction.estutilise = True
+            reduction.save()
+            reservation.save()
+            message = "La réduction à été utilisée correctement."
+
+    data = {
+        "message": message
+    }
+    return JsonResponse(data)
+"""
 #---------------- VIEWS DE A DEFINIR ----------------

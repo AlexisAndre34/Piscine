@@ -10,13 +10,16 @@
     <li>
       <div class="collapsible-header">Réservation du {{ reservation.datereservation }} <a href="{% url 'read_reservation' reservation.numreservation %}"><i class="material-icons">visibility</i></a></div>
       <div class="collapsible-body">
-          <div>Client : <I> {{ reservation.numclient.numclient.first_name }} {{ reservation.numclient.numclient.last_name }}</I></div>
-          <a class="btn pulse green " href="{% url 'paiement_reservation' reservation.numreservation %}">Valider le paiement</a>
-          <div>
-              <input type="text" style="width: 150px;">
-              <a class="btn blue">VALIDER LE CODE DE REDUCTION</a>
+          <div class="justify_spacearound">
+              <div>Client : <I> {{ reservation.numclient.numclient.first_name }} {{ reservation.numclient.numclient.last_name }}</I></div>
+              <a class="btn pulse green " href="{% url 'paiement_reservation' reservation.numreservation %}">Valider le paiement</a>
+              <div>
+                  <input id="id_reservation" type="number" style="display: none;"value="{{ reservation.numreservation }}"</input>
+                  <input id="code_reduction" type="text" style="width: 150px;" placeholder="Code de la réduction">
+                  <a id="btn_code_reduction" class="btn blue">VALIDER UNE REDUCTION</a>
+              </div>
+              <div id="message"></div>
           </div>
-
       </div>
     </li>
 {% endfor %}

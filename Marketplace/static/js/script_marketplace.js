@@ -74,7 +74,6 @@ $('#btn_localisation').click(function(){
         navigator.geolocation.getCurrentPosition(function(position) {
             marker_utilisateur = L.marker([position.coords.latitude,position.coords.longitude],{icon: greenIcon}).addTo(mymap); // Creation du marker avec les coordonnées gps de l'utilisateur
             marker_utilisateur.bindPopup("Vous êtes ici").openPopup();
-            console.log("hello")
         });
     }else {
         alert("Le service de géolocalisation n'est pas disponible sur votre ordinateur.");
@@ -118,6 +117,28 @@ $('#btn_search_map').click(function(){
                 commerce_marker.bindPopup(Commerces[cle].fields.nomcommerce);
             });
         }
+    });
+});
+$(document).ready(function(){
+    $('#btn_code_reduction').click(function(){
+        $.ajax({
+            type: "POST",
+            url: "/gestion/reservation/paiement/reduction/",
+            data: {
+                code_reduction: $('#code_reduction').val(),
+                id_reservation: $('#id_reservation').val(),
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val()
+
+            },
+            dataType: 'json',
+            success: function( result ) {
+                console.log(result);
+                //Si le code est mauvais
+                $('#btn_code_reduction')
+                //Si le code est bon
+            }
+        });
+
     });
 });
 

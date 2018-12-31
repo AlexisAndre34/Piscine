@@ -10,7 +10,7 @@
             <li class="collection-item">Produit : {{ produit.numproduit.nomproduit }}, Quantité : {{ produit.quantitecommande }} </li>
             {% endif %}
         {% endfor %}
-        <li class="collection-item">Adresse du commerce : {{ commande.numcommerce.ruecommerce }}, {{ commande.numcommerce.codepostalcommerce }} {{ commande.numcommerce.villecommerce }}</li>
+        <li class="collection-item">Adresse du commerce : {{ commande.numcommerce.ruecommerce }}, {{ commande.numcommerce.codepostalcommerce }} {{ commande.numcommerce.villecommerce }} <a class="btn-flat" href="{% url 'read_commerce' commande.numcommerce.numsiret %}">Voir le commerce</a></li>
     </div>
 </div>
 {% endblock %}

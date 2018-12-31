@@ -11,7 +11,7 @@
             <li class="collection-item">Produit : {{ produit.numproduit.nomproduit }}, Quantité : {{ produit.quantitereserve }} </li>
             {% endif %}
         {% endfor %}
-        <li class="collection-item">Adresse du commerce : {{ reservation.numcommerce.ruecommerce }}, {{ reservation.numcommerce.codepostalcommerce }} {{ reservation.numcommerce.villecommerce }}</li>
+        <li class="collection-item">Adresse du commerce : {{ reservation.numcommerce.ruecommerce }}, {{ reservation.numcommerce.codepostalcommerce }} {{ reservation.numcommerce.villecommerce }} <a class="btn-flat" href="{% url 'read_commerce' reservation.numcommerce.numsiret %}">Voir le commerce</a></li>
     </div>
 </div>
 
