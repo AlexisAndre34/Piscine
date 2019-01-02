@@ -26,7 +26,7 @@ urlpatterns = [
 	path('reservation/<int:idreservation>', views.read_reservation, name="read_reservation"),
 	path('reservations/commerce/<int:idcommerce>', views.read_mesreservationsCommerce, name="list_reservations_commerce"),
 	path('reservation/paiement/<int:idreservation>', views.paiement_reservation, name="paiement_reservation"),
-	#path('reservation/paiement/reduction/', views.valider_reduction, name="validation_reduction"),
+	path('reservation/paiement/reduction/', views.valider_reduction, name="validation_reduction"),
 	path('dashboard/', views.dashboard_commercant, name="dashboard_commercant")
 ]
 

@@ -2,27 +2,35 @@
 
 
 {% block content %}
+<div class="row">
+    <div class="col s12 m3">
+        <div class="justify_center">
+            <div>
+                <form>
+                    <input id="id_reservation" type="number" placeholder="Numéro de réservation">
+                    <input id="code_reduction" type="number" placeholder="Code de la réduction">
+                    <a id="btn_reduction" class="btn blue">VALIDER UNE REDUCTION</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m9">
+        <div class="recapitulation">
+            <ul class="collapsible">
+        {% for reservation in reservations %}
 
-<div class="recapitulation">
-    <ul class="collapsible">
-{% for reservation in reservations %}
-
-    <li>
-      <div class="collapsible-header">Réservation du {{ reservation.datereservation }} <a href="{% url 'read_reservation' reservation.numreservation %}"><i class="material-icons">visibility</i></a></div>
-      <div class="collapsible-body">
-          <div class="justify_spacearound">
-              <div>Client : <I> {{ reservation.numclient.numclient.first_name }} {{ reservation.numclient.numclient.last_name }}</I></div>
-              <a class="btn pulse green " href="{% url 'paiement_reservation' reservation.numreservation %}">Valider le paiement</a>
-              <div>
-                  <input id="id_reservation" type="number" style="display: none;"value="{{ reservation.numreservation }}"</input>
-                  <input id="code_reduction" type="text" style="width: 150px;" placeholder="Code de la réduction">
-                  <a id="btn_code_reduction" class="btn blue">VALIDER UNE REDUCTION</a>
+            <li>
+              <div class="collapsible-header">Réservation du {{ reservation.datereservation }}  ({{ reservation.montantreservation }} euros): N° {{ reservation.numreservation }}        <a href="{% url 'read_reservation' reservation.numreservation %}"><i class="material-icons">visibility</i></a></div>
+              <div class="collapsible-body">
+                  <div class="justify_spacearound">
+                      <div>Client : <I> {{ reservation.numclient.numclient.first_name }} {{ reservation.numclient.numclient.last_name }}</I></div>
+                      <a class="btn pulse green " href="{% url 'paiement_reservation' reservation.numreservation %}">Valider le paiement</a>
+                  </div>
               </div>
-              <div id="message"></div>
-          </div>
-      </div>
-    </li>
-{% endfor %}
-    </ul>
+            </li>
+        {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
 {% endblock %}

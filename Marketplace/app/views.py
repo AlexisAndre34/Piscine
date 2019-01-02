@@ -771,7 +771,7 @@ def reset_reservation(request):
     return render(init_reservation(request), 'reservation/reservation.html', locals())
 
 #---------------- VIEWS POUR LES REDUCTIONS  ----------------
-"""
+
 def valider_reduction(request):
     message = "hello"
     code_reduction = request.POST.get('code_reduction')
@@ -785,19 +785,22 @@ def valider_reduction(request):
         if reduction.estutilise == True:
             message = "Réduction déjà utilisé"
         else:
-            reservation = Reservation.objects.get(numreservation=id_reservation)
-            if reduction.typereduction == "bon": #On vérifie si la réduction est un bon ou un pourcentage
-                reservation.montantreservation = reservation.montantreservation - reduction.valeurreduction
+            reservation = Reservation.objects.filter(numreservation=id_reservation)
+            if not reservation:
+                message = "Numéro de réservation incorrect."
             else:
-                reservation.montantreservation = reservation.montantreservation - (reservation.montantreservation*reduction.valeurreduction)
-            reduction.estutilise = True
-            reduction.save()
-            reservation.save()
-            message = "La réduction à été utilisée correctement."
+                if reduction.typereduction == "bon": #On vérifie si la réduction est un bon ou un pourcentage
+                    reservation.montantreservation = reservation.montantreservation - reduction.valeurreduction
+                else:
+                    reservation.montantreservation = reservation.montantreservation - (reservation.montantreservation*reduction.valeurreduction)
+                reduction.estutilise = True
+                reduction.save()
+                reservation.save()
+                message = "La réduction à été utilisée correctement. Veuillez valider le paiement de la réservation n° "+id_reservation+"."
 
     data = {
         "message": message
-    }
+    }   
     return JsonResponse(data)
-"""
+
 #---------------- VIEWS DE A DEFINIR ----------------

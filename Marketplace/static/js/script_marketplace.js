@@ -48,6 +48,26 @@ $('#gpsbutton').click(function() {
   });
 });
 
+$('#btn_reduction').click(function(){
+    if ($('#code_reduction').val()>0  && $('#id_reservation').val()>0){
+        $.ajax({
+            type: "POST",
+            url: "/gestion/reservation/paiement/reduction/",
+            data: {
+                code_reduction: $('#code_reduction').val(),
+                id_reservation: $('#id_reservation').val(),
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val()
+
+            },
+            dataType: 'json',
+            success: function( result ) {
+                console.log(result);
+                confirm(result.message);
+            }
+        });
+    }
+});
+
 // Pour la carte //
 
 var mymap = L.map('mapid').setView([43.608353, 3.879833], 13); //Initialise la carte sur les coordonnees de setView()
@@ -119,28 +139,9 @@ $('#btn_search_map').click(function(){
         }
     });
 });
-$(document).ready(function(){
-    $('#btn_code_reduction').click(function(){
-        $.ajax({
-            type: "POST",
-            url: "/gestion/reservation/paiement/reduction/",
-            data: {
-                code_reduction: $('#code_reduction').val(),
-                id_reservation: $('#id_reservation').val(),
-                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val()
 
-            },
-            dataType: 'json',
-            success: function( result ) {
-                console.log(result);
-                //Si le code est mauvais
-                $('#btn_code_reduction')
-                //Si le code est bon
-            }
-        });
 
-    });
-});
+
 
 
 // ----------- //
