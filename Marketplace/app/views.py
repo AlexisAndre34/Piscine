@@ -255,7 +255,7 @@ def read_mescommandesCommerce(request, idcommerce):
 #permet de read les réservations d'un Client
 def read_mesreservationsClient(request):
     utilisateur = User.objects.get(id=request.user.id)
-    client = Client.objects.get(numclient=request.user.id)
+    client = Client.objects.get(numclient=utilisateur)
     reservations = Reservation.objects.filter(numclient=client)
     return render(request, 'read/mesreservationsClient.html', locals())
 
@@ -270,6 +270,11 @@ def read_mesreservationsCommerce(request, idcommerce):
 def list_commerces_carte(request):
     return render(request, 'list/map_commerces.html')
 
+def list_reduction(request):
+    utilisateur = User.objects.get(id=request.user.id)
+    client = Client.objects.get(numclient=utilisateur)
+    reductions = Reduction.objects.filter(numclient=client)
+    return render(request, 'list/list_reductions.html', {'reductions': reductions})
 
 def carte_commerces(request):
 
@@ -800,7 +805,7 @@ def valider_reduction(request):
 
     data = {
         "message": message
-    }   
+    }
     return JsonResponse(data)
 
 #---------------- VIEWS DE A DEFINIR ----------------

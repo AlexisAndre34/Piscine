@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="recapitulation">
+    <h4>Mes réductions <i class="material-icons">loyalty</i></h4>
+    <ul class="collapsible">
+    {% for reduction in reductions %}
+        <li>
+            <div class="collapsible-header">Code Réduction : {{ reduction.codereduction }}
+            {% if reduction.estutilise %}
+                <i class="material-icons">check</i>
+                {% endif %}
+            </div>
+            <div class="collapsible-body">
+                <div>Commerce :  <a href="{% url 'read_commerce' reduction.numcommerce.numsiret %}" >{{ reduction.numcommerce.nomcommerce }} </a></div>
+                <div>Type de réduction : {{ reduction.typereduction }} </div>
+                {% if reduction.typereduction == "bon" %}
+                <div>Valeur: {{ reduction.valeurreduction }} euros</div>
+                {% else %}
+                <div>Valeur: {{ reduction.valeurreduction }} %</div>
+                {% endif %}
+            </div>
+        </li>
+
+    {% endfor %}
+    </ul>
+{% endblock %}

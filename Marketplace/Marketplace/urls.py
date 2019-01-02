@@ -30,6 +30,7 @@ urlpatterns = [
     path('moncompte/commandes', views.read_mescommandesClient, name="mescommandesClient"),
     path('moncompte/reservations', views.read_mesreservationsClient, name="mesreservationsClient"),
     path('moncompte/reduction/creation/<int:idcommerce>', views.create_reduction, name="create_reduction"),
+    path('moncompte/reduction/afficher/', views.list_reduction, name="list_reduction"),
 	path('search/', views.search, name="search"),
 	path('search/<str:keyword>/<int:page>', views.search, name="search"),
     path('panier/afficher/', views.afficher_panier, name="afficher_panier"),

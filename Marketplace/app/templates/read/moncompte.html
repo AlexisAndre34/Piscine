@@ -9,11 +9,13 @@
             <li>Téléphone : {{ client.telephoneclient }}</li>
             <li>Date de naissance : {{ client.datenaissanceclient }}</li>
             <li>Adresse : {{ client.rueclient }}, {{ client.codepostalclient }} {{ client.villeclient }}</li>
+            <li>Points de fidelité : {{ client.pointsclient }}</li>
         </ul>
         <div>
             <a class="waves-effect btn-small grey">Changer de mot de passe</a>
             <a href="{% url 'updateclient' %}"class="waves-effect btn-floating green"><i class="material-icons">edit</i></a>
             <a class="btn-floating red"><i class="material-icons">delete</i></a>
+            <a href="{% url 'list_reduction' %}" class="btn-floating "><i class="material-icons">loyalty</i></a>
         </div>
     </div>
 

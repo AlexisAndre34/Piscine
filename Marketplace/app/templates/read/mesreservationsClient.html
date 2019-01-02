@@ -5,7 +5,15 @@
     <div class="collection with-header">
         <div class="collection-header"><h4>Mes réservations :</h4></div>
         {% for reservation in reservations %}
-        <a href="{% url 'read_reservation' reservation.numreservation %}" class="collection-item">Réservation effectuée le {{ reservation.datereservation }} pour {{ reservation.montantreservation }} euros. <I>Date limite de retrait : {{ reservation.datelimitereservation }}</I></a> <!-- IL faudra faire un for reservation in reservations -->
+        <div class="collection-item" >
+            <a href="{% url 'read_reservation' reservation.numreservation %}">Réservation effectuée le {{ reservation.datereservation }} pour {{ reservation.montantreservation }} euros.
+                {% if reservation.paiementrealise %}
+                <div class="secondary-content"><i class="material-icons">check</i></div>
+                {% endif %}</a>
+            <div><I>Date limite de retrait : {{ reservation.datelimitereservation }}</I></div>
+        </div>
+
+
         {% endfor %}
     </div>
 {% endblock %}

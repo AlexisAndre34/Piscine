@@ -70,7 +70,7 @@ $('#btn_reduction').click(function(){
 
 // Pour la carte //
 
-var mymap = L.map('mapid').setView([43.608353, 3.879833], 13); //Initialise la carte sur les coordonnees de setView()
+var mymap = L.map('mapid').setView([43.608353, 3.879833], 9); //Initialise la carte sur les coordonnees de setView()
 
 var greenIcon = new L.Icon({ //Création d'un icon de localisation vert
   iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
