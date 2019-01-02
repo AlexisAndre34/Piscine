@@ -111,7 +111,7 @@ def create_commerce(request):
             commercant = Commercant.objects.get(numcommercant = request.user.id)
             new_gestion = Gerer(numcommercant = commercant, numcommerce = commerce)
             new_gestion.save()
-            return render(request, 'index.html')
+            return read_commerce(request, commerce.numsiret)
     else:
         form = CommerceForm(request.POST)
     return render(request, 'create/createCommerce.html', {'formCommerce': form})
@@ -340,7 +340,7 @@ def update_commerce(request, idcommerce):
         commerce.nomcommerce = request.POST.get('nomcommerce')
         commerce.typecommerce = request.POST.get('typecommerce')
         commerce.emailcommerce = request.POST.get('emailcommerce')
-        commerce.livraisoncommerce = request.POST.get('livraisoncommerce')
+        commerce.livraisondisponible = request.POST.get('livraisondisponible')
         commerce.joursretrait = request.POST.get('joursretrait')
         commerce.telephonecommerce = request.POST.get('telephonecommerce')
         commerce.codepostalcommerce = request.POST.get('codepostalcommerce')
@@ -387,7 +387,7 @@ def delete_commerce(request, idcommerce):
     gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
     if request.method == 'POST':
         Commerce.objects.get(numsiret = idcommerce).delete()
-        return render(request, 'index.html')
+        return dashboard_commercant(request)
 
     return render(request, 'delete/deleteView.html')
 		
