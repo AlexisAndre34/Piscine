@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
 <div class="search_container">
-    {% for produit in listeProduits %}
+    {% for produit in produits %}
       <div class="card search_card">
       {% if produit.photoproduit1 %}
         <div class="card-image">
@@ -24,25 +24,27 @@
 
 
 
-<ul class="pagination">
+<div class="justify_center">
+    <ul class="pagination">
 
-   {% if listeProduits.has_previous %}
+       {% if produits.has_previous %}
 
-    <li class="waves-effect"><a href="{% url 'search' recherche listeProduits.previous_page_number %}"><i class="material-icons">chevron_left</i></a></li>
-    <li class="waves-effect"><a href="{% url 'search' recherche listeProduits.previous_page_number %}">{{ listeProduits.previous_page_number }}</a></li>
-   {% endif %}
+        <li class="waves-effect"><a href="{% url 'read_produit_by_ville' ville produits.previous_page_number %}"><i class="material-icons">chevron_left</i></a></li>
+        <li class="waves-effect"><a href="{% url 'read_produit_by_ville' ville produits.previous_page_number %}">{{ produits.previous_page_number }}</a></li>
+       {% endif %}
 
-    <li class="active"><a href="#!">{{ listeProduits.number }}</a></li> <!-- listeProduits.paginator.num_pages -->
+        <li class="active teal"><a href="#!">{{ produits.number }}</a></li> <!-- produits.paginator.num_pages -->
 
 
-   {% if listeProduits.has_next %}
+       {% if produits.has_next %}
 
-    <li class="waves-effect"><a href="{% url 'search' recherche listeProduits.next_page_number %}">{{ listeProduits.next_page_number }}</a></li>
-    <li class="waves-effect"><a href="{% url 'search' recherche listeProduits.next_page_number %}"><i class="material-icons">chevron_right</i></a></li>
+        <li class="waves-effect"><a href="{% url 'read_produit_by_ville' ville produits.next_page_number %}">{{ produits.next_page_number }}</a></li>
+        <li class="waves-effect"><a href="{% url 'read_produit_by_ville' ville produits.next_page_number %}"><i class="material-icons">chevron_right</i></a></li>
 
-   {% endif %}
+       {% endif %}
 
-</ul>
+    </ul>
+</div>
 
 
 {% endblock %}

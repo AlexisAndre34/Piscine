@@ -418,12 +418,12 @@ def search(request, keyword=None, page=1):
             else:
                 produits_all = Produit.objects.filter(Q(nomproduit__icontains=recherche) | Q(numcategorie=categories[0].numcategorie)) #On prend la première categorie qui à été retourné suite à notre requete
 
-            paginator = Paginator(produits_all, 2)  # On affiche 1 produit par page
+            """paginator = Paginator(produits_all, 2)  # On affiche 1 produit par page
             try:
                 produits = paginator.page(page)
             except EmptyPage:
-                produits = paginator.page(paginator.num_pages)
-
+                produits = paginator.page(paginator.num_pages)"""
+            produits = pagination(produits_all,page)
             return render(request, 'list/produits_recherche.html', locals())
     else:
 
@@ -435,13 +435,23 @@ def search(request, keyword=None, page=1):
 
         recherche=keyword #On passe la recherche à travers les différentes pages de la pagination
 
-        paginator = Paginator(produits_all, 2) #On affiche 1 produit par page
+        """paginator = Paginator(produits_all, 2) #On affiche 1 produit par page
         try:
             produits = paginator.page(page)
         except EmptyPage:
-            produits = paginator.page(paginator.num_pages)
-
+            produits = paginator.page(paginator.num_pages)"""
+        produits = pagination(produits_all, page)
         return render(request, 'list/produits_recherche.html', locals())
+
+
+def pagination(liste,nb_page):
+    paginator = Paginator(liste, 1)  # On affiche 2 produit par page
+    try:
+        produits = paginator.page(nb_page)
+    except EmptyPage:
+        produits = paginator.page(paginator.num_pages)
+
+    return produits
 
 #---------------- VIEWS DE LISTE ----------------
 #permet de voir les produits d'un commerce
@@ -463,18 +473,18 @@ def produit_by_ville(request, ville, page=1):
         for produit in produitsParCommerce:
             listeProduits.append(produit)
 
-    print(listeProduits)
 
+    produits = pagination(listeProduits, page)
     return render(request, 'list/produit_by_ville.html', locals())
 
 #permet de voir les produits par categorie
-def produit_by_categorie(request, numcategorie,page=1):
+def produit_by_categorie(request, numcategorie, page=1):
     produitsParCategorie = Produit.objects.filter(numcategorie = numcategorie)
     listeProduits = []
     for produit in produitsParCategorie:
         listeProduits.append(produit)
-    print(listeProduits)
 
+    produits = pagination(listeProduits,page) #La fonction que l'on appelle va créer la pagination pour ces produits
     return render(request, 'list/produits_by_categorie.html', locals())
 
 
