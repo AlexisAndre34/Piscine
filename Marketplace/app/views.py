@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage
-from app.models import Client, Commercant, Commerce, Gerer, Produit, Categorie, Commande, Reservation, Appartenir, Reserver, Commenter, Reduction
+from app.models import Client, Commercant, Commerce, Gerer, Produit, Concerner, Categorie, Commande, Reservation, Appartenir, Reserver, Commenter, Reduction
 from app.forms import SignInForm, SignUpFormClient, SignUpFormCommercant, CommerceForm, ProduitForm, UpdateClientForm, UpdateCommercantForm, CommentaireForm, ReductionForm
 from datetime import datetime, timedelta
 from django.db.models import Q #Pour réaliser des Query Set plus complexe, en OR
@@ -126,7 +126,9 @@ def create_produit(request, idcommerce):
             commerce = Commerce.objects.get(numsiret=idcommerce)
             new_produit = Produit(idcommerce=commerce, numcategorie=form.cleaned_data.get('choice_categorie'), nomproduit=form.cleaned_data.get('nomproduit'), marqueproduit=form.cleaned_data.get('marqueproduit'), descriptifproduit=form.cleaned_data.get('descriptifproduit'), caracteristiquesproduit=form.cleaned_data.get('caracteristiquesproduit'), prixproduit=form.cleaned_data.get('prixproduit'), tauxremise=form.cleaned_data.get('tauxremise'), quantitestock=form.cleaned_data.get('quantitestock'), quantitedisponible=qtestock, photoproduit1=form.cleaned_data.get('photoproduit1'), photoproduit2=form.cleaned_data.get('photoproduit2'))
             new_produit.save()
-            return render(request, 'index.html')
+            new_concerner = Concerner(numcategorie=form.cleaned_data.get('choice_categorie'), numproduit=new_produit)
+            new_concerner.save()
+            return read_commerce(request, commerce.numsiret)
     #Si c'est une requete GET ou autre chose
     else:
         form = ProduitForm()
@@ -370,12 +372,22 @@ def update_produit(request, pk):
             produit.prixproduit = form.cleaned_data.get('prixproduit')
             produit.tauxremise = form.cleaned_data.get('tauxremise')
             produit.quantitestock = form.cleaned_data.get('quantitestock')
-            produit.photoproduit1 = form.cleaned_data.get('photoproduit1')
-            produit.photoproduit2 = form.cleaned_data.get('photoproduit2')
+
+            if form.cleaned_data.get('photoproduit1') is not None:
+                produit.photoproduit1 = form.cleaned_data.get('photoproduit1')
+
+            if form.cleaned_data.get('photoproduit2') is not None:
+                produit.photoproduit2 =form.cleaned_data.get('photoproduit2')
+            produit.numcategorie = form.cleaned_data.get('choice_categorie')
+
             produit.save()
-            return read_commerce(request, produit.idcommerce)
+            concerner = Concerner.objects.get(numproduit=produit) #On met également la table Concerner à jour en modifiant la categorie associé à notre produit
+            concerner.numcategorie = form.cleaned_data.get('choice_categorie')
+            concerner.save()
+            return read_commerce(request, produit.idcommerce.numsiret)
     else:
         form = ProduitForm(instance=produit)
+        print(form)
     return render(request, 'update/updateProduit.html', {'Produitform': form})
 
 

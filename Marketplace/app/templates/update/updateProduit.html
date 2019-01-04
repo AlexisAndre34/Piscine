@@ -2,21 +2,25 @@
 
 {% block content %}
 
-<div>
-    <form method="post" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for field in Produitform %}
-		<div>
-			{{ field.label_tag }}<br>
-			{{ field }}
-		</div>
-		{% endfor %}
+<div class="page">
+	<div class = "formulaire">
+  		<div class="blocCentrer">
+			<div class= "titreForm">Modifier un produit</div>
+			<form method="post" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+				{% for field in Produitform %}
+				<div>
+					{{ field.label_tag }}<br>
+					{{ field }}
+				</div>
+				{% endfor %}
 
-
-    <div>
-		<button type="submit">Envoyer</button>
-	</div>
-    </form>
+				<div class="boutonForm">
+				  <button class="btn purple" type="submit">ENREGISTRER
+				  </button>
+				</div>
+			</form>
+      	</div>
+    </div>
 </div>
-
 {% endblock %}
