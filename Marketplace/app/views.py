@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage
@@ -103,6 +103,7 @@ def signup_commercant(request):
     return render(request, 'signup_commercant.html', {'formCommercant': form})
 
 #Creation d'un commerce
+@permission_required('add_commerce')
 def create_commerce(request):
     if request.method == 'POST':
         form = CommerceForm(request.POST)
@@ -116,6 +117,7 @@ def create_commerce(request):
         form = CommerceForm(request.POST)
     return render(request, 'create/createCommerce.html', {'formCommerce': form})
 
+@permission_required('add_produit')
 def create_produit(request, idcommerce):
     #Si c'est une requete en POST
     if request.method == 'POST':
@@ -135,6 +137,7 @@ def create_produit(request, idcommerce):
     return render(request, 'create/createProduit.html', {'formProduit': form})
 
 #Doit être connecté
+@permission_required('add_reduction')
 def create_reduction(request,idcommerce):
     utilisateur = User.objects.get(id=request.user.id)
     client = get_object_or_404(Client, numclient=utilisateur)
@@ -158,6 +161,7 @@ def create_reduction(request,idcommerce):
 
 #---------------- VIEWS DE LECTURE (READ) ----------------
 #permet de read un commerce
+@permission_required('view_commerce')
 def read_commerce(request, idcommerce):
     commerce = get_object_or_404(Commerce,  numsiret=idcommerce)
     estGerant = not (not Gerer.objects.filter(numcommercant=request.user.id, numcommerce=idcommerce)) #Premier not : pour tester si le resultat de la requete est vide (cela retourne un boolean) , Deuxième not : s'effectue sur le boolean retourné par le premier not
@@ -170,6 +174,7 @@ def read_commerce(request, idcommerce):
     return render(request, 'read/readCommerce.html', locals())
 
 #permet de read tous les commerces d'un commercant
+@permission_required('view_commerce')
 def read_commerce_by_commercant(request):
     commercant = Commercant.objects.get(numcommercant = request.user.id)
     listeGerer = Gerer.objects.filter(numcommercant = commercant)
@@ -177,6 +182,7 @@ def read_commerce_by_commercant(request):
 
 
 #permet de read un produit
+@permission_required('view_commerce')
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     commentaires = Commenter.objects.filter(numproduit=produit)
@@ -206,6 +212,7 @@ def read_moncompte(request):
     return render(request, 'read/moncompte.html', locals())
 
 #permet de read une commande
+@permission_required('view_commande')
 def read_commande(request, idcommande):
     commande = Commande.objects.get(numcommande=idcommande)
     estClient = request.session.get('estClient')
@@ -223,6 +230,7 @@ def read_commande(request, idcommande):
     return render(request, 'read/readCommande.html', locals())
 
 #permet de read une reservation
+@permission_required('view_reservation')
 def read_reservation(request, idreservation):
     reservation = Reservation.objects.get(numreservation=idreservation)
     estClient = request.session.get('estClient')
@@ -278,6 +286,7 @@ def list_reduction(request):
     reductions = Reduction.objects.filter(numclient=client)
     return render(request, 'list/list_reductions.html', {'reductions': reductions})
 
+@permission_required('view_commerce')
 def carte_commerces(request):
 
     commerces = Commerce.objects.all()
@@ -298,6 +307,7 @@ def carte_search(request):
 
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
+@permission_required('change_commercant')
 def update_commercant(request):
     user = User.objects.get(id=request.user.id)
     commercant = Commercant.objects.get(numcommercant=request.user.id)
@@ -314,6 +324,7 @@ def update_commercant(request):
     else:
         return render(request, 'update/updateCommercant.html', locals())
 
+@permission_required('change_client')
 def update_client(request):
     user = User.objects.get(id=request.user.id)
     client = Client.objects.get(numclient=request.user.id)
@@ -335,6 +346,7 @@ def update_client(request):
         date = str(client.datenaissanceclient.year)+"-"+str(client.datenaissanceclient.month)+"-"+str(client.datenaissanceclient.day) #Permet d'avoir le bon format de date pour le input : type=date , du formulaire
         return render(request, 'update/updateClient.html', locals())
 
+@permission_required('change_commerce')
 def update_commerce(request, idcommerce):
     user = User.objects.get(id=request.user.id)
     commerce = get_object_or_404(Commerce, numsiret=idcommerce)
@@ -359,6 +371,7 @@ def update_commerce(request, idcommerce):
 
 # mise a jour d'un produit
 
+@permission_required('change_produit')
 def update_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=produit.idcommerce)
@@ -395,6 +408,7 @@ def update_produit(request, pk):
 
 #permet de delete un commerce
 
+@permission_required('delete_commerce')
 def delete_commerce(request, idcommerce):
     gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
     if request.method == 'POST':
@@ -404,7 +418,7 @@ def delete_commerce(request, idcommerce):
     return render(request, 'delete/deleteView.html')
 		
 #permet de delete un produit
-
+@permission_required('delete_produit')
 def delete_produit(request, pk):
     produit = get_object_or_404(Produit , numproduit=pk)
     if request.method == 'POST':
@@ -416,6 +430,7 @@ def delete_produit(request, pk):
 
 
 #--------------- SEARCH -------------------------#
+@login_required
 def search(request, keyword=None, page=1):
     #keyword et page sont utilisé lorsque l'utilisateur fait défiler les pages, par défaut ils valent respectivement None et 1
     recherche = request.POST.get('recherche') #On récupère la recherche de l'utilisateur qui nous est envoyé en requete POST
@@ -467,6 +482,7 @@ def pagination(liste,nb_page):
 
 #---------------- VIEWS DE LISTE ----------------
 #permet de voir les produits d'un commerce
+@permission_required('view_produit')
 def produit_by_commerce(request, idcommerce, page=1):
     produitsParCommerce = Produit.objects.filter(idcommerce = idcommerce)
     listeProduits = []
@@ -477,6 +493,7 @@ def produit_by_commerce(request, idcommerce, page=1):
     return render(request, 'list/produits_by_commerce.html', locals())
 
 #permet de voir les produits par ville
+@permission_required('view_produit')
 def produit_by_ville(request, ville, page=1):
     listeCommerces = Commerce.objects.filter(villecommerce = ville)
     listeProduits = []
@@ -490,6 +507,7 @@ def produit_by_ville(request, ville, page=1):
     return render(request, 'list/produit_by_ville.html', locals())
 
 #permet de voir les produits par categorie
+@permission_required('view_produit')
 def produit_by_categorie(request, numcategorie, page=1):
     produitsParCategorie = Produit.objects.filter(numcategorie = numcategorie)
     listeProduits = []
@@ -507,6 +525,7 @@ def produit_by_categorie(request, numcategorie, page=1):
 
 #---------------- VIEWS DASHBOARD ----------------
 
+@login_required
 def dashboard_commercant(request):
     utilisateur = User.objects.get(id=request.user.id)
     commercant = Commercant.objects.get(numcommercant=request.user.id)
@@ -612,6 +631,7 @@ def afficher_panier(request):
     panier_vide = resultat[2]
     return render(request, 'panier/panier.html', locals())
 
+@login_required
 def init_panier(request):
     panier = list()
     request.session['panier'] = panier #On initialise le panier dans la session
@@ -634,6 +654,7 @@ def ajout_panier(request, idproduit):
 
     return afficher_panier(request)
 
+@login_required
 def supprimer_panier(request, idproduit):
     panier_session = request.session.get('panier')
     for produit_panier in panier_session:
@@ -643,6 +664,7 @@ def supprimer_panier(request, idproduit):
     request.session['panier'] = panier_session  # On sauvegarde
     return afficher_panier(request)
 
+@login_required
 def quantite_panier(request, idproduit):
 
     panier_session = request.session.get('panier')
@@ -655,6 +677,7 @@ def quantite_panier(request, idproduit):
     return afficher_panier(request)
 
 
+@login_required
 def verification_commande(request):
     Reponse = trierDemande(request,True)
     CommandesEnCours = Reponse[0]
@@ -664,6 +687,7 @@ def verification_commande(request):
 
     return render(request, 'panier/verificationPanier.html', locals())
 
+@login_required
 def validation_commande(request):
     Reponse = trierDemande(request,True)
     Commandes = Reponse[0]
@@ -687,6 +711,7 @@ def validation_commande(request):
     request = init_panier(request)
     return render(request, 'panier/valide.html')
 
+@login_required
 def reset_panier(request):
     return render(init_panier(request), 'panier/panier.html', locals())
 
@@ -721,6 +746,7 @@ def ajout_reservation(request, idproduit):
 
     return afficher_reservation(request)
 
+@login_required
 def supprimer_reservation(request, idproduit):
     reservation_session = request.session.get('reservation')
     for produit_reservation in reservation_session:
@@ -730,6 +756,7 @@ def supprimer_reservation(request, idproduit):
     request.session['reservation'] = reservation_session  # On sauvegarde
     return afficher_reservation(request)
 
+@login_required
 def quantite_reservation(request, idproduit):
 
     reservation_session = request.session.get('reservation')
@@ -741,7 +768,7 @@ def quantite_reservation(request, idproduit):
     request.session['reservation'] = reservation_session #On sauvegarde
     return afficher_reservation(request)
 
-
+@login_required
 def verification_reservation(request):
     Reponse = trierDemande(request,False)
     ReservationsEnCours = Reponse[0]
@@ -751,6 +778,7 @@ def verification_reservation(request):
 
     return render(request, 'reservation/verificationReservation.html', locals())
 
+@login_required
 def validation_reservations(request):
     reponse = trierDemande(request, False)
     Reservations = reponse[0]
@@ -776,7 +804,7 @@ def validation_reservations(request):
     request = init_reservation(request)
     return render(request, 'panier/valide.html', locals())
 
-
+@login_required
 def paiement_reservation(request, idreservation):
     reservation = get_object_or_404(Reservation, numreservation=idreservation)
     commercant = get_object_or_404(Commercant, numcommercant=request.user.id)
@@ -794,6 +822,7 @@ def paiement_reservation(request, idreservation):
     client.pointsclient = client.pointsclient + int(reservation.montantreservation)
     return read_mesreservationsCommerce(request, reservation.numcommerce)
 
+@login_required
 def reset_reservation(request):
     return render(init_reservation(request), 'reservation/reservation.html', locals())
 
