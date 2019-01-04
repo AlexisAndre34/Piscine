@@ -103,7 +103,7 @@ def signup_commercant(request):
     return render(request, 'signup_commercant.html', {'formCommercant': form})
 
 #Creation d'un commerce
-@permission_required('add_commerce')
+@permission_required('app.add_commerce')
 def create_commerce(request):
     if request.method == 'POST':
         form = CommerceForm(request.POST)
@@ -117,7 +117,7 @@ def create_commerce(request):
         form = CommerceForm(request.POST)
     return render(request, 'create/createCommerce.html', {'formCommerce': form})
 
-@permission_required('add_produit')
+@permission_required('app.add_produit')
 def create_produit(request, idcommerce):
     #Si c'est une requete en POST
     if request.method == 'POST':
@@ -137,7 +137,7 @@ def create_produit(request, idcommerce):
     return render(request, 'create/createProduit.html', {'formProduit': form})
 
 #Doit être connecté
-@permission_required('add_reduction')
+@permission_required('app.add_reduction')
 def create_reduction(request,idcommerce):
     utilisateur = User.objects.get(id=request.user.id)
     client = get_object_or_404(Client, numclient=utilisateur)
@@ -161,7 +161,7 @@ def create_reduction(request,idcommerce):
 
 #---------------- VIEWS DE LECTURE (READ) ----------------
 #permet de read un commerce
-@permission_required('view_commerce')
+@permission_required('app.view_commerce')
 def read_commerce(request, idcommerce):
     commerce = get_object_or_404(Commerce,  numsiret=idcommerce)
     estGerant = not (not Gerer.objects.filter(numcommercant=request.user.id, numcommerce=idcommerce)) #Premier not : pour tester si le resultat de la requete est vide (cela retourne un boolean) , Deuxième not : s'effectue sur le boolean retourné par le premier not
@@ -174,7 +174,7 @@ def read_commerce(request, idcommerce):
     return render(request, 'read/readCommerce.html', locals())
 
 #permet de read tous les commerces d'un commercant
-@permission_required('view_commerce')
+@permission_required('app.view_commerce')
 def read_commerce_by_commercant(request):
     commercant = Commercant.objects.get(numcommercant = request.user.id)
     listeGerer = Gerer.objects.filter(numcommercant = commercant)
@@ -182,7 +182,7 @@ def read_commerce_by_commercant(request):
 
 
 #permet de read un produit
-@permission_required('view_commerce')
+@permission_required('app.view_commerce')
 def read_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     commentaires = Commenter.objects.filter(numproduit=produit)
@@ -212,7 +212,7 @@ def read_moncompte(request):
     return render(request, 'read/moncompte.html', locals())
 
 #permet de read une commande
-@permission_required('view_commande')
+@permission_required('app.view_commande')
 def read_commande(request, idcommande):
     commande = Commande.objects.get(numcommande=idcommande)
     estClient = request.session.get('estClient')
@@ -230,7 +230,7 @@ def read_commande(request, idcommande):
     return render(request, 'read/readCommande.html', locals())
 
 #permet de read une reservation
-@permission_required('view_reservation')
+@permission_required('app.view_reservation')
 def read_reservation(request, idreservation):
     reservation = Reservation.objects.get(numreservation=idreservation)
     estClient = request.session.get('estClient')
@@ -286,7 +286,7 @@ def list_reduction(request):
     reductions = Reduction.objects.filter(numclient=client)
     return render(request, 'list/list_reductions.html', {'reductions': reductions})
 
-@permission_required('view_commerce')
+@permission_required('app.view_commerce')
 def carte_commerces(request):
 
     commerces = Commerce.objects.all()
@@ -307,7 +307,7 @@ def carte_search(request):
 
 #---------------- VIEWS DE MISES A JOUR (UPDATE) ----------------
 
-@permission_required('change_commercant')
+@permission_required('app.change_commercant')
 def update_commercant(request):
     user = User.objects.get(id=request.user.id)
     commercant = Commercant.objects.get(numcommercant=request.user.id)
@@ -324,7 +324,7 @@ def update_commercant(request):
     else:
         return render(request, 'update/updateCommercant.html', locals())
 
-@permission_required('change_client')
+@permission_required('app.change_client')
 def update_client(request):
     user = User.objects.get(id=request.user.id)
     client = Client.objects.get(numclient=request.user.id)
@@ -346,7 +346,7 @@ def update_client(request):
         date = str(client.datenaissanceclient.year)+"-"+str(client.datenaissanceclient.month)+"-"+str(client.datenaissanceclient.day) #Permet d'avoir le bon format de date pour le input : type=date , du formulaire
         return render(request, 'update/updateClient.html', locals())
 
-@permission_required('change_commerce')
+@permission_required('app.change_commerce')
 def update_commerce(request, idcommerce):
     user = User.objects.get(id=request.user.id)
     commerce = get_object_or_404(Commerce, numsiret=idcommerce)
@@ -371,7 +371,7 @@ def update_commerce(request, idcommerce):
 
 # mise a jour d'un produit
 
-@permission_required('change_produit')
+@permission_required('app.change_produit')
 def update_produit(request, pk):
     produit = get_object_or_404(Produit, numproduit=pk)
     get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=produit.idcommerce)
@@ -408,7 +408,7 @@ def update_produit(request, pk):
 
 #permet de delete un commerce
 
-@permission_required('delete_commerce')
+@permission_required('app.delete_commerce')
 def delete_commerce(request, idcommerce):
     gerer = get_object_or_404(Gerer, numcommercant=request.user.id, numcommerce=idcommerce)
     if request.method == 'POST':
@@ -418,7 +418,7 @@ def delete_commerce(request, idcommerce):
     return render(request, 'delete/deleteView.html')
 		
 #permet de delete un produit
-@permission_required('delete_produit')
+@permission_required('app.delete_produit')
 def delete_produit(request, pk):
     produit = get_object_or_404(Produit , numproduit=pk)
     if request.method == 'POST':
@@ -482,6 +482,7 @@ def pagination(liste,nb_page):
 
 #---------------- VIEWS DE LISTE ----------------
 #permet de voir les produits d'un commerce
+@permission_required('app.view_commerce')
 def produit_by_commerce(request, idcommerce, page=1):
     produitsParCommerce = Produit.objects.filter(idcommerce = idcommerce)
     listeProduits = []
@@ -492,6 +493,7 @@ def produit_by_commerce(request, idcommerce, page=1):
     return render(request, 'list/produits_by_commerce.html', locals())
 
 #permet de voir les produits par ville
+@permission_required('app.view_commerce')
 def produit_by_ville(request, ville, page=1):
     listeCommerces = Commerce.objects.filter(villecommerce = ville)
     listeProduits = []
