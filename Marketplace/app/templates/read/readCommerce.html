@@ -55,7 +55,7 @@
                 </div>
                 <div class="col s12 m7">
                     <a class="btn-small teal" href="{% url 'create_produit' commerce.numsiret %}">Ajouter un produit</a>
-                    <a class="btn-small teal" href="{% url 'produit_by_commerce' commerce.numsiret %}">Voir mes produits</a>
+                    <a class="btn-small teal" href="{% url 'produit_by_commerce' commerce.numsiret 1 %}">Voir mes produits</a>
                 </div>
                 <div class="col s12 m7">
                     <a class="waves-effect btn-small green" href="{% url 'update_commerce' idcommerce=commerce.numsiret %}">Modifier</a>

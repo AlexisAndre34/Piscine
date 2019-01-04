@@ -460,8 +460,8 @@ def produit_by_commerce(request, idcommerce, page=1):
     listeProduits = []
     for produit in produitsParCommerce:
         listeProduits.append(produit)
-    print(listeProduits)
 
+    produits = pagination(listeProduits, page)
     return render(request, 'list/produits_by_commerce.html', locals())
 
 #permet de voir les produits par ville
@@ -562,7 +562,7 @@ def trierDemande(request, choix):
             # ligne_produit[1] == objet_produit.quantitedisponible
             error_qte = True
 
-        if objet_produit.quantitestock == 0:  # Si rupture de stock
+        if objet_produit.quantitestock == 0 or objet_produit.quantitedisponible == 0 :  # Si rupture de stock
             Erreur = "Rupture de stock pour le " + objet_produit.nomproduit + ". Veuillez supprimer ce produit de votre panier."
             # ligne_produit[1] == objet_produit.quantitedisponible
             error_qte = True
