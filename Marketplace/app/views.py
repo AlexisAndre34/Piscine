@@ -482,7 +482,6 @@ def pagination(liste,nb_page):
 
 #---------------- VIEWS DE LISTE ----------------
 #permet de voir les produits d'un commerce
-@permission_required('view_produit')
 def produit_by_commerce(request, idcommerce, page=1):
     produitsParCommerce = Produit.objects.filter(idcommerce = idcommerce)
     listeProduits = []
@@ -493,7 +492,6 @@ def produit_by_commerce(request, idcommerce, page=1):
     return render(request, 'list/produits_by_commerce.html', locals())
 
 #permet de voir les produits par ville
-@permission_required('view_produit')
 def produit_by_ville(request, ville, page=1):
     listeCommerces = Commerce.objects.filter(villecommerce = ville)
     listeProduits = []
@@ -507,7 +505,6 @@ def produit_by_ville(request, ville, page=1):
     return render(request, 'list/produit_by_ville.html', locals())
 
 #permet de voir les produits par categorie
-@permission_required('view_produit')
 def produit_by_categorie(request, numcategorie, page=1):
     produitsParCategorie = Produit.objects.filter(numcategorie = numcategorie)
     listeProduits = []
