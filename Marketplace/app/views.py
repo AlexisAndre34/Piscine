@@ -535,6 +535,7 @@ def dashboard_commercant(request):
 #---------------- COMMUN  PANIER ET RESERVATION ----------------
 
 #Affichage du panier si choix=True, si choix=False alors affichage des reservations
+@permission_required('app.view_reservation','app.view_commande')
 def afficher_demande(request, choix):
     resultat = list()
     produits = list()
