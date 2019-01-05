@@ -384,8 +384,11 @@ def update_produit(request, pk):
             produit.caracteristiqueproduit = form.cleaned_data.get('caracteristiqueproduit')
             produit.prixproduit = form.cleaned_data.get('prixproduit')
             produit.tauxremise = form.cleaned_data.get('tauxremise')
-            produit.quantitestock = form.cleaned_data.get('quantitestock')
-
+            new_quantite = form.cleaned_data.get('quantitestock') - produit.quantitestock
+            produit.quantitestock = produit.quantitestock + new_quantite
+            produit.quantitedisponible = produit.quantitedisponible + new_quantite
+            if produit.quantitedisponible < 0:
+                produit.quantitedisponible = 0
             if form.cleaned_data.get('photoproduit1') is not None:
                 produit.photoproduit1 = form.cleaned_data.get('photoproduit1')
 
@@ -445,11 +448,6 @@ def search(request, keyword=None, page=1):
             else:
                 produits_all = Produit.objects.filter(Q(nomproduit__icontains=recherche) | Q(numcategorie=categories[0].numcategorie)) #On prend la première categorie qui à été retourné suite à notre requete
 
-            """paginator = Paginator(produits_all, 2)  # On affiche 1 produit par page
-            try:
-                produits = paginator.page(page)
-            except EmptyPage:
-                produits = paginator.page(paginator.num_pages)"""
             produits = pagination(produits_all,page)
             return render(request, 'list/produits_recherche.html', locals())
     else:
@@ -462,17 +460,12 @@ def search(request, keyword=None, page=1):
 
         recherche=keyword #On passe la recherche à travers les différentes pages de la pagination
 
-        """paginator = Paginator(produits_all, 2) #On affiche 1 produit par page
-        try:
-            produits = paginator.page(page)
-        except EmptyPage:
-            produits = paginator.page(paginator.num_pages)"""
         produits = pagination(produits_all, page)
         return render(request, 'list/produits_recherche.html', locals())
 
 
 def pagination(liste,nb_page):
-    paginator = Paginator(liste, 1)  # On affiche 2 produit par page
+    paginator = Paginator(liste, 2)  # On affiche 2 produit par page
     try:
         produits = paginator.page(nb_page)
     except EmptyPage:
@@ -708,7 +701,7 @@ def validation_commande(request):
 
     type_demande = "commande"
     request = init_panier(request)
-    return render(request, 'panier/valide.html')
+    return render(request, 'panier/valide.html', {'type_demande': type_demande})
 
 @login_required
 def reset_panier(request):
