@@ -837,14 +837,17 @@ def valider_reduction(request):
             if not reservation:
                 message = "Numéro de réservation incorrect."
             else:
+                reservation = reservation[0]
                 if reduction.typereduction == "bon": #On vérifie si la réduction est un bon ou un pourcentage
+                    type="euros"
                     reservation.montantreservation = reservation.montantreservation - reduction.valeurreduction
                 else:
+                    type="%"
                     reservation.montantreservation = reservation.montantreservation - (reservation.montantreservation*reduction.valeurreduction)
                 reduction.estutilise = True
                 reduction.save()
                 reservation.save()
-                message = "La réduction à été utilisée correctement. Veuillez valider le paiement de la réservation n° "+id_reservation+"."
+                message = "La réduction à été utilisée correctement ("+reduction.typereduction+" de "+str(reduction.valeurreduction)+" "+type+"). Procèder maitenant au paiement avec le client : "+str(reservation.montantreservation)+" euros. Veuillez ensuite valider le paiement de la réservation n° "+id_reservation+"."
 
     data = {
         "message": message
