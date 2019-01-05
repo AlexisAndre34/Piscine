@@ -7,22 +7,18 @@
       <div class="card search_card">
       {% if produit.photoproduit1 %}
         <div class="card-image">
-            <a href="{% url 'read_produit' produit.numproduit %}" ><img src={{ produit.photoproduit1.url }}></a>
+            <img class="materialboxed" width="350" src={{ produit.photoproduit1.url }}>
         </div>
       {% endif %}
-      {% if request.session.estClient %}
+            <a href="{% url 'read_produit' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">visibility</i></a>
             <a href="{% url 'ajout_reservation' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_basket</i></a>
             {% if produit.idcommerce.livraisondisponible %}
             <a href="{% url 'ajout_panier' produit.numproduit %}" class="btn-flat halfway-fab waves-effect waves-light"><i class="material-icons">shopping_cart</i></a>
             {% endif %}
 
-      {% else %}
-            <a class="btn" href="{% url 'updateproduit' produit.numproduit %}">Modifier produit</a>
-
-      {% endif %}
         <div class="card-content">
-            <span class="card-title">{{ produit.nomproduit }}</span>
-            <p>Prix : {{ produit.prixproduit }} euros</p>
+            <div><span><I>{{ produit.nomproduit|truncatechars:18 }}</I></span></div> <!--Avec truncatechars on affiche ici les 18 premiers ccaractères du nomproduit-->
+            <div><span>Prix : {{ produit.prixproduit }} euros</span></div>
         </div>
       </div>
     {% endfor %}
