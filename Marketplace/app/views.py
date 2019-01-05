@@ -180,6 +180,14 @@ def read_commerce_by_commercant(request):
     listeGerer = Gerer.objects.filter(numcommercant = commercant)
     return render(request, 'read/readCommerceByCommercant.html', locals())
 
+def read_commerce_by_ville(request, ville):
+    listeCommerces = Commerce.objects.filter(villecommerce = ville)
+    listeCom = []
+    for commerce in listeCommerces:
+        listeCom.append(commerce)
+        
+    return render(request, 'list/liste_commerces_by_ville.html', locals())
+
 
 #permet de read un produit
 @permission_required('app.view_commerce')

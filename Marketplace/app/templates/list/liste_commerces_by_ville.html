@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div>
+    <div class="collection with-header">
+        <div class="collection-header"><h4>Commerces</h4></div>
+    {% for commerce in listeCom %}
+    <div class="collection-item">
+        <h5>{{ commerce.nomcommerce }}</h5>
+        <a class="btn" href="{% url 'read_produit_by_commerce' commerce.numsiret 1 %}">Voir Produits</a>
+
+    </div>
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

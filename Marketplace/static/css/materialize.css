@@ -8381,7 +8381,7 @@ input[type=range]::-ms-thumb {
 }
 
 .carousel.carousel-slider .carousel-item {
-  width: 100%;
+  width: auto;
   height: 100%;
   /*min-height: 400px;*/
   position: absolute;

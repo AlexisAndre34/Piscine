@@ -138,10 +138,13 @@
     margin-right: 10px;
 }
 
+
 .justify_spacearound{
     display: flex;
     justify-content: space-around;
 }
+
+
 .recapitulation{
     margin-left: 5%;
     margin-right: 5%;
@@ -165,11 +168,8 @@
 }
 
 .titre_image{
+  margin-left: 100px;
   text-align: center;
-}
-
-.accueil .carousel .carousel-item > img{
-  width: 130%;
 }
 
 /* Pour la carte */
@@ -178,3 +178,8 @@
   width: 100%;
 }
 /* ------------ */
+
+.taille{
+  width: 300px;
+  height: 160px;
+}
