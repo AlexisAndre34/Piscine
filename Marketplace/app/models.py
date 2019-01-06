@@ -19,9 +19,9 @@ class Client(models.Model):
     datenaissanceclient = models.DateField()
     pointsclient = models.IntegerField(default='0')
     telephoneclient = models.CharField(blank=True, max_length=15)
-    codepostalclient = models.IntegerField(blank=True)
-    villeclient = models.CharField(blank=True, max_length=30)
-    rueclient = models.CharField(blank=True, max_length=30)
+    codepostalclient = models.IntegerField(blank=False)
+    villeclient = models.CharField(blank=False, max_length=30)
+    rueclient = models.CharField(blank=False, max_length=30)
     class Meta:
         db_table = 'client'
 
@@ -61,7 +61,7 @@ class Produit(models.Model):
     tauxremise = models.FloatField(max_length=5)
     quantitestock = models.IntegerField(default='0')
     quantitedisponible = models.IntegerField() #Lors de la création d'un produit le nb de produit disponible est egal au nb de produit en stock
-    photoproduit1 = models.ImageField(upload_to = 'media/', blank=True, null=True)
+    photoproduit1 = models.ImageField(upload_to = 'media/', blank=False, null=True)
     photoproduit2 = models.ImageField(upload_to = 'media/', blank=True, null=True)
     class Meta:
         db_table = 'produit'

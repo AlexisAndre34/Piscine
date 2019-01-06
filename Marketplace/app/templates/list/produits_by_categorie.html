@@ -19,6 +19,9 @@
         <div class="card-content">
             <div><span><I>{{ produit.nomproduit|truncatechars:18 }}</I></span></div> <!--Avec truncatechars on affiche ici les 18 premiers ccaractères du nomproduit-->
             <div><span>Prix : {{ produit.prixproduit }} euros</span></div>
+            {% if produit.tauxremise > 0 %}
+            <div><span>Promotion : {{ produit.tauxremise }} %</span></div>
+            {% endif %}
         </div>
       </div>
     {% endfor %}
