@@ -26,7 +26,11 @@
                     <a href="{% url 'ajout_reservation' produit.0.numproduit %}"><i class="material-icons">add</i></a>
                     <span>{{ produit.1 }}</span>
                 </td>
-                <td>{{ produit.0.prixproduit }}</td>
+                <td>{{ produit.0.prixproduit }}
+                {% if produit.0.tauxremise > 0 %}
+                 *
+                {% endif %}
+                </td>
                 <td>{{ produit.2 }}</td>
                 <td><a href="{% url 'supprimer_reservation' produit.0.numproduit %}"><i class="material-icons">delete</i></a></td>
             </tr>
@@ -44,4 +48,5 @@
     <span>Aucune réservations :( </span>
     {% endif %}
 
+<div>* : Le produit est en promotion</div>
 {% endblock %}

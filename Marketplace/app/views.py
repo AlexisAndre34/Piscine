@@ -583,7 +583,7 @@ def afficher_demande(request, choix):
 
     for produit in demande:
         objet_produit = Produit.objects.get(numproduit=produit[0])
-        prix_total = objet_produit.prixproduit * produit[1]
+        prix_total = (objet_produit.prixproduit - ( (objet_produit.prixproduit * objet_produit.tauxremise) / 100)) * produit[1]
         prix_total = round(prix_total, 2)
         prix_demande = prix_demande + prix_total
 
@@ -617,7 +617,7 @@ def trierDemande(request, choix):
 
     for ligne_produit in demande:
         objet_produit = Produit.objects.get(numproduit=ligne_produit[0])
-        prix_total = prix_total + round((objet_produit.prixproduit * ligne_produit[1]), 2)
+        prix_total = prix_total + round(( (objet_produit.prixproduit - ( (objet_produit.prixproduit * objet_produit.tauxremise) / 100)) * ligne_produit[1]), 2)
         i = 0  # // i de 0 à len(CommandeEnCours)-1
         while (i < (len(CommandesEnCours)-1)) and CommandesEnCours[i][0].numsiret != objet_produit.idcommerce.numsiret:  # Tant que on a pas parcourur tout la liste et qu'on a pas trouvé un commerce correspondant (Sortie du while si 1 des 2 est réalisé)
             i = i + 1
@@ -730,7 +730,7 @@ def validation_commande(request):
     for commande in Commandes:
         montant_commande = float()
         for produit in commande[1]: #On recupère le montant total de chaque commande par commerce
-            montant_commande = montant_commande + round((produit[0].prixproduit * produit[1]),2)
+            montant_commande = montant_commande + round( ( (produit[0].prixproduit - ((produit[0].prixproduit * produit[0].tauxremise)/100)) * produit[1]),2)
         client = Client.objects.get(numclient=request.user.id)
         new_commande = Commande(numclient=client, montantcommande=montant_commande, numcommerce=commande[0])
         new_commande.save() #Sauvegarde de la commande
@@ -821,7 +821,7 @@ def validation_reservations(request):
     for reservation in Reservations:
         montant_reservation = float()
         for produit in reservation[1]:
-            montant_reservation = montant_reservation + round((produit[0].prixproduit * produit[1]),2)
+            montant_reservation = montant_reservation + round( ( (produit[0].prixproduit - ((produit[0].prixproduit * produit[0].tauxremise)/100)) * produit[1]),2 )
             datelimite = datetime.now() + timedelta(days=reservation[0].joursretrait)
         client = Client.objects.get(numclient =request.user.id)
         new_reservation = Reservation(numclient=client, montantreservation = montant_reservation, numcommerce=reservation[0], datelimitereservation=datelimite, paiementrealise=False)
@@ -855,6 +855,7 @@ def paiement_reservation(request, idreservation):
 
     client = reservation.numclient
     client.pointsclient = client.pointsclient + int(reservation.montantreservation)
+    client.save()
     return read_mesreservationsCommerce(request, reservation.numcommerce)
 
 @login_required

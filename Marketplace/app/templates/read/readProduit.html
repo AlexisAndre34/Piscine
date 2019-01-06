@@ -54,6 +54,17 @@
         <td>Caracteristiques</td>
         <td>{{ produit.caracteristiquesproduit }}</td>
       </tr>
+      <tr>
+        <td>Prix</td>
+        <td>{{ produit.prixproduit }} euros</td>
+      </tr>
+      {% if produit.tauxremise > 0 %}
+      <tr>
+        <td>Promotion </td>
+        <td>{{ produit.tauxremise }} %</td>
+      </tr>
+
+      {% endif %}
     </tbody>
   </table>
   {% if produit.idcommerce.livraisondisponible %}
