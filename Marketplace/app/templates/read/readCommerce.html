@@ -40,6 +40,7 @@
                 <a class="btn" href="{% url 'create_reduction' commerce.numsiret %}">Générer une réduction pour ce commerce</a>
                 {% endif %}
             {% endif %}
+            <a class="btn" href="{% url 'produit_by_commerce' commerce.numsiret 1%}">Voir les produits du commerce</a>
             <a class="btn" id="btn_search_map">Localiser le commerce<i class="material-icons">location_on</i></a>
             <input id="search_map" type="text" value="{{ commerce.nomcommerce }}" style="display: none;">
         {% endif %}
