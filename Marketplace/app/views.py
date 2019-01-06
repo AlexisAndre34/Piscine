@@ -203,9 +203,27 @@ def read_produit(request, pk):
     commentaires = Commenter.objects.filter(numproduit=produit)
 
     estClient = request.session.get('estClient')
-    if estClient :                                          #Si c'est un client, on regarde s'il a déjà commenter le produit
+    if estClient :
       client = Client.objects.get(numclient=request.user.id)
-      b1 = Commenter.objects.filter(numproduit=produit, numclient=client)
+      achat = False
+
+      commandes_client = Commande.objects.filter(numclient=client) #On vérifie si le client à déjà commandé le produit
+      if len(commandes_client)>0:
+          for commande in commandes_client:
+              appartenir = Appartenir.objects.filter(numcommande=commande)
+              for ligne_produit in appartenir:
+                  if ligne_produit.numproduit == produit:
+                      achat = True
+
+      reservations_client = Reservation.objects.filter(numclient=client, paiementrealise=True)  # On vérifie si le client à déjà reservé (et payé) le produit
+      if len(reservations_client) > 0:
+          for reservation in reservations_client:
+              reserver = Reserver.objects.filter(numreservation=reservation)
+              for ligne_produit in reserver:
+                  if ligne_produit.numproduit == produit:
+                      achat = True
+
+      b1 = Commenter.objects.filter(numproduit=produit, numclient=client)#Si c'est un client, on regarde s'il a déjà commenter le produit
     
     #Si c'est une requete en POST
     if request.method == 'POST':

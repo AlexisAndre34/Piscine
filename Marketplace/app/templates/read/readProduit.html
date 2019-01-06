@@ -72,6 +72,7 @@
   {% else %}
   {% if user.is_authenticated %}
     {% if request.session.estClient %}
+      {% if achat %}
         <div class ="Commentaire">
           <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
@@ -95,6 +96,7 @@
           * La note est comprise entre 0 et 5
           </form>
         </div>
+      {% endif %}
     {% endif %}
   {% endif %}
   {% endif %}
