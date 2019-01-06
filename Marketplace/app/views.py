@@ -274,7 +274,7 @@ def read_mescommandesCommerce(request, idcommerce):
 def read_mesreservationsClient(request):
     utilisateur = User.objects.get(id=request.user.id)
     client = Client.objects.get(numclient=utilisateur)
-    reservations = Reservation.objects.filter(numclient=client)
+    reservations = Reservation.objects.filter(numclient=client).order_by('paiementrealise') #Résultat ordonné, les réservations non payés d'abord, ensuite c'est ordonné par date
     return render(request, 'read/mesreservationsClient.html', locals())
 
 #permet de read les réservations d'un Commerce
