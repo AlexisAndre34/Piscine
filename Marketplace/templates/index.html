@@ -78,9 +78,14 @@
   <ul class="sidenav" id="mobile-demo">
     <li><a href="{% url 'homepage' %}"><i class="material-icons">home</i>Accueil</a></li>
     {% if user.is_authenticated %}
-	<li><a href="{% url 'afficher_panier' %}" ><i class="material-icons">shopping_basket</i><i class="material-icons">shopping_cart</i></a></li>
-	<li><a href="{% url 'moncompte' %}"><i class="material-icons">account_circle</i>Mon compte</a></li>
-	<li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Deconnexion</a></li>
+      {% if request.session.estClient %}
+        <li><a href="{% url 'afficher_panier' %}" ><i class="material-icons">shopping_basket</i><i class="material-icons">shopping_cart</i></a></li>
+        <li><a href="{% url 'moncompte' %}"><i class="material-icons">account_circle</i>Mon compte</a></li>
+        <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Deconnexion</a></li>
+      {% else %}
+        <li><a  href="{% url 'dashboard_commercant' %}"><i class="material-icons">dashboard</i>Dashboard</a></li>
+        <li><a  href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Déconnexion</a></li>
+      {% endif %}
     {% else %}
     <li><a href="{% url 'login' %}"><i class="material-icons">person_outline</i>Connexion</a></li>
 	<li><a href="{% url 'signupClient' %}"><i class="material-icons">person_add</i>Inscription</a></li>

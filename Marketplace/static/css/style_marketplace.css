@@ -200,4 +200,7 @@
     overflow: hidden;
     white-space: nowrap;
   }
+  .wrap_content{
+    flex-wrap:wrap;
+  }
 }
