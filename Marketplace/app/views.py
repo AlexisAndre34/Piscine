@@ -868,7 +868,7 @@ def valider_reduction(request):
                     reservation.montantreservation = reservation.montantreservation - reduction.valeurreduction
                 else:
                     type="%"
-                    reservation.montantreservation = reservation.montantreservation - (reservation.montantreservation*reduction.valeurreduction)
+                    reservation.montantreservation = reservation.montantreservation - ((reservation.montantreservation*reduction.valeurreduction)/100)
                 reduction.estutilise = True
                 reduction.save()
                 reservation.save()
