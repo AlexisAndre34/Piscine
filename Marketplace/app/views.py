@@ -901,4 +901,16 @@ def valider_reduction(request):
     }
     return JsonResponse(data)
 
+#---------------- VIEWS COMPARAISON ----------------
+
+def comparaison(request):
+    id_produit1 = request.POST.get('produit1')
+    id_produit2 = request.POST.get('produit2')
+    produit1 = Produit.objects.get(numproduit=id_produit1)
+    produit2 = Produit.objects.get(numproduit=id_produit2)
+
+    return render(request, 'read/comparaison.html', {'produit1': produit1, 'produit2': produit2})
+
+
+
 #---------------- VIEWS DE A DEFINIR ----------------

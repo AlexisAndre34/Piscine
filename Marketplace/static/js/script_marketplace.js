@@ -37,6 +37,42 @@ $(document).ready(function() {
     $('input#id_numsiret').characterCounter();
 });
 
+$(document).ready(function() {
+    tab_idProduit = Array()
+    $('#btn_comparaison').css("display","none");
+    $('#comparaison_produit1').css("display","none");
+    $('#comparaison_produit2').css("display","none");
+
+    $('.comparaison input').change(function() {
+
+        if ( $(this)[0].checked == true ) {
+            tab_idProduit.push($(this)[0].id)
+            console.log(tab_idProduit)
+        }
+
+        if ( $(this)[0].checked == false ) {
+            if ( tab_idProduit[0] == $(this)[0].id ){
+                tab_idProduit.shift()
+            }
+            if ( tab_idProduit[1] == $(this)[0].id ){
+                tab_idProduit.pop()
+            }
+        }
+
+        if ( tab_idProduit.length == 2 ) {
+            $('#comparaison_produit1').val(tab_idProduit[0])
+            $('#comparaison_produit2').val(tab_idProduit[1])
+            $('#btn_comparaison').css("display","");
+        }
+
+        if ( tab_idProduit.length < 2 ) {
+            $('#btn_comparaison').css("display","none");
+        }
+
+    });
+
+});
+
 $('#gpsbutton').click(function() {
   var adresse = $('#id_ruecommerce').val()+', '+$('#id_codepostalcommerce').val()+' '+$('#id_villecommerce').val()+', France'  //On concatene la rue et la ville du commerce
   var mapboxClient = mapboxSdk({ accessToken: 'pk.eyJ1IjoiZ3Q0MjYiLCJhIjoiY2pxMnk4a2U0MTlpaTN4bXVhenZ3cDBmeCJ9.eJr9J2bb4I1VMM6AlAq1IQ' });
