@@ -49,7 +49,8 @@ class CommerceForm(forms.ModelForm):
                   "villecommerce": "Ville",
                   "ruecommerce": "Rue",
                   "gpslatitude": "Latitude",
-                  "gpslongitude": "Longitude",}
+                  "gpslongitude": "Longitude",
+                  "horairescommerce": "Horaires d'ouverture"}
 
 #Formulaire de creation de commentaire
 class CommentaireForm(forms.ModelForm):

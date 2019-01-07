@@ -397,6 +397,7 @@ def update_commerce(request, idcommerce):
         commerce.emailcommerce = request.POST.get('emailcommerce')
         commerce.livraisondisponible = request.POST.get('livraisondisponible')
         commerce.joursretrait = request.POST.get('joursretrait')
+        commerce.horairescommerce = request.POST.get('horairescommerce')
         commerce.telephonecommerce = request.POST.get('telephonecommerce')
         commerce.codepostalcommerce = request.POST.get('codepostalcommerce')
         commerce.villecommerce = request.POST.get('villecommerce')
