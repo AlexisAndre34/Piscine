@@ -16,10 +16,10 @@
                 </label>
             </div>
         </div>-->
-    <form method="post" action="/gestion/produit/comparaison">
+    <form method="post" action="{% url 'comparaison_produit' %}">
     {% csrf_token %}
-    <input id="comparaison_produit1" name="produit1" type="number"><input name="produit2" id="comparaison_produit2" type="number">
-    <button type="Submit" id="btn_comparaison" class="btn grey">Comparer les produits</button>
+    <input class="btn_invisible" id="comparaison_produit1" name="produit1" type="number"><input class="btn_invisible" name="produit2" id="comparaison_produit2" type="number">
+    <button  type="Submit" id="btn_comparaison" class="btn pulse grey">Comparer les produits</button>
     </form>
 </div>
 

@@ -120,6 +120,11 @@
 	align-items: flex-start;
 }
 
+.btn_invisible {
+    display: none;
+}
+
+
 .logo{
 }
 

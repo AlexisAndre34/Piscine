@@ -37,13 +37,11 @@ $(document).ready(function() {
     $('input#id_numsiret').characterCounter();
 });
 
+//Pour la comparaison des produits sur une page (Uniquement 2 produits)
 $(document).ready(function() {
-    tab_idProduit = Array()
-    $('#btn_comparaison').css("display","none");
-    $('#comparaison_produit1').css("display","none");
-    $('#comparaison_produit2').css("display","none");
-
-    $('.comparaison input').change(function() {
+    tab_idProduit = Array() //On initialise un tableau qui contiendra les id des produits que le client souhaite comparer
+    $('#btn_comparaison').css("display","none"); //On cache le bouton
+    $('.comparaison input').change(function() { //Si on clique sur une checkbox
 
         if ( $(this)[0].checked == true ) {
             tab_idProduit.push($(this)[0].id)
@@ -62,11 +60,11 @@ $(document).ready(function() {
         if ( tab_idProduit.length == 2 ) {
             $('#comparaison_produit1').val(tab_idProduit[0])
             $('#comparaison_produit2').val(tab_idProduit[1])
-            $('#btn_comparaison').css("display","");
+            $('#btn_comparaison').css("display",""); //On affiche le bouton
         }
 
         if ( tab_idProduit.length < 2 ) {
-            $('#btn_comparaison').css("display","none");
+            $('#btn_comparaison').css("display","none"); //On cache le bouton
         }
 
     });
