@@ -38,7 +38,10 @@ def login_user(request):
                 request = init_panier(request)
                 request = init_reservation(request) #On initiliase le panier et le panier_reservation de l'utilisateur
 
-                return redirect('homepage')
+                if estClient:
+                    return redirect('homepage')
+                else:
+                    return redirect('gestion/dashboard/')
             else:
                 error=True
                 #ErrorMessage = "Username ou mot de passe incorrect"

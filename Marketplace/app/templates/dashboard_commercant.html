@@ -12,13 +12,13 @@
             <li>Email : {{ utilisateur.email }}</li>
             <li>Tel : {{ commercant.telephonecommercant }}</li>
         </ul>
-        <a href="{% url 'updatecommercant' %}"class="waves-effect btn-floating green"><i class="material-icons">edit</i></a>
+        <a href="{% url 'updatecommercant' %}"class="btn green">Modifier <i class="material-icons">edit</i></a>
     </div>
 
-    <div class="col s12 m5">
-        <div>
-            <a class="btn teal"href="{% url 'read_commerce_by_commercant' %}">Mes Commerces</a>
-            <a class="btn teal"href="{% url 'create_commerce' %}">Ajouter Commerce</a>
+    <div  class="col s12 m5">
+        <div class="container">
+            <a class="btn teal"href="{% url 'read_commerce_by_commercant' %}">Voir mes Commerces</a>
+            <a class="btn teal"href="{% url 'create_commerce' %}">Ajouter un Commerce</a>
 
         </div>
     </div>
