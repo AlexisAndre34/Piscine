@@ -33,7 +33,7 @@ class Commerce(models.Model):
     emailcommerce = models.EmailField()
     livraisondisponible = models.BooleanField(choices=BOOLEAN_CHOICES)
     joursretrait = models.IntegerField(blank=False, null=True)  # Correspond à un nombre de jour
-    horairescommerce = models.CharField(blank=False, null=True, max-lenght = 250)
+    horairescommerce = models.CharField(blank=False, null=True, max_length = 250)
     telephonecommerce = models.CharField(max_length=15)
     codepostalcommerce = models.IntegerField()
     villecommerce = models.CharField(max_length=30)
