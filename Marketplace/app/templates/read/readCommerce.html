@@ -22,7 +22,11 @@
                 </tr>
                 <tr>
                     <td><b>Livraison disponible</b></td>
-                    <td>{{ commerce.livraisondisponible }}</td>
+                    {% if commerce.livraisondisponible %}
+                    <td>oui</td>
+                    {% else %}
+                    <td>non</td>
+                    {% endif %}
                 </tr>
             </tbody>
         </table>
