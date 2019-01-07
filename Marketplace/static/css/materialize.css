@@ -5045,7 +5045,7 @@ small {
 }
 
 .tabs.tabs-transparent .indicator {
-  background-color: #fff;
+  background-color: red;
 }
 
 .tabs.tabs-fixed-width {
@@ -8433,10 +8433,10 @@ input[type=range]::-ms-thumb {
   transition: background-color .3s;
   border-radius: 50%;
 }
-
+/*
 .carousel .indicators .indicator-item.active {
   background-color: #fff;
-}
+} */
 
 .carousel.scrolling .carousel-item .materialboxed,
 .carousel .carousel-item:not(.active) .materialboxed {
