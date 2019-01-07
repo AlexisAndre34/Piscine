@@ -5,6 +5,27 @@
 
 {% if request.session.estClient %}
 
+<div class="justify_center">
+    <!--<form method="post" action="">
+        {% csrf_token %}
+        <div>
+            <div class="switch">
+                <label>
+                  <span>Prix : Decroissant</span>
+                  <input name="ordre" type="checkbox">
+                  <span class="lever"></span>
+                  <span>Croissant</span>
+                </label>
+            </div>
+        </div>-->
+    <form method="post" action="/gestion/produit/comparaison">
+    {% csrf_token %}
+    <input id="comparaison_produit1" name="produit1" type="number"><input name="produit2" id="comparaison_produit2" type="number">
+    <button type="Submit" id="btn_comparaison" class="btn grey">Comparer les produits</button>
+    </form>
+</div>
+
+
 <div class="search_container">
     {% for produit in produits %}
       <div class="card search_card">
@@ -25,6 +46,12 @@
             {% if produit.tauxremise > 0 %}
             <div><span>Promotion : {{ produit.tauxremise }} %</span></div>
             {% endif %}
+            <form class="comparaison">
+                <label>
+                    <input id={{ produit.numproduit }} type="checkbox" />
+                    <span>Comparer</span>
+                </label>
+            </form>
         </div>
       </div>
     {% endfor %}

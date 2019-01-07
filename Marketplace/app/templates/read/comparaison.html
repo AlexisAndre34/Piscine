@@ -4,9 +4,23 @@
 
 <div class="row">
     <div class="col s12 m6">
+        <div class="justify_center">
+            <img class="materialboxed" width="350" src={{ produit1.photoproduit1.url }}>
+        </div>
+    </div>
+    <div class="col s12 m6">
+        <div class="justify_center">
+            <img class="materialboxed" width="350" src={{ produit2.photoproduit1.url }}>
+        </div>
+    </div>
+</div>
 
-            <h3> {{ produit1.nomProduit }}  </h3>
-            <table class="striped">
+<div class="row">
+    <div class="col s12 m6">
+
+
+    <h3> {{ produit1.nomProduit }}  </h3>
+    <table class="striped">
         <thead>
           <tr>
               <th>Details produit 1</th>
@@ -53,8 +67,9 @@
 
     <div class="col s12 m6">
 
-            <h3> {{ produit2.nomProduit }}  </h3>
-            <table class="striped">
+
+    <h3> {{ produit2.nomProduit }}  </h3>
+    <table class="striped">
         <thead>
           <tr>
               <th>Details produit 2</th>
