@@ -545,6 +545,8 @@ def produit_by_ville(request, ville, page=1):
     return render(request, 'list/produit_by_ville.html', locals())
 
 #permet de voir les produits par categorie
+@login_required
+@permission_required('app.view_produit',raise_exception=True)
 def produit_by_categorie(request, numcategorie, page=1):
     produitsParCategorie = Produit.objects.filter(numcategorie = numcategorie)
     listeProduits = []
