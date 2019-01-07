@@ -1,8 +1,323 @@
 {% extends 'index.html' %}
-{% load static %}
+
 {% block content %}
 
-    {{ produit1 }}
-    {{ produit2 }}
+<div class="row">
+    <div class="col s12 m6">
+        <div class="row s6 m4">
+            <!--
+            <div class="col s3 m7">
+
+             <div class="carousel carousel-slider center">
+                {% if produit1.photoproduit1 %}
+                <div class="carousel-item" href="#one!">
+                  <img src={{ produit1.photoproduit1.url }}>
+                </div>
+                {% endif %}
+                {% if produit1.photoproduit2 %}
+                <div class="carousel-item" href="#two!">
+                  <img src={{ produit1.photoproduit2.url }}>
+                </div>
+                {% endif %}
+                <ul class="indicators">
+                  {% if produit1.photoproduit1 %}
+                  <li class="indicator-item red"></li>
+                  {% endif %}
+                  {% if produit1.photoproduit2 %}
+                  <li class="indicator-item red"></li>
+                  {% endif %}
+                </ul>
+             </div>
+
+            </div> -->
+
+        <div class="col s3 m7">
+            <h3> {{ produit1.nomProduit }}  </h3>
+            <table class="striped">
+        <thead>
+          <tr>
+              <th>Details produit 1</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Nom</td>
+            <td>{{ produit1.nomproduit }}</td>
+          </tr>
+          <tr>
+            <td>Marque</td>
+            <td>{{ produit1.marqueproduit }}</td>
+          </tr>
+          <tr>
+            <td>Descriptif</td>
+            <td>{{ produit1.descriptifproduit }}</td>
+          </tr>
+          <tr>
+            <td>Caracteristiques</td>
+            <td>{{ produit1.caracteristiquesproduit }}</td>
+          </tr>
+          <tr>
+            <td>Prix</td>
+            <td>{{ produit1.prixproduit }} euros</td>
+          </tr>
+          {% if produit1.tauxremise > 0 %}
+          <tr>
+            <td>Promotion </td>
+            <td>{{ produit1.tauxremise }} %</td>
+          </tr>
+
+          {% endif %}
+        </tbody>
+      </table>
+      {% if produit1.idcommerce.livraisondisponible %}
+      <a class="btn" href="{% url 'ajout_panier' produit1.numproduit %}">Ajouter au panier<i class="material-icons">shopping_cart</i></a>
+      {% endif %}
+      <a class="btn" href="{% url 'ajout_reservation' produit1.numproduit %}">Ajouter aux réservations <i class="material-icons">shopping_basket</i></a>
+        </div>
+    </div>
+    </div>
+
+    <div class="col s12 m6">
+        <div class="row s6 m4">
+            <!--
+            <div class="col s3 m7">
+
+             <div class="carousel carousel-slider center">
+                {% if produit2.photoproduit1 %}
+                <div class="carousel-item" href="#one!">
+                  <img src={{ produit2.photoproduit1.url }}>
+                </div>
+                {% endif %}
+                {% if produit2.photoproduit2 %}
+                <div class="carousel-item" href="#two!">
+                  <img src={{ produit2.photoproduit2.url }}>
+                </div>
+                {% endif %}
+                <ul class="indicators">
+                  {% if produit2.photoproduit1 %}
+                  <li class="indicator-item red"></li>
+                  {% endif %}
+                  {% if produit2.photoproduit2 %}
+                  <li class="indicator-item red"></li>
+                  {% endif %}
+                </ul>
+              </div>
+
+            </div>-->
+
+        <div class="col s3 m7">
+            <h3> {{ produit2.nomProduit }}  </h3>
+            <table class="striped">
+        <thead>
+          <tr>
+              <th>Details produit 2</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Nom</td>
+            <td>{{ produit2.nomproduit }}</td>
+          </tr>
+          <tr>
+            <td>Marque</td>
+            <td>{{ produit2.marqueproduit }}</td>
+          </tr>
+          <tr>
+            <td>Descriptif</td>
+            <td>{{ produit2.descriptifproduit }}</td>
+          </tr>
+          <tr>
+            <td>Caracteristiques</td>
+            <td>{{ produit2.caracteristiquesproduit }}</td>
+          </tr>
+          <tr>
+            <td>Prix</td>
+            <td>{{ produit2.prixproduit }} euros</td>
+          </tr>
+          {% if produit2.tauxremise > 0 %}
+          <tr>
+            <td>Promotion </td>
+            <td>{{ produit2.tauxremise }} %</td>
+          </tr>
+
+          {% endif %}
+        </tbody>
+      </table>
+      {% if produit2.idcommerce.livraisondisponible %}
+      <a class="btn" href="{% url 'ajout_panier' produit1.numproduit %}">Ajouter au panier<i class="material-icons">shopping_cart</i></a>
+      {% endif %}
+      <a class="btn" href="{% url 'ajout_reservation' produit1.numproduit %}">Ajouter aux réservations <i class="material-icons">shopping_basket</i></a>
+        </div>
+
+
+    </div>
+    </div>
+</div>
+
+
+<!--
+<div class="row">
+    <div class="row s6 m4">
+        <div class="col s3 m3">
+
+         <div class="carousel carousel-slider center">
+            {% if produit1.photoproduit1 %}
+            <div class="carousel-item" href="#one!">
+              <img src={{ produit1.photoproduit1.url }}>
+            </div>
+            {% endif %}
+            {% if produit1.photoproduit2 %}
+            <div class="carousel-item" href="#two!">
+              <img src={{ produit1.photoproduit2.url }}>
+            </div>
+            {% endif %}
+            <ul class="indicators">
+              {% if produit1.photoproduit1 %}
+              <li class="indicator-item red"></li>
+              {% endif %}
+              {% if produit1.photoproduit2 %}
+              <li class="indicator-item red"></li>
+              {% endif %}
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="col s3 m7">
+            <h3> {{ produit1.nomProduit }}  </h3>
+            <table class="striped">
+        <thead>
+          <tr>
+              <th>Details produit1</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>produit1</td>
+            <td>{{ produit1.nomproduit }}</td>
+          </tr>
+          <tr>
+            <td>Marque</td>
+            <td>{{ produit1.marqueproduit }}</td>
+          </tr>
+          <tr>
+            <td>Descriptif</td>
+            <td>{{ produit1.descriptifproduit }}</td>
+          </tr>
+          <tr>
+            <td>Caracteristiques</td>
+            <td>{{ produit1.caracteristiquesproduit }}</td>
+          </tr>
+          <tr>
+            <td>Prix</td>
+            <td>{{ produit1.prixproduit }} euros</td>
+          </tr>
+          {% if produit1.tauxremise > 0 %}
+          <tr>
+            <td>Promotion </td>
+            <td>{{ produit1.tauxremise }} %</td>
+          </tr>
+
+          {% endif %}
+        </tbody>
+      </table>
+      {% if produit1.idcommerce.livraisondisponible %}
+      <a class="btn" href="{% url 'ajout_panier' produit1.numproduit %}">Ajouter au panier<i class="material-icons">shopping_cart</i></a>
+      {% endif %}
+      <a class="btn" href="{% url 'ajout_reservation' produit1.numproduit %}">Ajouter aux réservations <i class="material-icons">shopping_basket</i></a>
+        </div>
+    </div>
+
+    <div class="row s6 m4">
+        <div class="col s3 m3">
+
+         <div class="carousel carousel-slider center">
+            {% if produit2.photoproduit1 %}
+            <div class="carousel-item" href="#one!">
+              <img src={{ produit2.photoproduit1.url }}>
+            </div>
+            {% endif %}
+            {% if produit2.photoproduit2 %}
+            <div class="carousel-item" href="#two!">
+              <img src={{ produit2.photoproduit2.url }}>
+            </div>
+            {% endif %}
+            <ul class="indicators">
+              {% if produit2.photoproduit1 %}
+              <li class="indicator-item red"></li>
+              {% endif %}
+              {% if produit2.photoproduit2 %}
+              <li class="indicator-item red"></li>
+              {% endif %}
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="col s3 m7">
+            <h3> {{ produit2.nomProduit }}  </h3>
+            <table class="striped">
+        <thead>
+          <tr>
+              <th>Details produit1</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>produit2</td>
+            <td>{{ produit2.nomproduit }}</td>
+          </tr>
+          <tr>
+            <td>Marque</td>
+            <td>{{ produit2.marqueproduit }}</td>
+          </tr>
+          <tr>
+            <td>Descriptif</td>
+            <td>{{ produit2.descriptifproduit }}</td>
+          </tr>
+          <tr>
+            <td>Caracteristiques</td>
+            <td>{{ produit2.caracteristiquesproduit }}</td>
+          </tr>
+          <tr>
+            <td>Prix</td>
+            <td>{{ produit2.prixproduit }} euros</td>
+          </tr>
+          {% if produit2.tauxremise > 0 %}
+          <tr>
+            <td>Promotion </td>
+            <td>{{ produit2.tauxremise }} %</td>
+          </tr>
+
+          {% endif %}
+        </tbody>
+      </table>
+      {% if produit2.idcommerce.livraisondisponible %}
+      <a class="btn" href="{% url 'ajout_panier' produit1.numproduit %}">Ajouter au panier<i class="material-icons">shopping_cart</i></a>
+      {% endif %}
+      <a class="btn" href="{% url 'ajout_reservation' produit1.numproduit %}">Ajouter aux réservations <i class="material-icons">shopping_basket</i></a>
+        </div>
+    </div>
+</div>
+-->
 
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
