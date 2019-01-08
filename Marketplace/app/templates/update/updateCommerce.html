@@ -2,8 +2,12 @@
 
 {% block content %}
 
-<div>
-    <form method="post" action="">
+<div class="page">
+  <div class = "formulaire">
+    <div class="blocCentrer">
+
+      <form method="post" action="">
+
         {% csrf_token %}
         {% for field in form %}
 		<div>
@@ -13,10 +17,12 @@
 	{% endfor %}
 
 
-    <div>
-		<button type="submit">Envoyer</button>
+    <div  class="boutonForm">
+		<button  class ="btn purple" type="submit">Envoyer</button>
 	</div>
-    </form>
-</div>
+    	</form>
 
+	</div>
+  </div>
+</div>
 {% endblock %}

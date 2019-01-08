@@ -52,7 +52,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return render(request, 'index.html')
+    return render(request, 'accueil.html')
 
 
 #---------------- VIEWS DE CREATION (CREATE) ----------------
