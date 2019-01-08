@@ -107,9 +107,9 @@
         </tbody>
       </table>
       {% if produit2.idcommerce.livraisondisponible %}
-      <a class="btn" href="{% url 'ajout_panier' produit1.numproduit %}">Ajouter au panier<i class="material-icons">shopping_cart</i></a>
+      <a class="btn" href="{% url 'ajout_panier' produit2.numproduit %}">Ajouter au panier<i class="material-icons">shopping_cart</i></a>
       {% endif %}
-      <a class="btn" href="{% url 'ajout_reservation' produit1.numproduit %}">Ajouter aux réservations <i class="material-icons">shopping_basket</i></a>
+      <a class="btn" href="{% url 'ajout_reservation' produit2.numproduit %}">Ajouter aux réservations <i class="material-icons">shopping_basket</i></a>
 
     </div>
 </div>
